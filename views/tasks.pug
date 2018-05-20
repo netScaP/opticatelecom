@@ -1,0 +1,23 @@
+extends layout
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	each task in result
+		p= task.task
+		p= task.authorPhone
+		p= task.name
+		p= task.status
+		if isTech
+			form(method="POST", action="/newStatus")
+				input(type="hidden", value= task.id, name="taskId")
+				if isDisp
+					if task.status == 'adopted'
+						input(type="hidden", value="ready", name="newStatus")
+						button(type="submit") Считать выполненной
+				else
+					if task.status == 'free'
+						input(type="hidden", value="adopted", name="newStatus")
+						button(type="submit") Принять задачу 
+		hr

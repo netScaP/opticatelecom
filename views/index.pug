@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	if hasAcces
+		form(method="POST", action="/newTask")
+			input(type="text" ,name="phone", placeholder="Номер абонента")
+			input(type="text", name="name", placeholder="Имя абонента")
+			input(type="text", name="task", placeholder="Задача")
+			button(type="submin")

@@ -1,0 +1,20 @@
+extends ../layout
+
+block styles
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	div
+		each user in result
+			div
+				p= user.email
+				p= user.phone
+				p= user.name
+				p= user.roles[user.roles.length - 1]
+				form(action="/confirmUser", method="POST")
+					input(type="hidden", value= user.email, name="email")
+					button(type="submit") Принять
+			hr
+block scripts

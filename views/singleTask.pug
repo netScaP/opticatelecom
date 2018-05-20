@@ -1,0 +1,10 @@
+extends layout
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	p= result.task
+	p= result.authorPhone
+	p= result.name
+	hr

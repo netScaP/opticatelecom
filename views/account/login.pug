@@ -1,0 +1,47 @@
+extends ../layout
+
+block styles
+	link(rel='stylesheet', href='/stylesheets/account/login.css')
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	div.become
+		form.left(method="POST")
+			p Become a Member
+				span Login
+			p.easy It's Easy...
+			div.email
+				label(for="email") Email:
+				input(type="text", name="email", id="email", required)
+			div.password
+				label(for="password") Password:
+				input(type="text", name="password", id="password", required)
+			div.remember
+				div.left
+					input(type="checkbox", name="isRemember", id="isRemember")
+					label(for="isRemember") Remember me
+				div.right
+					a(href="#") Forgot Password?
+					span or
+					a(href="/user/signup") Create an account
+			input(type="hidden", name="_csrf", value= csrfToken)
+			button(type="submit")
+				span LOGIN
+				img(src="../images/rightArrow.png", alt="")
+		.right
+			p Follow Us
+			div.icons
+				div.social
+					a(href="#")
+						img.facebook(src="../images/social/facebook.png", alt="")
+					a(href="#")
+						img(src="../images/social/twitter.png", alt="")
+					a(href="#")
+						img.google(src="../images/social/google.png", alt="")
+			div.error
+				if hasErrors
+					each e in messages
+						p= messages
+block scripts

@@ -1,0 +1,27 @@
+extends ../layout
+
+block styles
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	div
+		p= "Hello, " + profile.name
+		p= "You are " + profile.roles[profile.roles.length - 1]
+		p= "Your email is " + profile.email
+		br
+		if profile.confirmed
+			div
+				p Your tasks
+				hr
+				each task in tasks
+					div.oneOfThem
+						p= task.status
+						p= task.authorPhone
+						p= task.name
+						p= task.task
+					hr
+		else
+			p You are not confirmed yet
+block scripts
