@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "babel-node ./bin/www"
+    "start": "./node_modules/.bin/babel-node ./bin/www"
   },
   "dependencies": {
+    "babel": "^6.23.0",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "~1.18.2",
     "connect-flash": "^0.1.1",
@@ -23,6 +24,11 @@
     "passport-local": "^1.0.0",
     "pug": "2.0.0-beta11",
     "serve-favicon": "~2.4.5"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
