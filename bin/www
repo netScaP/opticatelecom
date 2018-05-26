@@ -8,7 +8,7 @@ import app from '../app';
 import Debug from 'debug';
 import http from 'http';
 
-const port = process.env.PORT || 8000;
+const port = 8000;
 
 const debug = new Debug('arapp:server');
 /**
