@@ -14,13 +14,16 @@ import flash from 'connect-flash';
 import index from './routes/index';
 import user from './routes/user';
 
+import config from './config/confirmCode';
+
 mongoose.Promise = Promise;
 
 const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/arapp');
+mongoose.connect(config.db);
+console.log(config.db);
 require('./config/passport');
 
 // view engine setup

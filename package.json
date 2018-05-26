@@ -6,7 +6,6 @@
     "start": "./node_modules/.bin/babel-node ./bin/www"
   },
   "dependencies": {
-    "babel": "^6.23.0",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "~1.18.2",
     "connect-flash": "^0.1.1",
@@ -30,8 +29,12 @@
       "es2015"
     ]
   },
+  "env": {
+      "PORT": 8000,
+      "DB": "mongodb://xnx:Bahmud20002004@ds255329.mlab.com:55329/arapp"
+    },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
