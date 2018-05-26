@@ -8,14 +8,14 @@ import app from '../app';
 import Debug from 'debug';
 import http from 'http';
 
-import config from '../config/confirmCode';
+const port = process.env.PORT || 8000;
 
 const debug = new Debug('arapp:server');
 /**
  * Get port from environment and store in Express.
  */
 
-app.set('port', config.port);
+app.set('port', port);
 
 /**
  * Create HTTP server.
@@ -27,7 +27,7 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(config.port);
+server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -60,9 +60,9 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof config.port === 'string'
-    ? 'Pipe ' + config.port
-    : 'Port ' + config.port;
+  const bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
