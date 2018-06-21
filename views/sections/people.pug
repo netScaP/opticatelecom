@@ -1,0 +1,15 @@
+extends ../layout
+
+block styles
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	div
+		each user in users
+			div.user
+				p.name= user.name
+				p.phone= user.phone
+			hr
+block scripts

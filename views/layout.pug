@@ -11,11 +11,12 @@ html
 			span ---
 			a(href="/user/profile") My Profile 
 			span ---
-			a(href="/tasks") All tasks 
+			a(href="/people") People
 			span ---
 			a(href="/user/logout") Logout
 			span ---
-			if isAdmin
-				a(href="/admin") Admin Panel
 		block content
+		script(src='/socket.io/socket.io.js')
+		script(src="https://code.jquery.com/jquery-1.11.1.js")
+		script(src='/javascripts/socket.js')
 		block scripts

@@ -20,7 +20,15 @@ const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/arapp');
+export const sessionMiddleware = session({
+  secret: 'mysupersecret', 
+  resave: false, 
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  cookie: { maxAge: 180 * 60 * 1000 }
+});
+
+mongoose.connect('mongodb://localhost:27017/socnet');
 require('./config/passport');
 
 // view engine setup
@@ -34,13 +42,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(validator());
 app.use(cookieParser());
-app.use(session({
-  secret: 'mysupersecret', 
-  resave: false, 
-  saveUninitialized: false,
-  store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  cookie: { maxAge: 180 * 60 * 1000 }
-}));
+app.use(sessionMiddleware);
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
@@ -78,5 +80,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 export default app;

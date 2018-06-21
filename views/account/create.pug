@@ -14,23 +14,15 @@ block content
 			div.name
 				label(for="name")  Name:
 				input(type="text", name="name", id="name")
-			div.email
-				label(for="email") Email:
-				input(type="text", name="email", id="email")
+			div.username
+				label(for="username") Username:
+				input(type="text", name="username", id="username")
 			div.password
 				label(for="password") Password:
 				input(type="text", name="password", id="password")
 			div.phone
 				label(for="phone") Phone:
 				input(type="number", name="phone", id="phone")
-			div.roles
-				input(type="radio", name="roles", id="technician", value="technician", checked)
-				label(for="technician") Technician
-				input(type="radio", name="roles", id="dispatcher", value="dispatcher")
-				label(for="dispatcher") Dispatcher
-				input(type='radio', name="roles", id="adimn", value="admin")
-				label(for="admin") Admin
-			input(type="text", name="code", placeholder="Confirmed code")
 			input(type="hidden", name="_csrf", value= csrfToken)
 			button(type="submit")
 				span REGISTER

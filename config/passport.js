@@ -15,11 +15,11 @@ passport.deserializeUser((id, done) => {
 });
 
 passport.use('local.signup', new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true
-}, (req, email, password, done) => {
-    req.checkBody('email', 'Invalid email').notEmpty().isEmail();
+}, (req, username, password, done) => {
+    req.checkBody('username', 'Invalid username').notEmpty();
     req.checkBody('password', 'Invalid password').notEmpty().isLength({min:4});
     req.checkBody('name', "Name couldn't be is empty").notEmpty();
     req.checkBody('phone', "Invalid Phone").notEmpty().isLength({min:7});
@@ -31,24 +31,18 @@ passport.use('local.signup', new LocalStrategy({
         });
         return done(null, false, req.flash('error', messages));
     }
-    User.findOne({'email': email}, (err, user) => {
+    User.findOne({'username': username}, (err, user) => {
         if (err) {
             return done(err);
         }
         if (user) {
-            return done(null, false, {message: 'Email is already in use.'});
+            return done(null, false, {message: 'username is already in use.'});
         }
         const newUser = new User();
-        newUser.email = email;
+        newUser.username = username;
         newUser.password = newUser.encryptPassword(password);
         newUser.name = req.body.name;
         newUser.phone = +req.body.phone;
-        
-        if (req.body.roles == "admin") newUser.roles = ["technician","dispatcher", "admin"];
-        if (req.body.roles == "dispatcher") newUser.roles = ["technician","dispatcher"];
-        if (req.body.roles == "technician") newUser.roles = ["technician"];
-
-        if (req.body.code == config.code) newUser.confirmed = true;
         
         newUser.save((err, result) => {
            if (err) {
@@ -60,11 +54,11 @@ passport.use('local.signup', new LocalStrategy({
 }));
 
 passport.use('local.signin', new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true
-}, (req, email, password, done) => {
-    req.checkBody('email', 'Invalid email').notEmpty().isEmail();
+}, (req, username, password, done) => {
+    req.checkBody('username', 'Invalid username').notEmpty();
     req.checkBody('password', 'Invalid password').notEmpty();
     let errors = req.validationErrors();
     if (errors) {
@@ -74,7 +68,7 @@ passport.use('local.signin', new LocalStrategy({
         });
         return done(null, false, req.flash('error', messages));
     }
-    User.findOne({'email': email}, (err, user) => {
+    User.findOne({'username': username}, (err, user) => {
         if (err) {
             return done(err);
         }

@@ -7,21 +7,17 @@ block content
 		each message in messages
 			p= message
 	div
-		p= "Hello, " + profile.name
-		p= "You are " + profile.roles[profile.roles.length - 1]
-		p= "Your email is " + profile.email
-		br
-		if profile.confirmed
-			div
-				p Your tasks
-				hr
-				each task in tasks
-					div.oneOfThem
-						p= task.status
-						p= task.authorPhone
-						p= task.name
-						p= task.task
-					hr
-		else
-			p You are not confirmed yet
+		p hi, beacth
+		hr
+		ul(id="messages")
+		form(id="chatform")
+			input(id="m")
+			button Send
+	div#toRoom toRoom
+	div.open(style="opacity: 0;")
+		input(type='hidden', id="test", value="test")
+		ul(id="messagesP")
+		form(id="privateChat")
+			input(id="msg")
+			button Send
 block scripts
