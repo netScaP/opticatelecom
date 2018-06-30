@@ -30,7 +30,7 @@ export const sessionMiddleware = session({
   store: new MongoStore({ mongooseConnection: mongoose.connection }),
   cookie: { maxAge: 180 * 60 * 1000 }
 });
-
+console.log(config.db);
 mongoose.connect(config.db);
 require('./config/passport');
 
