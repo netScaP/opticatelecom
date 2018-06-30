@@ -40,7 +40,7 @@
     "DB": "mongodb://xnx:Bahmud20002004@ds121861.mlab.com:21861/socnet"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
