@@ -2,6 +2,7 @@ import express from 'express';
 import csrf from 'csurf';
 import passport from 'passport';
 
+import User from '../models/user';
 
 import { notLoggedIn, ensureAuthenticated } from '../middleware/auth';
 
@@ -19,9 +20,40 @@ router.get('/logout', ensureAuthenticated, (req, res, next) => {
 
 router.get('/profile', ensureAuthenticated, (req, res, next) => {
 	const messages = req.flash('error');
-	res.render('account/profile');
-	const io = req.app.get('io');
-	let clients = io.of('/').connected;
+	console.log(messages);
+	res.render('account/profile', {
+		'user': req.user,
+		messages,
+		hasErrors: messages.length > 0
+	});
+});
+
+router.get('/setting', ensureAuthenticated, (req, res, next) => {
+	const messages = req.flash('error');
+	console.log(messages);
+	res.render('account/setting', {
+		'user': req.user,
+		csrfToken: req.csrfToken(),
+		messages,
+		hasErrors: messages.length > 0
+	});
+});
+
+router.post('/setting', ensureAuthenticated, (req, res, next) => {
+
+	const newUser = new User();
+    newUser.username = req.body.username;
+    newUser.password = req.body.password == '' ? req.user.password : newUser.encryptPassword(req.body.password);
+    newUser.name = req.body.name;
+    newUser.phone = +req.body.phone;
+    newUser._id = req.user._id;
+    
+    User.updateOne( { username: req.body.username }, newUser, { upsert: true }, (err, result) => {
+    	if (err) req.flash('error', err);
+
+    	res.redirect('/user/profile');
+    });
+
 });
 
 // USE USE USE USE USE USE NOT GET OR POST

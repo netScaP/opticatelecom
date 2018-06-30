@@ -13,6 +13,9 @@ import flash from 'connect-flash';
 
 import index from './routes/index';
 import user from './routes/user';
+import api from './routes/api';
+
+import config from './config/confirmCode';
 
 mongoose.Promise = Promise;
 
@@ -28,7 +31,7 @@ export const sessionMiddleware = session({
   cookie: { maxAge: 180 * 60 * 1000 }
 });
 
-mongoose.connect('mongodb://localhost:27017/socnet');
+mongoose.connect(config.db);
 require('./config/passport');
 
 // view engine setup
@@ -62,6 +65,7 @@ app.use((req, res, next) => {
 
 app.use('/', index);
 app.use('/user', user);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

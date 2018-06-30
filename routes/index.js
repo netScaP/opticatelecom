@@ -18,12 +18,14 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 
 router.get('/people', ensureAuthenticated, (req, res, next) => {
 	const messages = req.flash('error');
+	const fuckYouser = req.user.username;
 	User.find((err, users) => {
 		res.render('sections/people', {
 			title: 'Arapp',
 			messages,
 			hasErrors: messages.length > 0,
-			users
+			users,
+			fuckYouser
 		});
 	});
 });

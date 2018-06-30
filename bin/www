@@ -11,14 +11,14 @@ import http from 'http';
 import { sessionMiddleware } from '../app';
 
 //SOCKET
-import { chatMessage, privateMessage, joinToRoom } from '../socket';
+import handler from '../socket';
 
 const debug = new Debug('arapp:server');
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || 80);
 app.set('port', port);
 
 /**
@@ -34,9 +34,7 @@ io.use((socket, next) => {
 });
 
 io.on('connection', (socket) => {
-	chatMessage(io, socket);
-	joinToRoom(io, socket);
-	privateMessage(io, socket);
+	handler(io, socket);
 });
 
 app.set('io', io);

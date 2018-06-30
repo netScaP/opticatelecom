@@ -6,18 +6,14 @@ block content
 	if hasErrors
 		each message in messages
 			p= message
+	br
+	div.setting
+		a(href='/user/setting') Change Your Settings
 	div
-		p hi, beacth
-		hr
-		ul(id="messages")
-		form(id="chatform")
-			input(id="m")
-			button Send
-	div#toRoom toRoom
-	div.open(style="opacity: 0;")
-		input(type='hidden', id="test", value="test")
-		ul(id="messagesP")
-		form(id="privateChat")
-			input(id="msg")
-			button Send
+		p Your name is: 
+			span= user.name
+		p Your username is: 
+			span= user.username
+		p Your phone is: 
+			span= user.phone
 block scripts

@@ -1,0 +1,24 @@
+extends ../layout
+
+block styles
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	br
+	div.setting
+		a(href='/user/profile') Back
+	form(method="POST")
+		p Your name is: 
+			input(type="text", value= user.name, name="name")
+		p Your username is: 
+			input(type="text", value= user.username, name="username")
+		p Your phone is: 
+			input(type="text", value= user.phone, name="phone")
+		p Your password is:
+			input(type="text", value= user.password)
+		input(type="text", placeholder="new password", name="password")
+		input(type='hidden', name='_csrf', value=csrfToken)
+		button(type="submit") SEND
+block scripts

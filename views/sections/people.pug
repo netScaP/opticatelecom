@@ -1,15 +1,25 @@
 extends ../layout
 
 block styles
+	link(rel='stylesheet', href='/stylesheets/section/people.css')
 
 block content
 	if hasErrors
 		each message in messages
 			p= message
-	div
-		each user in users
+	p(style="opacity: 0;")#myName= fuckYouser
+	each user in users
+		if fuckYouser !== user.username
 			div.user
+				p(style="opacity: 0;").username= user.username
 				p.name= user.name
 				p.phone= user.phone
-			hr
+				button.startMessaging(value= username) Start Messaging
+	div#chat
+		div
+			p#userChat Undefined
+		ul(id="messages")
+		form(id="privateChat")
+			input(id="msg")
+			button.sendMessage Send
 block scripts
