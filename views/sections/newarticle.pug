@@ -1,0 +1,17 @@
+extends ../layout
+
+block styles
+	link(rel='stylesheet', href='/stylesheets/section/newarticle.css')
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	form.mainDiv(method="POST")
+		input(type="text", placeholder="Caption", name="caption")
+		textarea(name="text", placeholder="Once upon a time")
+		span Image: 
+			input(type="url", name="image")
+		input(type='hidden', name='_csrf', value=csrfToken)
+		button(type="submit") Add
+block scripts

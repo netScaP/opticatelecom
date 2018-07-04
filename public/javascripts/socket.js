@@ -10,17 +10,24 @@ $(function () {
 		$('.sendMessage')[i].addEventListener('click', sendMessage, true);
 	}
 
-	socket.on('chat', function(msg){
-		$('#messages').append($('<li>').text(msg));
-		window.scrollTo(0, document.body.scrollHeight);
+	$('#close')[0].addEventListener('click', function() {
+		$('#chat')[0].style = 'opacity: 0; z-index: -100';
+		$('#messages').html('');
 	});
+
 	socket.on('chatP', function(msg, sender){
 		$('#messages').append($('<li>').append($('<span>').text(sender + ': ')).append($('<span>').text(msg)));
 		$('#msg')[0].value = '';
-		window.scrollTo(0, document.body.scrollHeight);
+		gotoBottom('messages');
+		//window.scrollTo(0, document.body.scrollHeight);
 	});
 });
 
+function gotoBottom(id){
+   var element = document.getElementById(id);
+   element.scrollTop = element.scrollHeight - element.clientHeight;
+   console.log(element);
+}
 
 function goChatting(e) {
 	var mainDiv  = e.target.parentNode;
@@ -52,8 +59,8 @@ function goChatting(e) {
 			chat_messages = response;
 			for (var i = 0; i < chat_messages.length; i++) {
 				$('#messages').append($('<li>').append($('<span>').text(chat_messages[i].sender + ': ')).append($('<span>').text(chat_messages[i].message)));
-				window.scrollTo(0, document.body.scrollHeight);
 			}
+			gotoBottom('messages');
 		}
 	});
 	document.getElementById('chat').style = 'opacity: 1; z-index: 100';

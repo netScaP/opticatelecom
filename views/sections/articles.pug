@@ -1,0 +1,22 @@
+extends ../layout
+
+block styles
+	link(rel='stylesheet', href='/stylesheets/section/articles.css')
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	div.mainDiv
+		div.newArticle
+			a.wna(href="/user/newarticle") Write new article
+		div.main
+			each article in articles
+				div.some
+					div.image
+						image(src= article.image).img
+					div.right
+						div.caption= article.caption
+						div.summary.forever= article.text
+block scripts
+	script(src="/javascripts/article.js")

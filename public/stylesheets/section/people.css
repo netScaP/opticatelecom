@@ -11,13 +11,17 @@
   flex-direction: column;
   align-items: space-between;
   border: 1px solid black; }
-  #chat div {
-    width: 100%;
+  #chat .topDiv {
+    width: 50%;
     height: 5%;
-    text-align: center; }
+    margin-left: 50%;
+    text-align: center;
+    display: flex;
+    justify-content: space-between; }
   #chat ul {
     height: 80%;
-    width: 100%; }
+    width: 100%;
+    overflow-y: scroll; }
   #chat form {
     width: 100%;
     height: 10%;
