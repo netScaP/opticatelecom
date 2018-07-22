@@ -3,7 +3,6 @@ import csrf from 'csurf';
 import passport from 'passport';
 
 import User from '../models/user';
-import Article from '../models/article';
 
 import { notLoggedIn, ensureAuthenticated } from '../middleware/auth';
 
@@ -58,48 +57,10 @@ router.post('/setting', ensureAuthenticated, (req, res, next) => {
 	    }
     }
     
-    User.updateOne( { username: req.user.username }, newUser, { upsert: true }, (err, result) => {
-    	if (err) req.flash('error', err.message);
+    User.updateOne( { username: req.user.username }, newUser, { upsert: true })
+    	.then(() => res.redirect('/user/profile'))
+    	.catch(e => req.flash('error', err.message));
 
-    	res.redirect('/user/profile');
-    });
-
-});
-
-router.get('/articles', ensureAuthenticated, (req, res, next) => {
-	Article.find({}, (err, result) => {
-		if (err) {
-			req.flash('error', err.message);
-		}
-		console.log(result);
-		res.render('sections/articles', {
-			articles: result
-		});
-	});
-});
-
-router.get('/newarticle', ensureAuthenticated, (req, res, next) => {
-	res.render('sections/newarticle', {
-		csrfToken: req.csrfToken()
-	});
-});
-
-router.post('/newarticle', ensureAuthenticated, (req, res, next) => {
-	console.log(req.body)
-	if (req.body.text === '') return res.redirect('/user/articles');
-	const newArticle = new Article();
-	newArticle.username = req.user;
-	newArticle.caption = req.body.caption == '' ? 'Empty' : req.body.caption;
-	newArticle.text = req.body.text;
-	newArticle.image = req.body.image;
-
-	newArticle.save((err, result) => {
-		if (err) {
-			return req.flash('error', err.message);
-		}
-		console.log(result);
-		res.redirect('/user/articles');
-	});
 });
 
 // USE USE USE USE USE USE NOT GET OR POST
@@ -124,10 +85,9 @@ router.post('/signup', passport.authenticate('local.signup', {
 	if (req.session.oldUrl) {
 		const oldUrl = req.session.oldUrl;
 		req.session.oldUrl = null;
-		res.redirect(oldUrl);
-	} else {
-		res.redirect('/');
+		return res.redirect(oldUrl);
 	}
+	res.redirect('/');
 });
 
 router.get('/signin', (req, res, next) => {
@@ -148,10 +108,9 @@ router.post('/signin', passport.authenticate('local.signin', {
 	if (req.session.oldUrl) {
 		const oldUrl = req.session.oldUrl;
 		req.session.oldUrl = null;
-		res.redirect(oldUrl);
-	} else {
-		res.redirect('/user/profile');
+		return res.redirect(oldUrl);
 	}
+	res.redirect('/user/profile');
 });
 
 export default router;

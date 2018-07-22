@@ -1,4 +1,4 @@
-var socket = io();
+var socket = io();/*
 $(function () {
 	console.log(socket);
 
@@ -75,4 +75,4 @@ function sendMessage(e) {
 	var sender 	= $('#myName')[0].innerHTML;
 	
 	socket.emit('roomMsg', second, message, sender);
-}
+}*/

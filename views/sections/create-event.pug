@@ -1,0 +1,15 @@
+extends ../layout
+
+block styles
+	link(rel='stylesheet', href='/stylesheets/section/create-event.css')
+
+block content
+	if hasErrors
+		each message in messages
+			p= message
+	form(method="POST")
+		input(type="text", placeholder="Title", name="title")
+		textarea(placeholder="content", name="content")
+		input(type="text", placeholder="city", name="city")
+		button(type="submit") Создать событие
+block scripts

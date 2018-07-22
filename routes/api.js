@@ -1,42 +1,27 @@
 import express from 'express';
 
 import User from '../models/user';
+import Event from '../models/event';
 
 import { notLoggedIn, ensureAuthenticated } from '../middleware/auth';
 
-import { chat_messages } from '../socket';
-
 const router = express.Router();
 
-router.get('/getMessages', (req, res, next) => {
-	//const room = req.query.room;
-	const first = req.query.first;
-	const second = req.query.second;
 
-	var msgs = [];
-
-	if (!!chat_messages[first + second]) {
-		msgs = chat_messages[first + second];
-	} else {
-		msgs = chat_messages[second + first] || [];
-	}
-		
-	res.send(msgs);
+router.get('/events', ensureAuthenticated, (req, res, next) => {
+	console.log(req.query);
+	console.log('im here');
+	Event.find().sort({ $natural: 1 }).skip(+req.query.skip).limit(+req.query.limit)
+		.then(events => res.send(events))
+		.catch(e => req.flash('error', e.message));
 });
 
-router.get('/whatRoom', (req, res, next) => {
-	const first = req.query.first;
-	const second = req.query.second;
+router.get('/total', ensureAuthenticated, (req, res, next) => {
+	Event.find()
+		.then(events => res.send(events))
+		.catch(e => req.flash('error', e.message));
+});
 
-	var room = 'fuckRoom';
 
-	if (!!chat_messages[first + second]) {
-		room = first + second;
-	} else {
-		room = second + first;
-	}
-	
-	res.send(room);
-})
-
+//.sort({ $natural: -1 });
 export default router;

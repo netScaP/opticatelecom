@@ -15,11 +15,11 @@ passport.deserializeUser((id, done) => {
 });
 
 passport.use('local.signup', new LocalStrategy({
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true
-}, (req, username, password, done) => {
-    req.checkBody('username', 'Invalid username').notEmpty();
+}, (req, email, password, done) => {
+    req.checkBody('email', 'Invalid email').notEmpty().isEmail();
     req.checkBody('password', 'Invalid password').notEmpty().isLength({min:4});
     req.checkBody('name', "Name couldn't be is empty").notEmpty();
     req.checkBody('phone', "Invalid Phone").notEmpty().isLength({min:7});
@@ -31,7 +31,7 @@ passport.use('local.signup', new LocalStrategy({
         });
         return done(null, false, req.flash('error', messages));
     }
-    User.findOne({'username': username}, (err, user) => {
+    User.findOne({'email': email}, (err, user) => {
         if (err) {
             return done(err);
         }
@@ -39,10 +39,12 @@ passport.use('local.signup', new LocalStrategy({
             return done(null, false, {message: 'username is already in use.'});
         }
         const newUser = new User();
-        newUser.username = username;
-        newUser.password = newUser.encryptPassword(password);
+        newUser.email = email;
         newUser.name = req.body.name;
-        newUser.phone = +req.body.phone;
+        newUser.password = newUser.encryptPassword(password);
+        newUser.phone = req.body.phone;
+        newUser.followingsEvents = [];
+        newUser.followingsUsers = [];
         
         newUser.save((err, result) => {
            if (err) {
@@ -54,11 +56,11 @@ passport.use('local.signup', new LocalStrategy({
 }));
 
 passport.use('local.signin', new LocalStrategy({
-    usernameField: 'username',
+    emailField: 'email',
     passwordField: 'password',
     passReqToCallback: true
-}, (req, username, password, done) => {
-    req.checkBody('username', 'Invalid username').notEmpty();
+}, (req, email, password, done) => {
+    req.checkBody('email', 'Invalid email').notEmpty();
     req.checkBody('password', 'Invalid password').notEmpty();
     let errors = req.validationErrors();
     if (errors) {
@@ -68,7 +70,7 @@ passport.use('local.signin', new LocalStrategy({
         });
         return done(null, false, req.flash('error', messages));
     }
-    User.findOne({'username': username}, (err, user) => {
+    User.findOne({'email': email}, (err, user) => {
         if (err) {
             return done(err);
         }

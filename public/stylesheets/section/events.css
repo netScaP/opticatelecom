@@ -1,0 +1,23 @@
+.common-block {
+  width: auto;
+  padding-left: 10%;
+  display: flex;
+  flex-direction: column; }
+  .common-block .events {
+    width: 100%;
+    display: flex;
+    flex-direction: column; }
+    .common-block .events .event {
+      width: 100%;
+      height: 200px;
+      scroll-y: auto; }
+      .common-block .events .event .event-title {
+        font-size: 24px; }
+      .common-block .events .event .event-join {
+        background-color: black;
+        color: white;
+        border-radius: 5px;
+        padding: 5px 10px;
+        align-self: flex-start; }
+
+/*# sourceMappingURL=events.css.map */

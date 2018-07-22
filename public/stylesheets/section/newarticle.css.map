@@ -1,9 +1,0 @@
-{
-	"version": 3,
-	"file": "newarticle.css",
-	"sources": [
-		"newarticle.sass"
-	],
-	"mappings": "AAAA,AAAA,QAAQ,CAAC;EACR,OAAO,EAAE,IAAK;EACd,cAAc,EAAE,MAAO,GAAG",
-	"names": []
-}
