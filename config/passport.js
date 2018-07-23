@@ -56,11 +56,11 @@ passport.use('local.signup', new LocalStrategy({
 }));
 
 passport.use('local.signin', new LocalStrategy({
-    emailField: 'email',
+    usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true
 }, (req, email, password, done) => {
-    req.checkBody('email', 'Invalid email').notEmpty();
+    req.checkBody('email', 'Invalid email').notEmpty().isEmail();
     req.checkBody('password', 'Invalid password').notEmpty();
     let errors = req.validationErrors();
     if (errors) {

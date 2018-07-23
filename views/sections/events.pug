@@ -7,28 +7,28 @@ block content
 	if hasErrors
 		each message in messages
 			p= message
+	template(id="pagination-template")
+		div.pagination
+			div.rightInfo
+				p Page: 
+				div.pageCount
+					ul
+						li(v-if='hasFirst()')
+							a(href='#', @click.prevent='changePage(1)') 1
+						li(v-if='hasFirst()') ...
+						li(v-for='page in pages')
+							a(href='#', @click.prevent='changePage(page)', :class='{ current: current == page }')
+								| {{ page }}
+						li(v-if='hasLast()') ...
+						li(v-if='hasLast()')
+							a(href='#', @click.prevent='changePage(totalPages)') {{ totalPages }}
+				div.rightArrow
+					a(href="#", v-if="hasNext()", @click.prevent="changePage(nextPage)")
+						img(src="../images/rightArrowBlack.png", alt="asdf")
+			div.leftInfo 
+				p(v-if="hasNext()") Events {{ (current - 1) * perPage + 1 }} to {{ current * perPage}} of {{ total }} total
+				p(v-if="!hasNext()") Events {{ (current - 1) * perPage + 1 }} to {{ total }} of total
 	div.common-block
-		template(id="pagination-template")
-			div.pagination
-				div.leftInfo 
-					p(v-if="hasNext()") Items {{ (current - 1) * perPage + 1 }} to {{ current * perPage}} of {{ total }} total
-					p(v-if="!hasNext()") Items {{ (current - 1) * perPage + 1 }} to {{ total }} of total
-				div.rightInfo
-					p Page: 
-					div.pageCount
-						ul
-							li(v-if='hasFirst()')
-								a(href='#', @click.prevent='changePage(1)') 1
-							li(v-if='hasFirst()') ...
-							li(v-for='page in pages')
-								a(href='#', @click.prevent='changePage(page)', :class='{ current: current == page }')
-									| {{ page }}
-							li(v-if='hasLast()') ...
-							li(v-if='hasLast()')
-								a(href='#', @click.prevent='changePage(totalPages)') {{ totalPages }}
-					div.rightArrow
-						a(href="#", v-if="hasNext()", @click.prevent="changePage(nextPage)")
-							img(src="../images/rightArrowBlack.png", alt="asdf")
 		div.events
 			div.event(v-for="(event, index) in events")
 				p.event-title {{ event.title }}
@@ -38,6 +38,18 @@ block content
 				br
 				button(@click="joinToEvent(event['_id']); eventIsOpen = true").event-join Join to event
 		pagination(:current='currentPage', :total='totalEvents', :per-page='perPage', @page-changed='fetchEvents')
+		div#current-event(v-if="eventIsOpen")
+			div#current-info
+				p#current-title {{ currentEvent.title }}
+				p#current-content {{ currentEvent.content }}
+				span#event-city {{ currentEvent.city }}, 
+				span#event-followers-length {{ currentEvent.followers }} - фоловер
+			div#current-chat
+				ul#messages(ref="messages")
+					li(v-for="message in currentEvent.messages") {{ message.senderName }}: {{ message.message }}
+				div
+					input#m(autocomplete="off", v-model="currentMsg")
+					button(@click="sendMsg()") SEND	
 block scripts
 	script(src="../javascripts/section/pagination.js")
 	script(src="../javascripts/section/events.js")

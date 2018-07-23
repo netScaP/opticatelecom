@@ -87,5 +87,21 @@ router.post('/create-event', ensureAuthenticated, (req, res, next) => {
 	.catch(e => req.flash('error', e.message));
 });
 
+router.get('/chat-message', ensureAuthenticated, (req, res, next) => {
+	console.log(req.query);
+	console.log(req.user);
+	Event.updateOne(
+		{ _id: req.query.id },
+		{ $push: { 
+			messages: {
+				sender: req.user['_id'],
+				senderName: req.user.name,
+				message: req.query.msg
+			} 
+		} }
+	).then(res => console.log(res))
+	.catch(e => console.log(e));
+});
+
 //.sort({ $natural: -1 });
 export default router;

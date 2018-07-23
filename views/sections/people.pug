@@ -7,20 +7,41 @@ block content
 	if hasErrors
 		each message in messages
 			p= message
-	p(style="opacity: 0;")#myName= fuckYouser
-	each user in users
-		if fuckYouser !== user.username
+	template(id="pagination-template")
+		div.pagination
+			div.rightInfo
+				p Page: 
+				div.pageCount
+					ul
+						li(v-if='hasFirst()')
+							a(href='#', @click.prevent='changePage(1)') 1
+						li(v-if='hasFirst()') ...
+						li(v-for='page in pages')
+							a(href='#', @click.prevent='changePage(page)', :class='{ current: current == page }')
+								| {{ page }}
+						li(v-if='hasLast()') ...
+						li(v-if='hasLast()')
+							a(href='#', @click.prevent='changePage(totalPages)') {{ totalPages }}
+				div.rightArrow
+					a(href="#", v-if="hasNext()", @click.prevent="changePage(nextPage)")
+						img(src="../images/rightArrowBlack.png", alt="asdf")
+			div.leftInfo 
+				p(v-if="hasNext()") Events {{ (current - 1) * perPage + 1 }} to {{ current * perPage}} of {{ total }} total
+				p(v-if="!hasNext()") Events {{ (current - 1) * perPage + 1 }} to {{ total }} of total
+	div.common-block
+		div.for-same-height
 			div.user
-				p(style="opacity: 0;").username= user.username
-				p.name= user.name
-				p.phone= user.phone
-				button.startMessaging(value= username) Start Messaging
-	div#chat
-		div.topDiv
-			p#userChat Undefined
-			button#close x
-		ul(id="messages")
-		form(id="privateChat")
-			input(id="msg")
-			button.sendMessage Send
+				div.user(v-for="(user, index) in users")
+					p.user-name {{ user.name }}
+					p.phone {{ user.phone }}
+					br
+					button(@click="followToUser(user['_id'], user.name, user.phone, index);").user-join Follow to user
+			div.followings-users
+				p {{ followingsUsers }}
+				div.user(v-for="(user, index) in followingsUsers")
+					p.user-name {{ user.name }}
+					p.phone {{ user.phone }}
+		pagination(:current='currentPage', :total='totalUsers', :per-page='perPage', @page-changed='fetchUsers')
 block scripts
+	script(src="../javascripts/section/pagination.js")
+	script(src="../javascripts/section/people.js")

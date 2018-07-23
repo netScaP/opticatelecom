@@ -59,7 +59,6 @@ Vue.component('pagination', {
 			return this.current > 1;
 		},
 		hasNext: function() {
-			console.log(this.totalPages);
 			return this.current < this.totalPages;
 		},
 		changePage: function(page) {

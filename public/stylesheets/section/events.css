@@ -18,6 +18,18 @@
         color: white;
         border-radius: 5px;
         padding: 5px 10px;
-        align-self: flex-start; }
+        align-self: flex-start;
+        cursor: pointer; }
+  .common-block .pagination {
+    display: flex;
+    justify-content: space-between; }
+    .common-block .pagination .rightInfo {
+      display: flex; }
+      .common-block .pagination .rightInfo .pageCount ul {
+        display: flex;
+        list-style-type: none; }
+        .common-block .pagination .rightInfo .pageCount ul li a {
+          color: black;
+          text-decoration: none; }
 
 /*# sourceMappingURL=events.css.map */

@@ -1,4 +1,15 @@
-var socket = io();/*
+var socket = io();
+console.log(socket);
+
+
+
+
+
+
+
+
+
+/*
 $(function () {
 	console.log(socket);
 
