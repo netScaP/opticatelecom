@@ -35,9 +35,8 @@ block content
 					p.user-name {{ user.name }}
 					p.phone {{ user.phone }}
 					br
-					button(@click="followToUser(user['_id'], user.name, user.phone, index);").user-join Follow to user
+					button(@click="followToUser(user['_id'], index);").user-join Follow to user
 			div.followings-users
-				p {{ followingsUsers }}
 				div.user(v-for="(user, index) in followingsUsers")
 					p.user-name {{ user.name }}
 					p.phone {{ user.phone }}

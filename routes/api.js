@@ -15,7 +15,10 @@ router.get('/events', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/users', ensureAuthenticated, (req, res, next) => {
-	User.find({ _id: { $ne: req.user['_id'] } }).sort({ $natural: 1 }).skip(+req.query.skip).limit(+req.query.limit)
+	User.find({ $and: [
+		{_id: { $nin: req.user['followingsUsers'] } }, 
+		{_id: { $ne: req.user['_id'] } } 
+	]}).sort({ $natural: 1 }).skip(+req.query.skip).limit(+req.query.limit)
 		.then(users => res.send(users))
 		.catch(e => req.flash('error', e.message));
 });
@@ -45,8 +48,12 @@ router.get('/follow-to-user', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/followings-users', ensureAuthenticated, (req, res, next) => {
-	User.find({ })
-	res.send(req.user['followingsUsers']);
+	User.findOne({ _id: req.user['_id'] })
+		.populate('followingsUsers')
+		.exec((err, users) => {
+			console.log(users);
+			res.send(users['followingsUsers']);
+		});
 });
 
 router.get('/join-to-event', ensureAuthenticated, (req, res, next) => {
