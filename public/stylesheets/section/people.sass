@@ -1,33 +1,42 @@
-#chat
-	position: fixed
-	width: 80%
-	height: 80%
-	top: 10%
-	left: 10%
-	background-color: white
-	z-index: -100
-	opacity: 0
+.common-block
+	width: auto
+	padding-left: 10%
 	display: flex
 	flex-direction: column
-	align-items: space-between
-	border: 1px solid black
-	.topDiv
+	.for-same-height
+		display: flex
+	.users, .followings-users
 		width: 50%
-		height: 5%
-		margin-left: 50%
-		text-align: center
+		display: flex
+		flex-direction: column
+		max-height: 1800px
+		overflow-y: auto
+		.user
+			width: 100%
+			height: 200px
+			scroll-y: auto
+			.user-name
+				font-size: 24px
+			.user-join
+				background-color: black
+				color: white
+				border-radius: 5px
+				padding: 5px 10px
+				align-self: flex-start
+				cursor: pointer
+	.pagination
+		width: 40%
 		display: flex
 		justify-content: space-between
-	ul
-		height: 80%
-		width: 100%
-		overflow-y: scroll
-	form
-		width: 100%
-		height: 10%
-		display: flex
-		justify-content: space-between
-		input
-			width: 80%
-		button
-			width: 15%
+		.rightInfo
+			display: flex
+			.pageCount
+				ul
+					display: flex
+					list-style-type: none
+					li
+						a
+							color: black
+							text-decoration: none
+						.current
+							text-decoration: underline

@@ -30,8 +30,11 @@ var app = new Vue({
 				}
 			}
 			this.$http.get('/api/follow-to-user', options);
-			this.followingsUsers.push(this.users[index]);
-			this.users.splice(index, 1);
+			if (typeof index === 'undefined') {
+				console.log('true');
+				this.followingsUsers.push(this.users[index]);
+				this.users.splice(index, 1);
+			}
 		}
 	},
 	created: function() {

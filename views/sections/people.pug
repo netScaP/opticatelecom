@@ -22,21 +22,17 @@ block content
 						li(v-if='hasLast()') ...
 						li(v-if='hasLast()')
 							a(href='#', @click.prevent='changePage(totalPages)') {{ totalPages }}
-				div.rightArrow
-					a(href="#", v-if="hasNext()", @click.prevent="changePage(nextPage)")
-						img(src="../images/rightArrowBlack.png", alt="asdf")
-			div.leftInfo 
-				p(v-if="hasNext()") Events {{ (current - 1) * perPage + 1 }} to {{ current * perPage}} of {{ total }} total
-				p(v-if="!hasNext()") Events {{ (current - 1) * perPage + 1 }} to {{ total }} of total
 	div.common-block
 		div.for-same-height
-			div.user
+			div.users
+				h2 All people
 				div.user(v-for="(user, index) in users")
 					p.user-name {{ user.name }}
 					p.phone {{ user.phone }}
 					br
 					button(@click="followToUser(user['_id'], index);").user-join Follow to user
 			div.followings-users
+				h2 Your follows
 				div.user(v-for="(user, index) in followingsUsers")
 					p.user-name {{ user.name }}
 					p.phone {{ user.phone }}

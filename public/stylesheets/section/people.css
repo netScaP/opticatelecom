@@ -1,35 +1,42 @@
-#chat {
-  position: fixed;
-  width: 80%;
-  height: 80%;
-  top: 10%;
-  left: 10%;
-  background-color: white;
-  z-index: -100;
-  opacity: 0;
+.common-block {
+  width: auto;
+  padding-left: 10%;
   display: flex;
-  flex-direction: column;
-  align-items: space-between;
-  border: 1px solid black; }
-  #chat .topDiv {
+  flex-direction: column; }
+  .common-block .for-same-height {
+    display: flex; }
+  .common-block .users, .common-block .followings-users {
     width: 50%;
-    height: 5%;
-    margin-left: 50%;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    max-height: 1800px;
+    scroll-y: scroll; }
+    .common-block .users .user, .common-block .followings-users .user {
+      width: 100%;
+      height: 200px;
+      scroll-y: auto; }
+      .common-block .users .user .user-name, .common-block .followings-users .user .user-name {
+        font-size: 24px; }
+      .common-block .users .user .user-join, .common-block .followings-users .user .user-join {
+        background-color: black;
+        color: white;
+        border-radius: 5px;
+        padding: 5px 10px;
+        align-self: flex-start;
+        cursor: pointer; }
+  .common-block .pagination {
+    width: 40%;
     display: flex;
     justify-content: space-between; }
-  #chat ul {
-    height: 80%;
-    width: 100%;
-    overflow-y: scroll; }
-  #chat form {
-    width: 100%;
-    height: 10%;
-    display: flex;
-    justify-content: space-between; }
-    #chat form input {
-      width: 80%; }
-    #chat form button {
-      width: 15%; }
+    .common-block .pagination .rightInfo {
+      display: flex; }
+      .common-block .pagination .rightInfo .pageCount ul {
+        display: flex;
+        list-style-type: none; }
+        .common-block .pagination .rightInfo .pageCount ul li a {
+          color: black;
+          text-decoration: none; }
+        .common-block .pagination .rightInfo .pageCount ul li .current {
+          text-decoration: underline; }
 
 /*# sourceMappingURL=people.css.map */

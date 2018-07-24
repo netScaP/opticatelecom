@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 router.get('/events', ensureAuthenticated, (req, res, next) => {
-	Event.find().sort({ $natural: 1 }).skip(+req.query.skip).limit(+req.query.limit)
+	Event.find({ _id: { $nin: req.user['followingsEvents'] } }).sort({ $natural: 1 }).skip(+req.query.skip).limit(+req.query.limit)
 		.then(events => res.send(events))
 		.catch(e => req.flash('error', e.message));
 });
@@ -24,7 +24,7 @@ router.get('/users', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/total-events', ensureAuthenticated, (req, res, next) => {
-	Event.find()
+	Event.find({ _id: { $nin: req.user['followingsEvents'] } })
 		.then(events => res.send(events))
 		.catch(e => req.flash('error', e.message));
 });
@@ -56,12 +56,26 @@ router.get('/followings-users', ensureAuthenticated, (req, res, next) => {
 		});
 });
 
+router.get('/followings-events', ensureAuthenticated, (req, res, next) => {
+	User.findOne({ _id: req.user['_id'] })
+		.populate('followingsEvents')
+		.exec((err, user) => {
+			console.log(user);
+			res.send(user['followingsEvents']);
+		});
+});
+
 router.get('/join-to-event', ensureAuthenticated, (req, res, next) => {
 	Event.findOneAndUpdate(
 		{ _id: req.query['id'] },
 		{ $addToSet: { followers: req.user['_id'] } }
 	)
 		.then(event => res.send(event))
+		.catch(e => req.flash('error', e.message));
+	User.updateOne(
+		{ _id: req.user['_id'] },
+		{ $addToSet: { followingsEvents: req.query['id'] } }
+	)
 		.catch(e => req.flash('error', e.message));
 });
 

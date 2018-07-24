@@ -3,24 +3,32 @@
   padding-left: 10%;
   display: flex;
   flex-direction: column; }
-  .common-block .events {
-    width: 100%;
+  .common-block .for-same-height {
     display: flex;
-    flex-direction: column; }
-    .common-block .events .event {
-      width: 100%;
-      height: 200px;
-      scroll-y: auto; }
-      .common-block .events .event .event-title {
-        font-size: 24px; }
-      .common-block .events .event .event-join {
-        background-color: black;
-        color: white;
-        border-radius: 5px;
-        padding: 5px 10px;
-        align-self: flex-start;
-        cursor: pointer; }
+    justify-content: space-between; }
+    .common-block .for-same-height .events {
+      border-right: 1px solid black; }
+    .common-block .for-same-height .events, .common-block .for-same-height .followings-events {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      max-height: 1800px;
+      overflow-y: auto; }
+      .common-block .for-same-height .events .event, .common-block .for-same-height .followings-events .event {
+        width: 100%;
+        height: 200px;
+        scroll-y: auto; }
+        .common-block .for-same-height .events .event .event-title, .common-block .for-same-height .followings-events .event .event-title {
+          font-size: 24px; }
+        .common-block .for-same-height .events .event .event-join, .common-block .for-same-height .followings-events .event .event-join {
+          background-color: black;
+          color: white;
+          border-radius: 5px;
+          padding: 5px 10px;
+          align-self: flex-start;
+          cursor: pointer; }
   .common-block .pagination {
+    width: 40%;
     display: flex;
     justify-content: space-between; }
     .common-block .pagination .rightInfo {
@@ -28,8 +36,48 @@
       .common-block .pagination .rightInfo .pageCount ul {
         display: flex;
         list-style-type: none; }
-        .common-block .pagination .rightInfo .pageCount ul li a {
-          color: black;
-          text-decoration: none; }
+        .common-block .pagination .rightInfo .pageCount ul li {
+          margin-right: 5px; }
+          .common-block .pagination .rightInfo .pageCount ul li a {
+            color: black;
+            text-decoration: none; }
+          .common-block .pagination .rightInfo .pageCount ul li .current {
+            text-decoration: underline; }
+  .common-block #current-event {
+    position: fixed;
+    padding-top: 10vh;
+    height: 80vh;
+    width: 50%;
+    right: 0;
+    top: 0;
+    background-color: white; }
+    .common-block #current-event #current-chat {
+      width: 100%; }
+      .common-block #current-event #current-chat ul {
+        height: 100%;
+        width: 90%;
+        overflow-y: auto;
+        list-style-type: none; }
+        .common-block #current-event #current-chat ul li {
+          display: flex;
+          flex-direction: column;
+          line-height: 20px;
+          margin-bottom: 10px; }
+          .common-block #current-event #current-chat ul li span {
+            font-size: 18px;
+            color: black;
+            text-decoration: none; }
+          .common-block #current-event #current-chat ul li .message {
+            margin-left: 20px; }
+      .common-block #current-event #current-chat div {
+        width: 100%; }
+        .common-block #current-event #current-chat div input {
+          width: 80%; }
+        .common-block #current-event #current-chat div button {
+          background-color: black;
+          padding: 5px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          color: white; }
 
 /*# sourceMappingURL=events.css.map */

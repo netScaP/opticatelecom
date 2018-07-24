@@ -85,6 +85,12 @@ router.post('/create-event', ensureAuthenticated, (req, res, next) => {
 	newEvent.save()
 	.then(() => res.redirect('/events'))
 	.catch(e => req.flash('error', e.message));
+	console.log(newEvent);
+	User.updateOne(
+		{ _id: req.user['_id'] },
+		{ $addToSet: { followingsEvents: newEvent['_id'] } }
+	)
+		.catch(e => req.flash('error', e.message));
 });
 
 router.get('/chat-message', ensureAuthenticated, (req, res, next) => {
@@ -99,7 +105,8 @@ router.get('/chat-message', ensureAuthenticated, (req, res, next) => {
 				message: req.query.msg
 			} 
 		} }
-	).then(res => console.log(res))
+	)
+	.then(res => console.log(res))
 	.catch(e => console.log(e));
 });
 

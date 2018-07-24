@@ -4,6 +4,7 @@ var app = new Vue({
 	el: '.common-block',
 	data: {
 		events: [],
+		followingsEvents: [],
 		currentPage: 1,
 		perPage: 9,
 		currentEvent: {},
@@ -26,7 +27,7 @@ var app = new Vue({
 				this.currentPage = page;
 			}, console.log);
 		},
-		joinToEvent: function(id) {
+		joinToEvent: function(id, index) {
 			var options = {
 				params: {
 					'id': id
@@ -34,8 +35,12 @@ var app = new Vue({
 			}
 			this.$http.get('/api/join-to-event', options)
 			.then(event => this.currentEvent = event.body);
-			console.log(id);
 			socket.emit('join-to-event', id);
+
+			if (typeof index !== 'undefined') {
+				this.followingsEvents.push(this.events[index]);
+				this.events.splice(index, 1);
+			}
 		},
 		sendMsg: function(e) {
 			socket.emit('chat-message', this.currentEvent['_id'], this.currentMsg, 'uder');
@@ -63,6 +68,12 @@ var app = new Vue({
 		.then(function (response) {
 			this.totalEvents = response.body.length;
 		});
+
+		this.$http.get('/api/followings-events')
+		.then(function (response) {
+			console.log(response.body);
+			this.followingsEvents = response.body;
+		});
 	}
 });
 
@@ -70,6 +81,15 @@ socket.on('chat-message', function(msg, sender) {
 	console.log(msg + ' ' + sender);
 	console.log(app.$refs.messages);
 	var li = document.createElement("li");
-	li.innerText = sender + ': ' +msg;
-	app.$refs.messages.append(li);	
+
+	li.innerHTML = "<span class='sender'>" + sender + ":</span><span class='message'>" + msg + "</span>";
+	//li.innerText = sender + ': ' +msg;
+	app.$refs.messages.append(li);
+	gotoBottom('messages');	
 });
+
+function gotoBottom(id){
+	var element = document.getElementById(id);
+	element.scrollTop = element.scrollHeight - element.clientHeight;
+	console.log(element);
+}
