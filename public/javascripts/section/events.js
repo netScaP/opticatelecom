@@ -74,16 +74,16 @@ var app = new Vue({
 			console.log(response.body);
 			this.followingsEvents = response.body;
 		});
+	},
+	updated: function() {
+		gotoBottom('messages');
 	}
 });
 
 socket.on('chat-message', function(msg, sender) {
-	console.log(msg + ' ' + sender);
-	console.log(app.$refs.messages);
 	var li = document.createElement("li");
 
 	li.innerHTML = "<span class='sender'>" + sender + ":</span><span class='message'>" + msg + "</span>";
-	//li.innerText = sender + ': ' +msg;
 	app.$refs.messages.append(li);
 	gotoBottom('messages');	
 });
@@ -91,5 +91,4 @@ socket.on('chat-message', function(msg, sender) {
 function gotoBottom(id){
 	var element = document.getElementById(id);
 	element.scrollTop = element.scrollHeight - element.clientHeight;
-	console.log(element);
 }

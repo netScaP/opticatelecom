@@ -1,18 +1,58 @@
 .common-block {
   width: auto;
-  padding-left: 10%;
+  padding-left: 5%;
   display: flex;
   flex-direction: column; }
   .common-block .for-same-height {
     display: flex;
-    justify-content: space-between; }
-    .common-block .for-same-height .events {
-      border-right: 1px solid black; }
-    .common-block .for-same-height .events, .common-block .for-same-height .followings-events {
-      width: 40%;
+    max-height: 1800px; }
+    .common-block .for-same-height #current-event {
+      width: 50%;
       display: flex;
       flex-direction: column;
+      height: 100%;
       max-height: 1800px;
+      position: fixed;
+      left: 50%; }
+      .common-block .for-same-height #current-event #current-chat {
+        height: 100%; }
+        .common-block .for-same-height #current-event #current-chat ul {
+          height: 80%;
+          width: 90%;
+          list-style-type: none;
+          overflow-y: auto; }
+          .common-block .for-same-height #current-event #current-chat ul li {
+            display: flex;
+            flex-direction: column;
+            line-height: 20px;
+            margin-bottom: 10px; }
+            .common-block .for-same-height #current-event #current-chat ul li span {
+              font-size: 18px;
+              color: black;
+              text-decoration: none; }
+            .common-block .for-same-height #current-event #current-chat ul li .message {
+              margin-left: 20px; }
+      .common-block .for-same-height #current-event div {
+        width: 100%; }
+        .common-block .for-same-height #current-event div input {
+          width: 80%; }
+        .common-block .for-same-height #current-event div button {
+          background-color: black;
+          padding: 5px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          color: white; }
+    .common-block .for-same-height .events {
+      border-right: 1px solid black;
+      width: 20%; }
+    .common-block .for-same-height .followings-events {
+      width: 20%;
+      margin-left: 5%;
+      margin-right: 5%; }
+    .common-block .for-same-height .events, .common-block .for-same-height .followings-events {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
       overflow-y: auto; }
       .common-block .for-same-height .events .event, .common-block .for-same-height .followings-events .event {
         width: 100%;
@@ -43,41 +83,5 @@
             text-decoration: none; }
           .common-block .pagination .rightInfo .pageCount ul li .current {
             text-decoration: underline; }
-  .common-block #current-event {
-    position: fixed;
-    padding-top: 10vh;
-    height: 80vh;
-    width: 50%;
-    right: 0;
-    top: 0;
-    background-color: white; }
-    .common-block #current-event #current-chat {
-      width: 100%; }
-      .common-block #current-event #current-chat ul {
-        height: 100%;
-        width: 90%;
-        overflow-y: auto;
-        list-style-type: none; }
-        .common-block #current-event #current-chat ul li {
-          display: flex;
-          flex-direction: column;
-          line-height: 20px;
-          margin-bottom: 10px; }
-          .common-block #current-event #current-chat ul li span {
-            font-size: 18px;
-            color: black;
-            text-decoration: none; }
-          .common-block #current-event #current-chat ul li .message {
-            margin-left: 20px; }
-      .common-block #current-event #current-chat div {
-        width: 100%; }
-        .common-block #current-event #current-chat div input {
-          width: 80%; }
-        .common-block #current-event #current-chat div button {
-          background-color: black;
-          padding: 5px 20px;
-          border-radius: 5px;
-          cursor: pointer;
-          color: white; }
 
 /*# sourceMappingURL=events.css.map */

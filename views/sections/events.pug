@@ -42,20 +42,20 @@ block content
 					span.event-followers-length {{ event.followers.length }} - фоловер
 					br
 					button(@click="joinToEvent(event['_id']); eventIsOpen = true").event-join Join to chat
-		div#current-event(v-if="eventIsOpen")
-			div#current-info
-				p#current-title {{ currentEvent.title }}
-				p#current-content {{ currentEvent.content }}
-				span#event-city {{ currentEvent.city }}, 
-				span#event-followers-length {{ currentEvent.followers.length }} - фоловер
-			div#current-chat
-				ul#messages(ref="messages")
-					li(v-for="message in currentEvent.messages") 
-						span.sender {{ message.senderName }}: 
-						span.message {{ message.message }}
-				div
-					input#m(autocomplete="off", v-model="currentMsg")
-					button(@click="sendMsg()") SEND	
+			div#current-event(v-if="eventIsOpen")
+				div#current-info
+					p#current-title {{ currentEvent.title }}
+					p#current-content {{ currentEvent.content }}
+					span#event-city {{ currentEvent.city }} 
+					span#event-followers-length {{ currentEvent.followers.length }} - фоловер
+				div#current-chat
+					ul#messages(ref="messages")
+						li(v-for="message in currentEvent.messages") 
+							span.sender {{ message.senderName }}: 
+							span.message {{ message.message }}
+					div
+						input#m(autocomplete="off", v-model="currentMsg")
+						button(@click="sendMsg()") SEND	
 		pagination(:current='currentPage', :total='totalEvents', :per-page='perPage', @page-changed='fetchEvents')
 block scripts
 	script(src="../javascripts/section/pagination.js")

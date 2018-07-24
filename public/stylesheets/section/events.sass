@@ -1,18 +1,58 @@
 .common-block
 	width: auto
-	padding-left: 10%
+	padding-left: 5%
 	display: flex
 	flex-direction: column
 	.for-same-height
 		display: flex
-		justify-content: space-between
-		.events
-			border-right: 1px solid black
-		.events, .followings-events
-			width: 40%
+		max-height: 1800px
+		#current-event
+			width: 50%
 			display: flex
 			flex-direction: column
+			height: 100%
 			max-height: 1800px
+			position: fixed
+			left: 50%
+			#current-chat
+				height: 100%
+				ul
+					height: 80%
+					width: 90%
+					list-style-type: none
+					overflow-y: auto
+					li
+						display: flex
+						flex-direction: column
+						line-height: 20px
+						margin-bottom: 10px
+						span
+							font-size: 18px
+							color: black
+							text-decoration: none
+						.message
+							margin-left: 20px
+			div
+				width: 100%
+				input
+					width: 80%
+				button
+					background-color: black
+					padding: 5px 20px
+					border-radius: 5px
+					cursor: pointer
+					color: white
+		.events
+			border-right: 1px solid black
+			width: 20%
+		.followings-events
+			width: 20%
+			margin-left: 5%
+			margin-right: 5%
+		.events, .followings-events
+			display: flex
+			flex-direction: column
+			height: 100%
 			overflow-y: auto
 			.event
 				width: 100%
@@ -44,40 +84,3 @@
 							text-decoration: none
 						.current
 							text-decoration: underline
-	#current-event
-		position: fixed
-		padding-top: 10vh
-		height: 80vh
-		width: 50%
-		right: 0
-		top: 0
-		background-color: white
-		overflow-y: auto
-		#current-chat
-			width: 100%
-			ul
-				height: 100%
-				width: 90%
-				overflow-y: auto
-				list-style-type: none
-				li
-					display: flex
-					flex-direction: column
-					line-height: 20px
-					margin-bottom: 10px
-					span
-						font-size: 18px
-						color: black
-						text-decoration: none
-					.message
-						margin-left: 20px
-			div
-				width: 100%
-				input
-					width: 80%
-				button
-					background-color: black
-					padding: 5px 20px
-					border-radius: 5px
-					cursor: pointer
-					color: white
