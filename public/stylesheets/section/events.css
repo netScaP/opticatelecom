@@ -2,7 +2,8 @@
   width: auto;
   padding-left: 5%;
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  background-color: #E8E2FD; }
   .common-block .for-same-height {
     display: flex;
     max-height: 1800px; }
@@ -17,15 +18,19 @@
       .common-block .for-same-height #current-event #current-chat {
         height: 100%; }
         .common-block .for-same-height #current-event #current-chat ul {
-          height: 80%;
+          height: 70%;
           width: 90%;
           list-style-type: none;
           overflow-y: auto; }
+          .common-block .for-same-height #current-event #current-chat ul .newMessage {
+            background-color: #9A71FF; }
           .common-block .for-same-height #current-event #current-chat ul li {
             display: flex;
             flex-direction: column;
             line-height: 20px;
-            margin-bottom: 10px; }
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 90%; }
             .common-block .for-same-height #current-event #current-chat ul li span {
               font-size: 18px;
               color: black;
@@ -35,25 +40,50 @@
       .common-block .for-same-height #current-event div {
         width: 100%; }
         .common-block .for-same-height #current-event div input {
-          width: 80%; }
+          width: 80%;
+          padding: 10px;
+          border: 1px solid #6C3FFF;
+          border-radius: 3px; }
         .common-block .for-same-height #current-event div button {
-          background-color: black;
-          padding: 5px 20px;
+          background-color: #6C3FFF;
+          padding: 10px 20px;
           border-radius: 5px;
           cursor: pointer;
-          color: white; }
+          color: #E8E2FD; }
     .common-block .for-same-height .events {
-      border-right: 1px solid black;
+      border-right: 1px solid #6C3FFF;
       width: 20%; }
     .common-block .for-same-height .followings-events {
-      width: 20%;
-      margin-left: 5%;
-      margin-right: 5%; }
+      width: 20%; }
+      .common-block .for-same-height .followings-events .event .event-content {
+        margin-top: 0px; }
+      .common-block .for-same-height .followings-events .event .for-del {
+        width: 100%;
+        display: flex;
+        justify-content: space-between; }
+        .common-block .for-same-height .followings-events .event .for-del .event-title {
+          margin-bottom: 15px; }
+        .common-block .for-same-height .followings-events .event .for-del .event-quit {
+          margin-top: 15px;
+          align-self: center;
+          margin-right: 30px;
+          background-color: white;
+          border: 1px solid #FF0000;
+          color: #FF0000;
+          cursor: pointer;
+          transition: all .3s linear; }
+          .common-block .for-same-height .followings-events .event .for-del .event-quit:hover {
+            transform: scale(1.3, 1.3);
+            color: white;
+            border: 1px solid #FF0000;
+            background-color: #FF0000; }
     .common-block .for-same-height .events, .common-block .for-same-height .followings-events {
       display: flex;
       flex-direction: column;
       height: 100%;
-      overflow-y: auto; }
+      overflow-y: auto;
+      padding-left: 2.5%;
+      border-right: 1px solid #6C3FFF; }
       .common-block .for-same-height .events .event, .common-block .for-same-height .followings-events .event {
         width: 100%;
         height: 200px;
@@ -61,8 +91,8 @@
         .common-block .for-same-height .events .event .event-title, .common-block .for-same-height .followings-events .event .event-title {
           font-size: 24px; }
         .common-block .for-same-height .events .event .event-join, .common-block .for-same-height .followings-events .event .event-join {
-          background-color: black;
-          color: white;
+          background-color: #6C3FFF;
+          color: #E8E2FD;
           border-radius: 5px;
           padding: 5px 10px;
           align-self: flex-start;
@@ -79,7 +109,7 @@
         .common-block .pagination .rightInfo .pageCount ul li {
           margin-right: 5px; }
           .common-block .pagination .rightInfo .pageCount ul li a {
-            color: black;
+            color: #6C3FFF;
             text-decoration: none; }
           .common-block .pagination .rightInfo .pageCount ul li .current {
             text-decoration: underline; }

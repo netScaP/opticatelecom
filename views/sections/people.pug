@@ -34,7 +34,9 @@ block content
 			div.followings-users
 				h2 Your follows
 				div.user(v-for="(user, index) in followingsUsers")
-					p.user-name {{ user.name }}
+					div.for-del
+						p.user-name {{ user.name }}
+						button(@click="quitUser(user['_id'], index)").user-quit x
 					p.phone {{ user.phone }}
 		pagination(:current='currentPage', :total='totalUsers', :per-page='perPage', @page-changed='fetchUsers')
 block scripts

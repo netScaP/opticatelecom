@@ -30,11 +30,19 @@ var app = new Vue({
 				}
 			}
 			this.$http.get('/api/follow-to-user', options);
-			if (typeof index === 'undefined') {
-				console.log('true');
-				this.followingsUsers.push(this.users[index]);
-				this.users.splice(index, 1);
-			}
+			console.log('true');
+			this.followingsUsers.unshift(this.users[index]);
+			this.users.splice(index, 1);
+		},
+		quitUser: function(id, index) {
+			var options = {
+				params: {
+					'id': id
+				}
+			};
+			this.$http.get('/api/quit-from-user', options);
+			this.users.unshift(this.followingsUsers[index]);
+			this.followingsUsers.splice(index, 1);
 		}
 	},
 	created: function() {

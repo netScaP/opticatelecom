@@ -2,7 +2,8 @@
   width: auto;
   padding-left: 10%;
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  background-color: #E8E2FD; }
   .common-block .for-same-height {
     display: flex; }
   .common-block .users, .common-block .followings-users {
@@ -10,16 +11,33 @@
     display: flex;
     flex-direction: column;
     max-height: 1800px;
-    scroll-y: scroll; }
+    overflow-y: auto; }
     .common-block .users .user, .common-block .followings-users .user {
-      width: 100%;
+      width: 50%;
       height: 200px;
       scroll-y: auto; }
+      .common-block .users .user .for-del, .common-block .followings-users .user .for-del {
+        display: flex;
+        justify-content: space-between;
+        width: 100%; }
+        .common-block .users .user .for-del .user-quit, .common-block .followings-users .user .for-del .user-quit {
+          align-self: center;
+          margin-right: 30px;
+          background-color: white;
+          border: 1px solid #FF0000;
+          color: #FF0000;
+          cursor: pointer;
+          transition: all .3s linear; }
+          .common-block .users .user .for-del .user-quit:hover, .common-block .followings-users .user .for-del .user-quit:hover {
+            transform: scale(1.3, 1.3);
+            color: white;
+            border: 1px solid #FF0000;
+            background-color: #FF0000; }
       .common-block .users .user .user-name, .common-block .followings-users .user .user-name {
         font-size: 24px; }
       .common-block .users .user .user-join, .common-block .followings-users .user .user-join {
-        background-color: black;
-        color: white;
+        background-color: #6C3FFF;
+        color: #E8E2FD;
         border-radius: 5px;
         padding: 5px 10px;
         align-self: flex-start;
@@ -34,7 +52,7 @@
         display: flex;
         list-style-type: none; }
         .common-block .pagination .rightInfo .pageCount ul li a {
-          color: black;
+          color: #6C3FFF;
           text-decoration: none; }
         .common-block .pagination .rightInfo .pageCount ul li .current {
           text-decoration: underline; }

@@ -39,27 +39,27 @@ router.get('/events', ensureAuthenticated, (req, res, next) => {
 	});
 });
 
-router.get('/follow-to-event/:id', ensureAuthenticated, (req, res, next) => {
-	User.updateOne(
-		{ email: req.user.email },
-		{ $push: { followingsEvents: req.params.id }}
-	)
-	.catch(e => req.flash('error', e.message));
+// router.get('/follow-to-event/:id', ensureAuthenticated, (req, res, next) => {
+// 	User.updateOne(
+// 		{ email: req.user.email },
+// 		{ $push: { followingsEvents: req.params.id }}
+// 	)
+// 	.catch(e => req.flash('error', e.message));
 
-	Event.updateOne(
-		{ _id: req.params.id },
-		{ $push: { followers: req.user['_id'] } }
-	)
-	.catch(e => req.flash('error', e.message));
-});
+// 	Event.updateOne(
+// 		{ _id: req.params.id },
+// 		{ $push: { followers: req.user['_id'] } }
+// 	)
+// 	.catch(e => req.flash('error', e.message));
+// });
 
-router.get('/follow-to-use/:id', ensureAuthenticated, (req, res, next) => {
-	User.updateOne(
-		{ _id: req.params.id },
-		{ $push: { followingsUsers: req.user['_id'] } }
-	)
-	.catch(e => req.flash('error', e.message));
-});
+// router.get('/follow-to-user/:id', ensureAuthenticated, (req, res, next) => {
+// 	User.updateOne(
+// 		{ _id: req.params.id },
+// 		{ $push: { followingsUsers: req.user['_id'] } }
+// 	)
+// 	.catch(e => req.flash('error', e.message));
+// });
 
 router.get('/create-event', ensureAuthenticated, (req, res, next) => {
 	const messages = req.flash('error');

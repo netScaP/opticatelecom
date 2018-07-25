@@ -3,22 +3,22 @@ html
 	head
 		title= title
 		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		link(href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300", rel="stylesheet")
 		link(rel='stylesheet', href='/stylesheets/style.css')
 		block styles
 	body
 		div.menu
-			a(href="/") Home Page
-			span ---
-			a(href="/user/profile") My Profile 
-			span ---
-			a(href="/people") People
-			span ---
-			a(href="/events") Events
-			span ---
-			a(href="/create-event") Create Event
-			span ---
-			a(href="/user/logout") Logout
-			span ---
+			ul
+				li
+					a(href="/") Home Page
+				li
+					a(href="/people") People
+				li
+					a(href="/events") Events
+				li
+					a(href="/create-event") Create Event
+				li
+					a(href="/user/logout") Logout
 		div.main-block
 			block content
 		script(src='/socket.io/socket.io.js')

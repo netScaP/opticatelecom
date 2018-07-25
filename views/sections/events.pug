@@ -36,7 +36,9 @@ block content
 			div.followings-events
 				h2 You joined events
 				div.event(v-for="(event, index) in followingsEvents")
-					p.event-title {{ event.title }}
+					div.for-del
+						p.event-title {{ event.title }}
+						button(@click="quitEvent(event['_id'], index)").event-quit x
 					p.event-content {{ event.content }}
 					span.event-city {{ event.city }}, 
 					span.event-followers-length {{ event.followers.length }} - фоловер
@@ -50,11 +52,11 @@ block content
 					span#event-followers-length {{ currentEvent.followers.length }} - фоловер
 				div#current-chat
 					ul#messages(ref="messages")
-						li(v-for="message in currentEvent.messages") 
+						li(v-for="message in currentEvent.messages", :class='{ newMessage: message.sender == "You" }') 
 							span.sender {{ message.senderName }}: 
 							span.message {{ message.message }}
 					div
-						input#m(autocomplete="off", v-model="currentMsg")
+						input#m(autocomplete="off", v-model="currentMsg", @keyup.enter="sendMsg()")
 						button(@click="sendMsg()") SEND	
 		pagination(:current='currentPage', :total='totalEvents', :per-page='perPage', @page-changed='fetchEvents')
 block scripts

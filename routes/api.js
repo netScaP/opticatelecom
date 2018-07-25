@@ -47,6 +47,14 @@ router.get('/follow-to-user', ensureAuthenticated, (req, res, next) => {
 		.catch(e => console.log(e));
 });
 
+router.get('/quit-from-user', ensureAuthenticated, (req, res, next) => {
+	User.updateOne(
+		{ _id: req.user['_id'] },
+		{ $pull: { followingsUsers: req.query['id'] } }
+	)
+		.then(user => console.log(user));
+});
+
 router.get('/followings-users', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ _id: req.user['_id'] })
 		.populate('followingsUsers')
@@ -77,6 +85,21 @@ router.get('/join-to-event', ensureAuthenticated, (req, res, next) => {
 		{ $addToSet: { followingsEvents: req.query['id'] } }
 	)
 		.catch(e => req.flash('error', e.message));
+});
+
+router.get('/quit-from-event', ensureAuthenticated, (req, res, next) => {
+	console.log('req');
+	console.log(req.query);
+	Event.updateOne(
+		{ _id: req.query['id'] },
+		{ $pull: { followers: req.user['_id'] } }
+	)
+		.then(event => console.log(event));
+	User.updateOne(
+		{ _id: req.user['_id'] },
+		{ $pull: { followingsEvents: req.query['id'] } }
+	)
+		.then(user => console.log(user));
 });
 
 

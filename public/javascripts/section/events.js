@@ -38,12 +38,22 @@ var app = new Vue({
 			socket.emit('join-to-event', id);
 
 			if (typeof index !== 'undefined') {
-				this.followingsEvents.push(this.events[index]);
+				this.followingsEvents.unshift(this.events[index]);
 				this.events.splice(index, 1);
 			}
 		},
+		quitEvent: function(id, index) {
+			this.events.unshift(this.followingsEvents[index]);
+			this.followingsEvents.splice(index, 1);
+			var options = {
+				params: {
+					'id': id
+				}
+			}
+			this.$http.get('/api/quit-from-event', options);
+		},
 		sendMsg: function(e) {
-			socket.emit('chat-message', this.currentEvent['_id'], this.currentMsg, 'uder');
+			socket.emit('chat-message', this.currentEvent['_id'], this.currentMsg, 'You');
 			var options = {
 				params: {
 					id: this.currentEvent['_id'],
@@ -81,10 +91,17 @@ var app = new Vue({
 });
 
 socket.on('chat-message', function(msg, sender) {
-	var li = document.createElement("li");
+	// var li = document.createElement("li");
+	// li.classList.add('new-message');
 
-	li.innerHTML = "<span class='sender'>" + sender + ":</span><span class='message'>" + msg + "</span>";
-	app.$refs.messages.append(li);
+	// li.innerHTML = "<span class='sender'>" + sender + ":</span><span class='message'>" + msg + "</span>";
+	// app.$refs.messages.append(li);
+	app.currentEvent.messages.push({
+		senderName: sender,
+		sender: 'You',
+		message: msg
+	});
+	console.log(app.currentEvent);
 	gotoBottom('messages');	
 });
 
