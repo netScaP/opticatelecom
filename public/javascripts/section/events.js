@@ -4,11 +4,13 @@ var app = new Vue({
 	el: '.common-block',
 	data: {
 		events: [],
+		hashtags: [],
 		followingsEvents: [],
 		currentPage: 1,
 		perPage: 9,
 		currentEvent: {},
 		currentMsg: '',
+		search: '',
 		eventIsOpen: false,
 		totalEvents: 0
 	},
@@ -17,7 +19,8 @@ var app = new Vue({
 			var options = {
 				params: {
 					skip: (page - 1) * this.perPage,
-					limit: this.perPage
+					limit: this.perPage,
+					hashtags: this.hashtags.length == 0 ? ['all'] : this.hashtags
 				}
 			};
 
@@ -62,26 +65,55 @@ var app = new Vue({
 			};
 			this.$http.get('/chat-message', options);
 			Vue.set(app, 'currentMsg', '');
-			console.log(this.currentEvent);
+		},
+		addHashtag: function() {
+			this.hashtags.push(this.search.toLowerCase());
+			Vue.set(app, 'search', '');
+			this.fetchEvents(1);
+
+			var options = {
+				params: {
+					hashtags: this.hashtags
+				}
+			};
+
+			this.$http.get('/api/total-events', options)
+			.then(function (response) {
+				this.totalEvents = response.body.length;
+			});
+		},
+		delHashtag: function(index) {
+			this.hashtags.splice(index, 1);
+			this.fetchEvents(1);
+
+			var options = {
+				params: {
+					hashtags: this.hashtags.length == 0 ? ['all'] : this.hashtags
+				}
+			}
+			this.fetchEvents(this.currentPage);
+
+			this.$http.get('/api/total-events', options)
+			.then(function (response) {
+				this.totalEvents = response.body.length;
+			});
 		}
 	},
 	created: function() {
 		var options = {
 			params: {
-				skip: 0,
-				limit: this.perPage
+				hashtags: this.hashtags.length == 0 ? ['all'] : this.hashtags
 			}
 		}
 		this.fetchEvents(this.currentPage);
 
-		this.$http.get('/api/total-events')
+		this.$http.get('/api/total-events', options)
 		.then(function (response) {
 			this.totalEvents = response.body.length;
 		});
 
 		this.$http.get('/api/followings-events')
 		.then(function (response) {
-			console.log(response.body);
 			this.followingsEvents = response.body;
 		});
 	},
@@ -91,17 +123,11 @@ var app = new Vue({
 });
 
 socket.on('chat-message', function(msg, sender) {
-	// var li = document.createElement("li");
-	// li.classList.add('new-message');
-
-	// li.innerHTML = "<span class='sender'>" + sender + ":</span><span class='message'>" + msg + "</span>";
-	// app.$refs.messages.append(li);
 	app.currentEvent.messages.push({
 		senderName: sender,
 		sender: 'You',
 		message: msg
 	});
-	console.log(app.currentEvent);
 	gotoBottom('messages');	
 });
 

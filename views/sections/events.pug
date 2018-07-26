@@ -25,7 +25,11 @@ block content
 	div.common-block
 		div.for-same-height
 			div.events
-				h2 All events
+				div.top
+					h2 All events
+					input.search(type="text", v-model="search", placeholder="Search", @keyup.enter="addHashtag()")
+				ul.hashtags
+					li(v-for="(hashtag, index) in hashtags", @click="delHashtag(index)") {{ hashtag }}
 				div.event(v-for="(event, index) in events")
 					p.event-title {{ event.title }}
 					p.event-content {{ event.content }}
@@ -34,7 +38,7 @@ block content
 					br
 					button(@click="joinToEvent(event['_id'], index); eventIsOpen = true").event-join Join to event
 			div.followings-events
-				h2 You joined events
+				h2.top You joined events
 				div.event(v-for="(event, index) in followingsEvents")
 					div.for-del
 						p.event-title {{ event.title }}
@@ -60,5 +64,6 @@ block content
 						button(@click="sendMsg()") SEND	
 		pagination(:current='currentPage', :total='totalEvents', :per-page='perPage', @page-changed='fetchEvents')
 block scripts
+	//- script(src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js")
 	script(src="../javascripts/section/pagination.js")
 	script(src="../javascripts/section/events.js")

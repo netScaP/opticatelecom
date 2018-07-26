@@ -9,9 +9,16 @@ const router = express.Router();
 
 
 router.get('/events', ensureAuthenticated, (req, res, next) => {
-	Event.find({ _id: { $nin: req.user['followingsEvents'] } }).sort({ $natural: 1 }).skip(+req.query.skip).limit(+req.query.limit)
-		.then(events => res.send(events))
-		.catch(e => req.flash('error', e.message));
+	console.log(req.query);
+	Event.find({_id: { $nin: req.user['followingsEvents'] }, hashtags: { $in: req.query['hashtags'] } }).skip(+req.query.skip).limit(+req.query.limit)
+		.then(events => {
+			console.log(events);
+			res.send(events)
+		})
+		.catch(e => {
+			console.log(e);
+			req.flash('error', e.message)
+		});
 });
 
 router.get('/users', ensureAuthenticated, (req, res, next) => {
@@ -24,9 +31,17 @@ router.get('/users', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/total-events', ensureAuthenticated, (req, res, next) => {
-	Event.find({ _id: { $nin: req.user['followingsEvents'] } })
-		.then(events => res.send(events))
-		.catch(e => req.flash('error', e.message));
+	console.log(req.query);
+	console.log('total-events');
+	Event.find({_id: { $nin: req.user['followingsEvents'] }, hashtags: { $in: req.query['hashtags'] } })
+		.then(events => {
+			console.log(events);
+			res.send(events)
+		})
+		.catch(e => {
+			console.log(e);
+			req.flash('error', e.message)
+		});
 });
 
 router.get('/total-users', ensureAuthenticated, (req, res, next) => {
@@ -94,7 +109,8 @@ router.get('/quit-from-event', ensureAuthenticated, (req, res, next) => {
 		{ _id: req.query['id'] },
 		{ $pull: { followers: req.user['_id'] } }
 	)
-		.then(event => console.log(event));
+		.then(() => Event.remove({ followers: { $exists: true, $size: 0 } }));
+
 	User.updateOne(
 		{ _id: req.user['_id'] },
 		{ $pull: { followingsEvents: req.query['id'] } }
@@ -102,6 +118,11 @@ router.get('/quit-from-event', ensureAuthenticated, (req, res, next) => {
 		.then(user => console.log(user));
 });
 
+router.get('/search-events', ensureAuthenticated, (req, res, next) => {
+	console.log(req.query);
+	console.log('search');
+	Event.find({ $text: { $search: req.query['query'] } }).then(events => console.log(events));
+});
 
 //.sort({ $natural: -1 });
 export default router;

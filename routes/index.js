@@ -81,6 +81,7 @@ router.post('/create-event', ensureAuthenticated, (req, res, next) => {
 		message: 'Create an event'
 	}];
 	newEvent.followers = [ req.user['_id'] ];
+	newEvent.hashtags = ['all'].concat(req.body['hashtags'].toLowerCase().split(', '));
 
 	newEvent.save()
 	.then(() => res.redirect('/events'))
