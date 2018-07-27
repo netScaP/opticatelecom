@@ -4,6 +4,7 @@ var app = new Vue({
 	el: '.common-block',
 	data: {
 		events: [],
+		cashEvents: {},
 		hashtags: [],
 		followingsEvents: [],
 		currentPage: 1,
@@ -11,11 +12,18 @@ var app = new Vue({
 		currentEvent: {},
 		currentMsg: '',
 		search: '',
+		city: '',
 		eventIsOpen: false,
 		totalEvents: 0
 	},
 	methods: {
 		fetchEvents: function(page) {
+			if (this.hashtags.length == 0 && this.cashEvents.hasOwnProperty(page)) {
+				this.events = this.cashEvents[page];
+				this.currentPage = page;
+				return true;
+			}
+
 			var options = {
 				params: {
 					skip: (page - 1) * this.perPage,
@@ -28,16 +36,30 @@ var app = new Vue({
 			.then(function(response) {
 				this.events = response.body;
 				this.currentPage = page;
+				this.cashEvents[page] = response.body;
 			}, console.log);
+		},
+		fetchTotalEvents: function() {
+			var options = {
+				params: {
+					hashtags: this.hashtags.length == 0 ? ['all'] : this.hashtags
+				}
+			};
+
+			this.$http.get('/api/total-events', options)
+			.then(function (response) {
+				this.totalEvents = response.body.length;
+			});
 		},
 		joinToEvent: function(id, index) {
 			var options = {
 				params: {
 					'id': id
 				}
-			}
+			};
 			this.$http.get('/api/join-to-event', options)
-			.then(event => this.currentEvent = event.body);
+				.then(event => this.currentEvent = event.body);
+
 			socket.emit('join-to-event', id);
 
 			if (typeof index !== 'undefined') {
@@ -52,7 +74,7 @@ var app = new Vue({
 				params: {
 					'id': id
 				}
-			}
+			};
 			this.$http.get('/api/quit-from-event', options);
 		},
 		sendMsg: function(e) {
@@ -70,47 +92,23 @@ var app = new Vue({
 			this.hashtags.push(this.search.toLowerCase());
 			Vue.set(app, 'search', '');
 			this.fetchEvents(1);
-
-			var options = {
-				params: {
-					hashtags: this.hashtags
-				}
-			};
-
-			this.$http.get('/api/total-events', options)
-			.then(function (response) {
-				this.totalEvents = response.body.length;
-			});
+			this.fetchTotalEvents();
 		},
 		delHashtag: function(index) {
 			this.hashtags.splice(index, 1);
 			this.fetchEvents(1);
 
-			var options = {
-				params: {
-					hashtags: this.hashtags.length == 0 ? ['all'] : this.hashtags
-				}
-			}
-			this.fetchEvents(this.currentPage);
-
-			this.$http.get('/api/total-events', options)
-			.then(function (response) {
-				this.totalEvents = response.body.length;
-			});
+			this.fetchTotalEvents();
+		}
+	},
+	watch: {
+		city: function(newVal) {
+			console.log(newVal);
 		}
 	},
 	created: function() {
-		var options = {
-			params: {
-				hashtags: this.hashtags.length == 0 ? ['all'] : this.hashtags
-			}
-		}
 		this.fetchEvents(this.currentPage);
-
-		this.$http.get('/api/total-events', options)
-		.then(function (response) {
-			this.totalEvents = response.body.length;
-		});
+		this.fetchTotalEvents();
 
 		this.$http.get('/api/followings-events')
 		.then(function (response) {

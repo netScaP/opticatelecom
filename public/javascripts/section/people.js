@@ -5,14 +5,16 @@ var app = new Vue({
 		currentPage: 1,
 		perPage: 9,
 		totalUsers: 0,
-		followingsUsers: []
+		followingsUsers: [],
+		search: ''
 	},
 	methods: {
 		fetchUsers: function(page) {
 			var options = {
 				params: {
 					skip: (page - 1) * this.perPage,
-					limit: this.perPage
+					limit: this.perPage,
+					search: this.search
 				}
 			};
 
@@ -22,6 +24,18 @@ var app = new Vue({
 				this.users = response.body;
 				this.currentPage = page;
 			}, console.log);
+		},
+		fetchTotalUsers: function() {
+			var options = {
+				params: {
+					search: this.search
+				}
+			};
+
+			this.$http.get('/api/total-users', options)
+			.then(function (response) {
+				this.totalUsers = response.body.length;
+			});
 		},
 		followToUser: function(id, index) {
 			var options = {
@@ -45,19 +59,15 @@ var app = new Vue({
 			this.followingsUsers.splice(index, 1);
 		}
 	},
-	created: function() {
-		var options = {
-			params: {
-				skip: 0,
-				limit: this.perPage
-			}
+	watch: {
+		search: function(newVal) {
+			this.fetchUsers(1);
+			this.fetchTotalUsers();
 		}
+	},
+	created: function() {
 		this.fetchUsers(this.currentPage);
-
-		this.$http.get('/api/total-users')
-		.then(function (response) {
-			this.totalUsers = response.body.length;
-		});
+		this.fetchTotalUsers();
 
 		this.$http.get('/api/followings-users')
 		.then(function (response) {

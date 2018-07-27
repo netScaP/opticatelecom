@@ -25,7 +25,9 @@ block content
 	div.common-block
 		div.for-same-height
 			div.users
-				h2 All people
+				div.top
+					h2 All people
+					input.search(type="text", v-model.lazy.trim="search")
 				div.user(v-for="(user, index) in users")
 					p.user-name {{ user.name }}
 					p.phone {{ user.phone }}

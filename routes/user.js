@@ -31,6 +31,7 @@ router.get('/profile', ensureAuthenticated, (req, res, next) => {
 router.get('/setting', ensureAuthenticated, (req, res, next) => {
 	const messages = req.flash('error');
 	console.log(messages);
+	console.log(req.user);
 	res.render('account/setting', {
 		'user': req.user,
 		csrfToken: req.csrfToken(),
@@ -42,10 +43,11 @@ router.get('/setting', ensureAuthenticated, (req, res, next) => {
 router.post('/setting', ensureAuthenticated, (req, res, next) => {
 
 	const newUser = new User();
-    newUser.username = req.query.username == '' ? req.user.username : req.body.username;
+    newUser.email = req.query.email == '' ? req.user.email : req.body.email;
     newUser.password = req.body.password == '' ? req.user.password : newUser.encryptPassword(req.body.password);
     newUser.name = req.query.name == '' ? req.user.name : req.body.name;;
     newUser.phone = req.body.phone == '' ? +req.user.phone : +req.body.name;
+    newUser.city = req.body.city == '' ? req.user['city'] : req.body['city'];
     newUser._id = req.user._id;
 
     if (req.body.phone.length < 7 || !Number.isInteger(+req.body.phone)) {
@@ -57,9 +59,9 @@ router.post('/setting', ensureAuthenticated, (req, res, next) => {
 	    }
     }
     
-    User.updateOne( { username: req.user.username }, newUser, { upsert: true })
+    User.updateOne( { email: req.user.email }, newUser, { upsert: true })
     	.then(() => res.redirect('/user/profile'))
-    	.catch(e => req.flash('error', err.message));
+    	.catch(e => req.flash('error', e.message));
 
 });
 

@@ -12,6 +12,18 @@
     flex-direction: column;
     max-height: 1800px;
     overflow-y: auto; }
+    .common-block .users .top, .common-block .followings-users .top {
+      display: flex;
+      width: 100%;
+      align-items: center; }
+      .common-block .users .top .search, .common-block .followings-users .top .search {
+        width: 60%;
+        margin-left: 10px;
+        border: 1px solid #6C3FFF;
+        border-radius: 3px;
+        padding: 5px;
+        font-family: 'Open Sans Condensed', sans-serif;
+        font-size: 18px; }
     .common-block .users .user, .common-block .followings-users .user {
       width: 50%;
       height: 200px;

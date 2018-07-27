@@ -12,12 +12,10 @@ block content
 	form(method="POST")
 		p Your name is: 
 			input(type="text", value= user.name, name="name")
-		p Your username is: 
-			input(type="text", value= user.username, name="username")
+		p Your city is:
+			input(type="text", value= user.city, name="city")
 		p Your phone is: 
 			input(type="text", value= user.phone, name="phone")
-		p Your password is:
-			input(type="text", value= user.password, name="decodPassword")
 		input(type="text", placeholder="new password", name="password")
 		input(type='hidden', name='_csrf', value=csrfToken)
 		button(type="submit") SEND

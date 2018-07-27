@@ -22,6 +22,7 @@ passport.use('local.signup', new LocalStrategy({
     req.checkBody('email', 'Invalid email').notEmpty().isEmail();
     req.checkBody('password', 'Invalid password').notEmpty().isLength({min:4});
     req.checkBody('name', "Name couldn't be is empty").notEmpty();
+    req.checkBody('city', "City couldn't be is empty").notEmpty();
     req.checkBody('phone', "Invalid Phone").notEmpty().isLength({min:7});
     let errors = req.validationErrors();
     if (errors) {
@@ -41,6 +42,7 @@ passport.use('local.signup', new LocalStrategy({
         const newUser = new User();
         newUser.email = email;
         newUser.name = req.body.name;
+        newUser.city = req.body.city;
         newUser.password = newUser.encryptPassword(password);
         newUser.phone = req.body.phone;
         newUser.followingsEvents = [];

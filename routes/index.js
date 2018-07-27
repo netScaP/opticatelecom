@@ -35,7 +35,8 @@ router.get('/events', ensureAuthenticated, (req, res, next) => {
 	const messages = req.flash('error');
 	res.render('sections/events', {
 		messages,
-		hasErrors: messages.length > 0
+		hasErrors: messages.length > 0,
+		city: req.user['city']
 	});
 });
 

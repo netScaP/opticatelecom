@@ -27,7 +27,8 @@ block content
 			div.events
 				div.top
 					h2 All events
-					input.search(type="text", v-model="search", placeholder="Search", @keyup.enter="addHashtag()")
+					input.search(type="text", v-model.trim="search", placeholder="Search", @keyup.enter="addHashtag()")
+					button(@click="addHashtag()") +
 				ul.hashtags
 					li(v-for="(hashtag, index) in hashtags", @click="delHashtag(index)") {{ hashtag }}
 				div.event(v-for="(event, index) in events")
@@ -38,7 +39,10 @@ block content
 					br
 					button(@click="joinToEvent(event['_id'], index); eventIsOpen = true").event-join Join to event
 			div.followings-events
-				h2.top You joined events
+				div.top 
+					h2 You joined events
+					p Твой город: 
+						span= city
 				div.event(v-for="(event, index) in followingsEvents")
 					div.for-del
 						p.event-title {{ event.title }}

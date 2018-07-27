@@ -10,7 +10,16 @@ const router = express.Router();
 
 router.get('/events', ensureAuthenticated, (req, res, next) => {
 	console.log(req.query);
-	Event.find({_id: { $nin: req.user['followingsEvents'] }, hashtags: { $in: req.query['hashtags'] } }).skip(+req.query.skip).limit(+req.query.limit)
+	const hashtags = req.query['hashtags'].length === 0 ? ['all'] : req.query['hashtags'];
+	Event.find({
+		_id: { 
+			$nin: req.user['followingsEvents'] 
+		}, 
+		hashtags: { 
+			$in: hashtags 
+		},
+		city: req.user['city']
+	}).skip(+req.query.skip).limit(+req.query.limit)
 		.then(events => {
 			console.log(events);
 			res.send(events)
@@ -22,18 +31,38 @@ router.get('/events', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/users', ensureAuthenticated, (req, res, next) => {
-	User.find({ $and: [
-		{_id: { $nin: req.user['followingsUsers'] } }, 
-		{_id: { $ne: req.user['_id'] } } 
-	]}).sort({ $natural: 1 }).skip(+req.query.skip).limit(+req.query.limit)
-		.then(users => res.send(users))
-		.catch(e => req.flash('error', e.message));
+	console.log(req.query);
+	console.log('users');
+	User.find({
+		$and: [
+			{_id: { $nin: req.user['followingsUsers'] } }, 
+			{_id: { $ne: req.user['_id'] } } 
+		],
+		name: { $regex: ".*" + req.query['search'] + ".*", $options: 'i'}
+	}).skip(+req.query.skip).limit(+req.query.limit)
+		.then(users => {
+			console.log(users);
+			res.send(users)
+		})
+		.catch(e => {
+			console.log(e);
+			req.flash('error', e.message)
+		});
 });
 
 router.get('/total-events', ensureAuthenticated, (req, res, next) => {
 	console.log(req.query);
 	console.log('total-events');
-	Event.find({_id: { $nin: req.user['followingsEvents'] }, hashtags: { $in: req.query['hashtags'] } })
+	const hashtags = req.query['hashtags'].length === 0 ? ['all'] : req.query['hashtags'];
+	Event.find({
+		_id: { 
+			$nin: req.user['followingsEvents'] 
+		}, 
+		hashtags: { 
+			$in: hashtags 
+		},
+		city: req.user['city']
+	})
 		.then(events => {
 			console.log(events);
 			res.send(events)
@@ -45,7 +74,8 @@ router.get('/total-events', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/total-users', ensureAuthenticated, (req, res, next) => {
-	User.find()
+	console.log(req.query);
+	User.find({ name: { $regex: ".*" + req.query['search'] + ".*", $options: 'i'} })
 		.then(users => res.send(users))
 		.catch(e => req.flash('error', e.message));
 });
@@ -118,11 +148,6 @@ router.get('/quit-from-event', ensureAuthenticated, (req, res, next) => {
 		.then(user => console.log(user));
 });
 
-router.get('/search-events', ensureAuthenticated, (req, res, next) => {
-	console.log(req.query);
-	console.log('search');
-	Event.find({ $text: { $search: req.query['query'] } }).then(events => console.log(events));
-});
 
 //.sort({ $natural: -1 });
 export default router;
