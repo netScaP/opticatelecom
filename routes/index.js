@@ -36,31 +36,10 @@ router.get('/events', ensureAuthenticated, (req, res, next) => {
 	res.render('sections/events', {
 		messages,
 		hasErrors: messages.length > 0,
-		city: req.user['city']
+		city: req.user['city'],
+		userId: req.user['_id']
 	});
 });
-
-// router.get('/follow-to-event/:id', ensureAuthenticated, (req, res, next) => {
-// 	User.updateOne(
-// 		{ email: req.user.email },
-// 		{ $push: { followingsEvents: req.params.id }}
-// 	)
-// 	.catch(e => req.flash('error', e.message));
-
-// 	Event.updateOne(
-// 		{ _id: req.params.id },
-// 		{ $push: { followers: req.user['_id'] } }
-// 	)
-// 	.catch(e => req.flash('error', e.message));
-// });
-
-// router.get('/follow-to-user/:id', ensureAuthenticated, (req, res, next) => {
-// 	User.updateOne(
-// 		{ _id: req.params.id },
-// 		{ $push: { followingsUsers: req.user['_id'] } }
-// 	)
-// 	.catch(e => req.flash('error', e.message));
-// });
 
 router.get('/create-event', ensureAuthenticated, (req, res, next) => {
 	const messages = req.flash('error');
@@ -87,7 +66,7 @@ router.post('/create-event', ensureAuthenticated, (req, res, next) => {
 	newEvent.save()
 	.then(() => res.redirect('/events'))
 	.catch(e => req.flash('error', e.message));
-	console.log(newEvent);
+
 	User.updateOne(
 		{ _id: req.user['_id'] },
 		{ $addToSet: { followingsEvents: newEvent['_id'] } }
@@ -96,8 +75,6 @@ router.post('/create-event', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/chat-message', ensureAuthenticated, (req, res, next) => {
-	console.log(req.query);
-	console.log(req.user);
 	Event.updateOne(
 		{ _id: req.query.id },
 		{ $push: { 

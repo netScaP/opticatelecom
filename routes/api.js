@@ -3,13 +3,12 @@ import express from 'express';
 import User from '../models/user';
 import Event from '../models/event';
 
-import { notLoggedIn, ensureAuthenticated } from '../middleware/auth';
+import { notLoggedIn, ensureAuthenticated, isEventCreater } from '../middleware/auth';
 
 const router = express.Router();
 
 
 router.get('/events', ensureAuthenticated, (req, res, next) => {
-	console.log(req.query);
 	const hashtags = req.query['hashtags'].length === 0 ? ['all'] : req.query['hashtags'];
 	Event.find({
 		_id: { 
@@ -31,8 +30,6 @@ router.get('/events', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/users', ensureAuthenticated, (req, res, next) => {
-	console.log(req.query);
-	console.log('users');
 	User.find({
 		$and: [
 			{_id: { $nin: req.user['followingsUsers'] } }, 
@@ -51,8 +48,6 @@ router.get('/users', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/total-events', ensureAuthenticated, (req, res, next) => {
-	console.log(req.query);
-	console.log('total-events');
 	const hashtags = req.query['hashtags'].length === 0 ? ['all'] : req.query['hashtags'];
 	Event.find({
 		_id: { 
@@ -74,16 +69,12 @@ router.get('/total-events', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/total-users', ensureAuthenticated, (req, res, next) => {
-	console.log(req.query);
 	User.find({ name: { $regex: ".*" + req.query['search'] + ".*", $options: 'i'} })
 		.then(users => res.send(users))
 		.catch(e => req.flash('error', e.message));
 });
 
 router.get('/follow-to-user', ensureAuthenticated, (req, res, next) => {
-	console.log(req.query);
-	console.log(req.query.id);
-	console.log(req.user['_id']);
 	User.updateOne(
 		{ _id: req.user['_id'] },
 		{ $addToSet: { followingsUsers: req.query.id } }
@@ -132,9 +123,28 @@ router.get('/join-to-event', ensureAuthenticated, (req, res, next) => {
 		.catch(e => req.flash('error', e.message));
 });
 
-router.get('/quit-from-event', ensureAuthenticated, (req, res, next) => {
-	console.log('req');
+router.post('/update-event', ensureAuthenticated, (req, res, next) => {
 	console.log(req.query);
+	console.log(req.body);
+	const event = req.body.params.event;
+	event.createdBy = req.user['_id'];
+	for (var i = event.hashtags.length - 1; i >= 0; i--) {
+		if (event.hashtags[i] == '') {
+			event.hashtags[i].splice(index, 1);
+		}
+	}
+	Event.updateOne(
+		{ _id: event['_id'] },
+		event
+	)
+		.then((result) => console.log(result))
+		.catch(e => {
+			console.log(e);
+			req.flash('error', e.message);
+		});
+});
+
+router.get('/quit-from-event', ensureAuthenticated, (req, res, next) => {
 	Event.updateOne(
 		{ _id: req.query['id'] },
 		{ $pull: { followers: req.user['_id'] } }

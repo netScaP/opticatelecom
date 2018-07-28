@@ -24,6 +24,7 @@ block content
 							a(href='#', @click.prevent='changePage(totalPages)') {{ totalPages }}  
 	div.common-block
 		div.for-same-height
+			span(ref="userId", v-show="false") #{userId}
 			div.events
 				div.top
 					h2 All events
@@ -37,21 +38,44 @@ block content
 					span.event-city {{ event.city }}, 
 					span.event-followers-length {{ event.followers.length }} - фоловер
 					br
+					div.event-hashtags
+						span(v-for="hashtag in event.hashtags", @click="addHashtag(hashtag)") # {{ hashtag }}
+					br
 					button(@click="joinToEvent(event['_id'], index); eventIsOpen = true").event-join Join to event
 			div.followings-events
 				div.top 
 					h2 You joined events
 					p Твой город: 
-						span= city
+						span #{city}
 				div.event(v-for="(event, index) in followingsEvents")
-					div.for-del
-						p.event-title {{ event.title }}
-						button(@click="quitEvent(event['_id'], index)").event-quit x
-					p.event-content {{ event.content }}
-					span.event-city {{ event.city }}, 
-					span.event-followers-length {{ event.followers.length }} - фоловер
-					br
-					button(@click="joinToEvent(event['_id']); eventIsOpen = true").event-join Join to chat
+					span(v-if="event.createdBy")
+						div.for-del
+							p.event-title {{ event.title }}
+							div
+								button(v-if="userId == event['createdBy']", @click="event.createdBy = false").event-change
+									img(src="../images/edit.svg")
+								button(@click="quitEvent(event['_id'], index)").event-quit
+									img(src="../images/close.svg")
+						p.event-content {{ event.content }}
+						span.event-city {{ event.city }}, 
+						span.event-followers-length {{ event.followers.length }} - фоловер
+						br
+						div.event-hashtags
+							span(v-for="hashtag in event.hashtags", @click="addHashtag(hashtag)") # {{ hashtag }}
+						br
+						button(@click="joinToEvent(event['_id']); eventIsOpen = true").event-join Join to chat
+					form.edit-event(v-else, @submit.prevent="updateEvent(index, event)")
+						input(type="text", v-model="event.title", ref="eventTitle")
+						textarea(type="text", v-model="event.content", ref="eventContent")
+						input(type="text", v-model="event.city", ref="eventCity") 
+						span.event-followers-length  {{ event.followers.length }} - фоловер
+						br
+						div.event-hashtags
+							div(v-for="hashtag in event.hashtags")
+								input(v-model.trim="hashtag")
+							div(@click="addHashtagEdit(index)") +
+						br
+						button(type="submit", @click="event.createdBy = userId").submitEdit Change
 			div#current-event(v-if="eventIsOpen")
 				div#current-info
 					p#current-title {{ currentEvent.title }}

@@ -12,7 +12,7 @@ var app = new Vue({
 		currentEvent: {},
 		currentMsg: '',
 		search: '',
-		city: '',
+		userId: '',
 		eventIsOpen: false,
 		totalEvents: 0
 	},
@@ -36,7 +36,9 @@ var app = new Vue({
 			.then(function(response) {
 				this.events = response.body;
 				this.currentPage = page;
-				this.cashEvents[page] = response.body;
+				if (this.hashtags.length == 0) {
+					this.cashEvents[page] = response.body;
+				}
 			}, console.log);
 		},
 		fetchTotalEvents: function() {
@@ -50,6 +52,21 @@ var app = new Vue({
 			.then(function (response) {
 				this.totalEvents = response.body.length;
 			});
+		},
+		updateEvent: function(index, event) {
+			console.log(this.followingsEvents[index]);
+			console.log(event);
+			var options = {
+				params: {
+					event: event
+				}
+			};
+
+			this.$http.post('/api/update-event', options);
+		},
+		addHashtagEdit: function(index) {
+			this.followingsEvents[index].hashtags.push('');
+			console.log(this.followingsEvents[index].hashtags);
 		},
 		joinToEvent: function(id, index) {
 			var options = {
@@ -88,22 +105,21 @@ var app = new Vue({
 			this.$http.get('/chat-message', options);
 			Vue.set(app, 'currentMsg', '');
 		},
-		addHashtag: function() {
-			this.hashtags.push(this.search.toLowerCase());
-			Vue.set(app, 'search', '');
+		addHashtag: function(hashtag) {
+			if (typeof hashtag !== 'undefined') {
+				this.hashtags.push(hashtag);
+			} else {
+				if (this.search === '') return false;
+				this.hashtags.push(this.search.toLowerCase());
+				Vue.set(app, 'search', '');
+			}
 			this.fetchEvents(1);
 			this.fetchTotalEvents();
 		},
 		delHashtag: function(index) {
 			this.hashtags.splice(index, 1);
 			this.fetchEvents(1);
-
 			this.fetchTotalEvents();
-		}
-	},
-	watch: {
-		city: function(newVal) {
-			console.log(newVal);
 		}
 	},
 	created: function() {
@@ -114,9 +130,16 @@ var app = new Vue({
 		.then(function (response) {
 			this.followingsEvents = response.body;
 		});
+
 	},
 	updated: function() {
 		gotoBottom('messages');
+	},
+	mounted: function() {
+		console.log(this.userId);
+		console.log(this.$refs);
+		console.log(this.$refs['userId']);
+		this.userId = this.$refs['userId'].innerHTML;
 	}
 });
 

@@ -30,8 +30,7 @@ router.get('/profile', ensureAuthenticated, (req, res, next) => {
 
 router.get('/setting', ensureAuthenticated, (req, res, next) => {
 	const messages = req.flash('error');
-	console.log(messages);
-	console.log(req.user);
+
 	res.render('account/setting', {
 		'user': req.user,
 		csrfToken: req.csrfToken(),
@@ -41,7 +40,6 @@ router.get('/setting', ensureAuthenticated, (req, res, next) => {
 });
 
 router.post('/setting', ensureAuthenticated, (req, res, next) => {
-
 	const newUser = new User();
     newUser.email = req.query.email == '' ? req.user.email : req.body.email;
     newUser.password = req.body.password == '' ? req.user.password : newUser.encryptPassword(req.body.password);

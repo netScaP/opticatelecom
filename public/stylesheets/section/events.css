@@ -74,28 +74,64 @@
           margin-right: 5px; }
     .common-block .for-same-height .followings-events {
       width: 20%; }
-      .common-block .for-same-height .followings-events .event .event-content {
+      .common-block .for-same-height .followings-events .event span .event-content {
         margin-top: 0px; }
-      .common-block .for-same-height .followings-events .event .for-del {
+      .common-block .for-same-height .followings-events .event span .for-del {
         width: 100%;
         display: flex;
-        justify-content: space-between; }
-        .common-block .for-same-height .followings-events .event .for-del .event-title {
-          margin-bottom: 15px; }
-        .common-block .for-same-height .followings-events .event .for-del .event-quit {
-          margin-top: 15px;
-          align-self: center;
-          margin-right: 30px;
-          background-color: white;
-          border: 1px solid #FF0000;
-          color: #FF0000;
-          cursor: pointer;
-          transition: all .3s linear; }
-          .common-block .for-same-height .followings-events .event .for-del .event-quit:hover {
-            transform: scale(1.3, 1.3);
-            color: white;
+        justify-content: space-between;
+        align-items: flex-end; }
+        .common-block .for-same-height .followings-events .event span .for-del div {
+          display: flex; }
+          .common-block .for-same-height .followings-events .event span .for-del div .event-quit {
+            margin-right: 30px;
+            background-color: white;
             border: 1px solid #FF0000;
-            background-color: #FF0000; }
+            width: 25px;
+            height: 25px;
+            cursor: pointer; }
+            .common-block .for-same-height .followings-events .event span .for-del div .event-quit img {
+              width: 100%;
+              height: 100%; }
+          .common-block .for-same-height .followings-events .event span .for-del div .event-change {
+            background-color: lightgreen;
+            border: 1px solid grey;
+            width: 25px;
+            height: 25px;
+            cursor: pointer; }
+            .common-block .for-same-height .followings-events .event span .for-del div .event-change img {
+              width: 100%;
+              height: 100%; }
+      .common-block .for-same-height .followings-events .event .edit-event {
+        width: 100%; }
+        .common-block .for-same-height .followings-events .event .edit-event input {
+          padding: 5px;
+          border: 1px solid #6C3FFF;
+          border-radius: 3px;
+          width: 50%;
+          margin-top: 5px; }
+        .common-block .for-same-height .followings-events .event .edit-event textarea {
+          width: 90%;
+          border: 1px solid #6C3FFF;
+          border-radius: 3px;
+          margin-top: 5px; }
+        .common-block .for-same-height .followings-events .event .edit-event .event-hashtags {
+          display: inline-flex;
+          flex-wrap: wrap; }
+          .common-block .for-same-height .followings-events .event .edit-event .event-hashtags div {
+            width: 60px; }
+            .common-block .for-same-height .followings-events .event .edit-event .event-hashtags div input {
+              width: 70%; }
+          .common-block .for-same-height .followings-events .event .edit-event .event-hashtags button {
+            background-color: white;
+            border: 1px solid #6C3FFF;
+            padding: 5px; }
+        .common-block .for-same-height .followings-events .event .edit-event .submitEdit {
+          background-color: #6C3FFF;
+          padding: 5px 10px;
+          border-radius: 5px;
+          cursor: pointer;
+          color: #E8E2FD; }
     .common-block .for-same-height .events, .common-block .for-same-height .followings-events {
       display: flex;
       flex-direction: column;
@@ -107,8 +143,15 @@
         width: 100%;
         height: 200px;
         scroll-y: auto; }
+        .common-block .for-same-height .events .event .for-del .event-title, .common-block .for-same-height .followings-events .event .for-del .event-title {
+          font-size: 24px;
+          margin-bottom: 1px; }
         .common-block .for-same-height .events .event .event-title, .common-block .for-same-height .followings-events .event .event-title {
-          font-size: 24px; }
+          font-size: 24px;
+          margin-bottom: 1px; }
+        .common-block .for-same-height .events .event .event-content, .common-block .for-same-height .followings-events .event .event-content {
+          margin-bottom: 10px;
+          margin-top: 10px; }
         .common-block .for-same-height .events .event .event-join, .common-block .for-same-height .followings-events .event .event-join {
           background-color: #6C3FFF;
           color: #E8E2FD;
@@ -116,6 +159,19 @@
           padding: 5px 10px;
           align-self: flex-start;
           cursor: pointer; }
+        .common-block .for-same-height .events .event .event-hashtags, .common-block .for-same-height .followings-events .event .event-hashtags {
+          display: inline-flex;
+          margin-top: 5px;
+          margin-bottom: 5px;
+          flex-wrap: wrap; }
+          .common-block .for-same-height .events .event .event-hashtags span, .common-block .for-same-height .followings-events .event .event-hashtags span {
+            border: 1px solid #6C3FFF;
+            display: inline-block;
+            padding: 3px 5px;
+            background-color: white;
+            border-radius: 3px;
+            margin-right: 5px;
+            cursor: pointer; }
   .common-block .pagination {
     width: 40%;
     display: flex;
