@@ -124,8 +124,6 @@ router.get('/join-to-event', ensureAuthenticated, (req, res, next) => {
 });
 
 router.post('/update-event', ensureAuthenticated, (req, res, next) => {
-	console.log(req.query);
-	console.log(req.body);
 	const event = req.body.params.event;
 	event.createdBy = req.user['_id'];
 	for (var i = event.hashtags.length - 1; i >= 0; i--) {

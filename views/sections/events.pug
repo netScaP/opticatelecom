@@ -61,18 +61,18 @@ block content
 						span.event-followers-length {{ event.followers.length }} - фоловер
 						br
 						div.event-hashtags
-							span(v-for="hashtag in event.hashtags", @click="addHashtag(hashtag)") # {{ hashtag }}
+							span(v-for="hashtag in event.hashtags", @click="addHashtag(hashtag)") \#{{ hashtag }}
 						br
 						button(@click="joinToEvent(event['_id']); eventIsOpen = true").event-join Join to chat
 					form.edit-event(v-else, @submit.prevent="updateEvent(index, event)")
-						input(type="text", v-model="event.title", ref="eventTitle")
-						textarea(type="text", v-model="event.content", ref="eventContent")
-						input(type="text", v-model="event.city", ref="eventCity") 
+						input(type="text", v-model.trim="event.title", ref="eventTitle")
+						textarea(type="text", v-model.trim="event.content", ref="eventContent")
+						input(type="text", v-model.trim="event.city", ref="eventCity") 
 						span.event-followers-length  {{ event.followers.length }} - фоловер
 						br
 						div.event-hashtags
-							div(v-for="hashtag in event.hashtags")
-								input(v-model.trim="hashtag")
+							div(v-for="(hashtag, hashtagIndex) in event.hashtags")
+								input(type="text", v-model.trim="event.hashtags[hashtagIndex]")
 							div(@click="addHashtagEdit(index)") +
 						br
 						button(type="submit", @click="event.createdBy = userId").submitEdit Change

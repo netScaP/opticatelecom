@@ -54,8 +54,10 @@ var app = new Vue({
 			});
 		},
 		updateEvent: function(index, event) {
-			console.log(this.followingsEvents[index]);
-			console.log(event);
+			for (var i = event['hashtags'].length - 1; i >= 0; i--) {
+				if (event['hashtags'][i] == '') event['hashtags'].splice(index, 1);
+			};
+
 			var options = {
 				params: {
 					event: event
@@ -66,7 +68,6 @@ var app = new Vue({
 		},
 		addHashtagEdit: function(index) {
 			this.followingsEvents[index].hashtags.push('');
-			console.log(this.followingsEvents[index].hashtags);
 		},
 		joinToEvent: function(id, index) {
 			var options = {
