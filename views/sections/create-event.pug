@@ -12,5 +12,12 @@ block content
 		textarea(placeholder="content", name="content")
 		input(type="text", placeholder="city", name="city")
 		input(type="text", placeholder="Example: кино, фильм", name="hashtags")
+		div.time
+			div.start
+				label(for="startEvent") When start
+				input(type="datetime-local", name="startEvent", id="startEvent")
+			div.end
+				label(for="endEvent") When end
+				input(type="datetime-local", name="endEvent", id="endEvent")
 		button(type="submit") Создать событие
 block scripts

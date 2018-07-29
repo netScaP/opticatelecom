@@ -35,6 +35,9 @@ block content
 				div.event(v-for="(event, index) in events")
 					p.event-title {{ event.title }}
 					p.event-content {{ event.content }}
+					div.event-time
+						p {{ event.startEvent | normalizeDate }}
+						p {{ event.endEvent | normalizeDate }}
 					span.event-city {{ event.city }}, 
 					span.event-followers-length {{ event.followers.length }} - фоловер
 					br
@@ -57,6 +60,9 @@ block content
 								button(@click="quitEvent(event['_id'], index)").event-quit
 									img(src="../images/close.svg")
 						p.event-content {{ event.content }}
+						div.event-time
+							p {{ event.startEvent | normalizeDate }}
+							p {{ event.endEvent | normalizeDate }}
 						span.event-city {{ event.city }}, 
 						span.event-followers-length {{ event.followers.length }} - фоловер
 						br
@@ -78,7 +84,10 @@ block content
 						button(type="submit", @click="event.createdBy = userId").submitEdit Change
 			div#current-event(v-if="eventIsOpen")
 				div#current-info
-					p#current-title {{ currentEvent.title }}
+					div#for-del
+						p#current-title {{ currentEvent.title }}
+						button#close-event(@click="eventIsOpen = false")
+							img(src="../images/close.svg")
 					p#current-content {{ currentEvent.content }}
 					span#event-city {{ currentEvent.city }} 
 					span#event-followers-length {{ currentEvent.followers.length }} - фоловер

@@ -11,6 +11,18 @@ form {
     border: 1px solid #6C3FFF;
     padding: 5px;
     font-family: 'Open Sans Condensed', sans-serif; }
+  form .time {
+    width: 100%;
+    display: flex;
+    background-color: white; }
+    form .time .start, form .time .end {
+      width: 50%; }
+      form .time .start label, form .time .end label {
+        margin-right: 5px; }
+      form .time .start input, form .time .end input {
+        border: 1px solid #6C3FFF;
+        border-radius: 3px;
+        padding: 5px; }
   form button {
     margin-top: 10px;
     cursor: pointer;

@@ -9,6 +9,7 @@ const router = express.Router();
 
 
 router.get('/events', ensureAuthenticated, (req, res, next) => {
+	const currentDate = new Date().toISOString();
 	const hashtags = req.query['hashtags'].length === 0 ? ['all'] : req.query['hashtags'];
 	Event.find({
 		_id: { 
@@ -17,8 +18,9 @@ router.get('/events', ensureAuthenticated, (req, res, next) => {
 		hashtags: { 
 			$in: hashtags 
 		},
-		city: req.user['city']
-	}).skip(+req.query.skip).limit(+req.query.limit)
+		city: req.user['city'],
+		startEvent: { $gte: currentDate }
+	}).sort({ startEvent: 1 }).skip(+req.query.skip).limit(+req.query.limit)
 		.then(events => {
 			console.log(events);
 			res.send(events)
@@ -101,11 +103,19 @@ router.get('/followings-users', ensureAuthenticated, (req, res, next) => {
 });
 
 router.get('/followings-events', ensureAuthenticated, (req, res, next) => {
-	User.findOne({ _id: req.user['_id'] })
+	const currentDate = new Date().toISOString();
+	User.findOne({ 
+		_id: req.user['_id']
+	})
+		.sort({ startEvent: 1 })
 		.populate('followingsEvents')
 		.exec((err, user) => {
 			console.log(user);
-			res.send(user['followingsEvents']);
+			if (user)
+				res.send(user['followingsEvents']);
+			else {
+				res.send([]);
+			}
 		});
 });
 

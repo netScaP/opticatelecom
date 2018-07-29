@@ -50,6 +50,8 @@ router.get('/create-event', ensureAuthenticated, (req, res, next) => {
 });
 
 router.post('/create-event', ensureAuthenticated, (req, res, next) => {
+	console.log(req.body['startEvent']);
+	console.log(new Date(req.body['startEvent']));
 	const newEvent = new Event();
 	newEvent.title = req.body.title;
 	newEvent.content = req.body.content;
@@ -62,6 +64,8 @@ router.post('/create-event', ensureAuthenticated, (req, res, next) => {
 	}];
 	newEvent.followers = [ req.user['_id'] ];
 	newEvent.hashtags = ['all'].concat(req.body['hashtags'].toLowerCase().split(', '));
+	newEvent.startEvent = new Date(req.body['startEvent']);
+	newEvent.endEvent = new Date(req.body['endEvent']);
 
 	newEvent.save()
 	.then(() => res.redirect('/events'))

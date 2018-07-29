@@ -1,5 +1,11 @@
 var socket = io();
 
+// Vue.filter('normalizeDate', function(value) {
+// 	console.log(value);
+// 	console.log(value.toUTCString());
+// 	return value.toUTCString();
+// });
+
 var app = new Vue({
 	el: '.common-block',
 	data: {
@@ -15,6 +21,15 @@ var app = new Vue({
 		userId: '',
 		eventIsOpen: false,
 		totalEvents: 0
+	},
+	filters: {
+		normalizeDate: function(value) {
+			if (value) {
+				value = value.split('T');
+				value[1] = value[1].split('.')[0];
+				return value.join(' - ');
+			}
+		}
 	},
 	methods: {
 		fetchEvents: function(page) {

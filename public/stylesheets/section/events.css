@@ -5,16 +5,29 @@
   flex-direction: column;
   background-color: #E8E2FD; }
   .common-block .for-same-height {
-    display: flex;
-    max-height: 1800px; }
+    display: inline-flex; }
     .common-block .for-same-height #current-event {
       width: 50%;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      max-height: 1900px;
       position: fixed;
+      height: 100%;
       left: 50%; }
+      .common-block .for-same-height #current-event #for-del {
+        width: 90%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center; }
+        .common-block .for-same-height #current-event #for-del #close-event {
+          padding: 5px 10px;
+          background-color: white;
+          border: 1px solid #FF0000;
+          width: 25px;
+          height: 25px;
+          cursor: pointer; }
+          .common-block .for-same-height #current-event #for-del #close-event img {
+            width: 100%;
+            height: 100%; }
       .common-block .for-same-height #current-event #current-chat {
         height: 100%; }
         .common-block .for-same-height #current-event #current-chat ul {
@@ -73,7 +86,8 @@
           cursor: pointer;
           margin-right: 5px; }
     .common-block .for-same-height .followings-events {
-      width: 20%; }
+      width: 20%;
+      height: auto; }
       .common-block .for-same-height .followings-events .event span .event-content {
         margin-top: 0px; }
       .common-block .for-same-height .followings-events .event span .for-del {
@@ -135,13 +149,11 @@
     .common-block .for-same-height .events, .common-block .for-same-height .followings-events {
       display: flex;
       flex-direction: column;
-      height: 100%;
-      overflow-y: auto;
       padding-left: 2.5%;
       border-right: 1px solid #6C3FFF; }
       .common-block .for-same-height .events .event, .common-block .for-same-height .followings-events .event {
         width: 100%;
-        height: 200px;
+        height: auto;
         scroll-y: auto; }
         .common-block .for-same-height .events .event .for-del .event-title, .common-block .for-same-height .followings-events .event .for-del .event-title {
           font-size: 24px;
@@ -152,6 +164,18 @@
         .common-block .for-same-height .events .event .event-content, .common-block .for-same-height .followings-events .event .event-content {
           margin-bottom: 10px;
           margin-top: 10px; }
+        .common-block .for-same-height .events .event .event-time, .common-block .for-same-height .followings-events .event .event-time {
+          width: 80%;
+          display: flex;
+          justify-content: space-between; }
+          .common-block .for-same-height .events .event .event-time p, .common-block .for-same-height .followings-events .event .event-time p {
+            display: inline-block;
+            background-color: white;
+            border: 1px solid #6C3FFF;
+            padding: 5px;
+            border-radius: 3px;
+            margin-bottom: 5px;
+            margin-top: 0px; }
         .common-block .for-same-height .events .event .event-join, .common-block .for-same-height .followings-events .event .event-join {
           background-color: #6C3FFF;
           color: #E8E2FD;
@@ -188,5 +212,38 @@
             text-decoration: none; }
           .common-block .pagination .rightInfo .pageCount ul li .current {
             text-decoration: underline; }
+
+@media (max-width: 1200px) {
+  body {
+    padding: 5px; }
+    body .common-block {
+      padding-left: 1%; }
+      body .common-block .for-same-height .events .hashtags {
+        height: auto;
+        padding: 5px; }
+      body .common-block .for-same-height .events .event {
+        margin-bottom: 15px; }
+        body .common-block .for-same-height .events .event .event-title {
+          margin-top: 5px; } }
+
+@media (max-width: 1000px) {
+  .common-block .for-same-height .events {
+    width: 50%; }
+  .common-block .for-same-height .followings-events {
+    width: 50%; }
+  .common-block .for-same-height #current-event {
+    z-index: 1000;
+    width: 90%;
+    height: 100%;
+    background-color: #E8E2FD;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 0px 5%; }
+    .common-block .for-same-height #current-event #current-chat {
+      padding: 0px 5%;
+      width: 90%; }
+      .common-block .for-same-height #current-event #current-chat ul {
+        height: 80%; } }
 
 /*# sourceMappingURL=events.css.map */
