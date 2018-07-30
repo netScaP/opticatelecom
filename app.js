@@ -14,6 +14,8 @@ import flash from 'connect-flash';
 import index from './routes/index';
 import user from './routes/user';
 import api from './routes/api';
+import apiEvents from './routes/api/events';
+import apiUsers from './routes/api/users';
 
 import config from './config/confirmCode';
 
@@ -66,7 +68,8 @@ app.use((req, res, next) => {
 
 app.use('/', index);
 app.use('/user', user);
-app.use('/api', api);
+app.use('/api/events', apiEvents);
+app.use('/api/users', apiUsers);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

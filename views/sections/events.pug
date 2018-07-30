@@ -23,11 +23,14 @@ block content
 						li(v-if='hasLast()')
 							a(href='#', @click.prevent='changePage(totalPages)') {{ totalPages }}  
 	div.common-block
+		ul.small-size-menu(v-if="isWidthLTE700")
+			li(:class='{ acitve: whichEventIsOpen == "all" }', @click="whichEventIsOpen = 'all'") All Events
+			li(:class='{ acitve: whichEventIsOpen == "followings" }', @click="whichEventIsOpen = 'followings'") You joined events
 		div.for-same-height
 			span(ref="userId", v-show="false") #{userId}
-			div.events
+			div.events(v-if="!isWidthLTE700 || whichEventIsOpen == 'all'")
 				div.top
-					h2 All events
+					h2(v-if="!isWidthLTE700") All events
 					input.search(type="text", v-model.trim="search", placeholder="Search", @keyup.enter="addHashtag()")
 					button(@click="addHashtag()") +
 				ul.hashtags
@@ -45,9 +48,10 @@ block content
 						span(v-for="hashtag in event.hashtags", @click="addHashtag(hashtag)") # {{ hashtag }}
 					br
 					button(@click="joinToEvent(event['_id'], index); eventIsOpen = true").event-join Join to event
-			div.followings-events
+				pagination(:current='currentPage', :total='totalEvents', :per-page='perPage', @page-changed='fetchEvents')
+			div.followings-events(v-if="!isWidthLTE700 || whichEventIsOpen == 'followings'")
 				div.top 
-					h2 You joined events
+					h2(v-if="!isWidthLTE700") You joined events
 					p Твой город: 
 						span #{city}
 				div.event(v-for="(event, index) in followingsEvents")
@@ -98,8 +102,7 @@ block content
 							span.message {{ message.message }}
 					div
 						input#m(autocomplete="off", v-model="currentMsg", @keyup.enter="sendMsg()")
-						button(@click="sendMsg()") SEND	
-		pagination(:current='currentPage', :total='totalEvents', :per-page='perPage', @page-changed='fetchEvents')
+						button.send-msg(@click="sendMsg()") SEND	
 block scripts
 	//- script(src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js")
 	script(src="../javascripts/section/pagination.js")

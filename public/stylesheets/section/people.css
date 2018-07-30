@@ -69,4 +69,24 @@
         .common-block .pagination .rightInfo .pageCount ul li .current {
           text-decoration: underline; }
 
+@media (max-width: 700px) {
+  body {
+    padding: 0px; }
+    body .common-block .small-size-menu {
+      list-style-type: none;
+      display: flex;
+      padding-left: 0px; }
+      body .common-block .small-size-menu li {
+        display: block;
+        width: 50%;
+        text-align: center;
+        cursor: pointer; }
+      body .common-block .small-size-menu .acitve {
+        text-decoration: underline; }
+    body .common-block .for-same-height .users, body .common-block .for-same-height .followings-users {
+      width: 80%;
+      border: 0px; }
+      body .common-block .for-same-height .users .user, body .common-block .for-same-height .followings-users .user {
+        width: auto; } }
+
 /*# sourceMappingURL=people.css.map */

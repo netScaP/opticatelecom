@@ -14,4 +14,8 @@ body {
         text-decoration: none;
         color: #6C3FFF; }
 
+@media (max-width: 700px) {
+  .menu ul {
+    justify-content: center; } }
+
 /*# sourceMappingURL=style.css.map */

@@ -16,13 +16,17 @@ form
 	.time
 		width: 100%
 		display: flex
-		background-color: white
+		justify-content: space-between
+		border: 0px
 		.start, .end
-			width: 50%
+			border-radius: 3px
+			background-color: white
+			border: 1px solid $secondColor
+			padding: 5px
 			label
 				margin-right: 5px
 			input
-				border: 1px solid $secondColor
+				border: 0px
 				border-radius: 3px
 				padding: 5px
 	button
@@ -32,3 +36,13 @@ form
 		padding: 5px 10px
 		background-color: $secondColor
 		color: $mainColor
+@media(max-width: 900px)
+	form
+		width: 90%
+		margin-left: 5%
+@media(max-width: 700px)
+	form
+		.time
+			flex-direction: column
+			.start, .end
+				margin-bottom: 15px

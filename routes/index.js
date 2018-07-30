@@ -50,8 +50,6 @@ router.get('/create-event', ensureAuthenticated, (req, res, next) => {
 });
 
 router.post('/create-event', ensureAuthenticated, (req, res, next) => {
-	console.log(req.body['startEvent']);
-	console.log(new Date(req.body['startEvent']));
 	const newEvent = new Event();
 	newEvent.title = req.body.title;
 	newEvent.content = req.body.content;

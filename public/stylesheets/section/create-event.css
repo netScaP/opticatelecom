@@ -14,13 +14,17 @@ form {
   form .time {
     width: 100%;
     display: flex;
-    background-color: white; }
+    justify-content: space-between;
+    border: 0px; }
     form .time .start, form .time .end {
-      width: 50%; }
+      border-radius: 3px;
+      background-color: white;
+      border: 1px solid #6C3FFF;
+      padding: 5px; }
       form .time .start label, form .time .end label {
         margin-right: 5px; }
       form .time .start input, form .time .end input {
-        border: 1px solid #6C3FFF;
+        border: 0px;
         border-radius: 3px;
         padding: 5px; }
   form button {
@@ -30,5 +34,16 @@ form {
     padding: 5px 10px;
     background-color: #6C3FFF;
     color: #E8E2FD; }
+
+@media (max-width: 900px) {
+  form {
+    width: 90%;
+    margin-left: 5%; } }
+
+@media (max-width: 700px) {
+  form .time {
+    flex-direction: column; }
+    form .time .start, form .time .end {
+      margin-bottom: 15px; } }
 
 /*# sourceMappingURL=create-event.css.map */

@@ -1,11 +1,5 @@
 var socket = io();
 
-// Vue.filter('normalizeDate', function(value) {
-// 	console.log(value);
-// 	console.log(value.toUTCString());
-// 	return value.toUTCString();
-// });
-
 var app = new Vue({
 	el: '.common-block',
 	data: {
@@ -20,7 +14,9 @@ var app = new Vue({
 		search: '',
 		userId: '',
 		eventIsOpen: false,
-		totalEvents: 0
+		totalEvents: 0,
+		isWidthLTE700: false,
+		whichEventIsOpen: 'all',
 	},
 	filters: {
 		normalizeDate: function(value) {
@@ -63,7 +59,7 @@ var app = new Vue({
 				}
 			};
 
-			this.$http.get('/api/total-events', options)
+			this.$http.get('/api/events/total', options)
 			.then(function (response) {
 				this.totalEvents = response.body.length;
 			});
@@ -79,18 +75,13 @@ var app = new Vue({
 				}
 			};
 
-			this.$http.post('/api/update-event', options);
+			this.$http.post('/api/events/update', options);
 		},
 		addHashtagEdit: function(index) {
 			this.followingsEvents[index].hashtags.push('');
 		},
 		joinToEvent: function(id, index) {
-			var options = {
-				params: {
-					'id': id
-				}
-			};
-			this.$http.get('/api/join-to-event', options)
+			this.$http.post('/api/events/join/' + id)
 				.then(event => this.currentEvent = event.body);
 
 			socket.emit('join-to-event', id);
@@ -103,12 +94,8 @@ var app = new Vue({
 		quitEvent: function(id, index) {
 			this.events.unshift(this.followingsEvents[index]);
 			this.followingsEvents.splice(index, 1);
-			var options = {
-				params: {
-					'id': id
-				}
-			};
-			this.$http.get('/api/quit-from-event', options);
+
+			this.$http.post('/api/events/quit' + id);
 		},
 		sendMsg: function(e) {
 			socket.emit('chat-message', this.currentEvent['_id'], this.currentMsg, 'You');
@@ -142,19 +129,21 @@ var app = new Vue({
 		this.fetchEvents(this.currentPage);
 		this.fetchTotalEvents();
 
-		this.$http.get('/api/followings-events')
+		this.$http.get('/api/events/followings')
 		.then(function (response) {
 			this.followingsEvents = response.body;
 		});
+
+		this.isWidthLTE700 = window.innerWidth <= 700 ? true : false;
+		console.log(window.innerWidth);
+		console.log(this.isWidthLTE700);
 
 	},
 	updated: function() {
 		gotoBottom('messages');
 	},
 	mounted: function() {
-		console.log(this.userId);
 		console.log(this.$refs);
-		console.log(this.$refs['userId']);
 		this.userId = this.$refs['userId'].innerHTML;
 	}
 });

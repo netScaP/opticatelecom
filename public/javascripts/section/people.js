@@ -6,7 +6,9 @@ var app = new Vue({
 		perPage: 9,
 		totalUsers: 0,
 		followingsUsers: [],
-		search: ''
+		search: '',
+		isWidthLTE700: false,
+		whichEventIsOpen: 'all'
 	},
 	methods: {
 		fetchUsers: function(page) {
@@ -32,29 +34,19 @@ var app = new Vue({
 				}
 			};
 
-			this.$http.get('/api/total-users', options)
+			this.$http.get('/api/users/total', options)
 			.then(function (response) {
 				this.totalUsers = response.body.length;
 			});
 		},
 		followToUser: function(id, index) {
-			var options = {
-				params: {
-					'id': id
-				}
-			}
-			this.$http.get('/api/follow-to-user', options);
+			this.$http.post('/api/users/follow/' + id);
 			console.log('true');
 			this.followingsUsers.unshift(this.users[index]);
 			this.users.splice(index, 1);
 		},
 		quitUser: function(id, index) {
-			var options = {
-				params: {
-					'id': id
-				}
-			};
-			this.$http.get('/api/quit-from-user', options);
+			this.$http.post('/api/users/quit/' + id);
 			this.users.unshift(this.followingsUsers[index]);
 			this.followingsUsers.splice(index, 1);
 		}
@@ -69,11 +61,11 @@ var app = new Vue({
 		this.fetchUsers(this.currentPage);
 		this.fetchTotalUsers();
 
-		this.$http.get('/api/followings-users')
+		this.$http.get('/api/users/followings')
 		.then(function (response) {
-			console.log(response.body);
 			this.followingsUsers = response.body;
-			console.log(this.followingsUsers);
 		});
+
+		this.isWidthLTE700 = window.innerWidth <= 700 ? true : false;
 	}
 });

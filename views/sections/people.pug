@@ -23,8 +23,11 @@ block content
 						li(v-if='hasLast()')
 							a(href='#', @click.prevent='changePage(totalPages)') {{ totalPages }}
 	div.common-block
+		ul.small-size-menu(v-if="isWidthLTE700")
+			li(:class='{ acitve: whichEventIsOpen == "all" }', @click="whichEventIsOpen = 'all'") People
+			li(:class='{ acitve: whichEventIsOpen == "followings" }', @click="whichEventIsOpen = 'followings'") Your follow
 		div.for-same-height
-			div.users
+			div.users(v-if="!isWidthLTE700 || whichEventIsOpen == 'all'")
 				div.top
 					h2 All people
 					input.search(type="text", v-model.lazy.trim="search")
@@ -33,14 +36,15 @@ block content
 					p.phone {{ user.phone }}
 					br
 					button(@click="followToUser(user['_id'], index);").user-join Follow to user
-			div.followings-users
+				pagination(:current='currentPage', :total='totalUsers', :per-page='perPage', @page-changed='fetchUsers')
+			div.followings-users(v-if="!isWidthLTE700 || whichEventIsOpen == 'followings'")
 				h2 Your follows
 				div.user(v-for="(user, index) in followingsUsers")
 					div.for-del
 						p.user-name {{ user.name }}
 						button(@click="quitUser(user['_id'], index)").user-quit x
 					p.phone {{ user.phone }}
-		pagination(:current='currentPage', :total='totalUsers', :per-page='perPage', @page-changed='fetchUsers')
+		
 block scripts
 	script(src="../javascripts/section/pagination.js")
 	script(src="../javascripts/section/people.js")

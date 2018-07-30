@@ -24,7 +24,11 @@
           border: 1px solid #FF0000;
           width: 25px;
           height: 25px;
-          cursor: pointer; }
+          cursor: pointer;
+          background-image: url("../../images/close.svg");
+          background-position: center;
+          background-size: 70% 70%;
+          background-repeat: no-repeat; }
           .common-block .for-same-height #current-event #for-del #close-event img {
             width: 100%;
             height: 100%; }
@@ -57,7 +61,7 @@
           padding: 10px;
           border: 1px solid #6C3FFF;
           border-radius: 3px; }
-        .common-block .for-same-height #current-event div button {
+        .common-block .for-same-height #current-event div .send-msg {
           background-color: #6C3FFF;
           padding: 10px 20px;
           border-radius: 5px;
@@ -84,7 +88,11 @@
         flex-wrap: wrap; }
         .common-block .for-same-height .events .hashtags li {
           cursor: pointer;
-          margin-right: 5px; }
+          margin-right: 5px;
+          padding: 5px 10px;
+          background-color: white;
+          border-radius: 3px;
+          border: 1px solid #6C3FFF; }
     .common-block .for-same-height .followings-events {
       width: 20%;
       height: auto; }
@@ -245,5 +253,29 @@
       width: 90%; }
       .common-block .for-same-height #current-event #current-chat ul {
         height: 80%; } }
+
+@media (max-width: 700px) {
+  body {
+    padding: 0px; }
+    body .common-block .small-size-menu {
+      list-style-type: none;
+      display: flex;
+      padding-left: 0px; }
+      body .common-block .small-size-menu li {
+        display: block;
+        width: 50%;
+        text-align: center;
+        cursor: pointer; }
+      body .common-block .small-size-menu .acitve {
+        text-decoration: underline; }
+    body .common-block .for-same-height .events, body .common-block .for-same-height .followings-events {
+      width: 80%;
+      border: 0px; }
+    body .common-block .for-same-height .events .top .search {
+      width: 100%; }
+    body .common-block .for-same-height #current-event div input {
+      width: 70%; }
+    body .common-block .for-same-height #current-event #current-chat ul {
+      height: 70%; } }
 
 /*# sourceMappingURL=events.css.map */
