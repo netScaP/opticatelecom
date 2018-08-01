@@ -1,48 +1,31 @@
-extends ../layout
-
-block styles
-	link(rel='stylesheet', href='/stylesheets/account/create.css')
-
-block content
-	if hasErrors
-		each message in messages
-			p= message
-	div.become
-		form.left(method="POST")
-			p Become a Member
-			p.easy It's Easy...
-			div.email
-				label(for="email")  E-mail:
-				input(type="text", name="email", id="email")
-			div.name
-				label(for="name") Name:
-				input(type="text", name="name", id="name")
-			div.name
-				label(for="city") City:
-				input(type="text", name="city", id="city")
-			div.password
-				label(for="password") Password:
-				input(type="text", name="password", id="password")
-			div.phone
-				label(for="phone") Phone:
-				input(type="number", name="phone", id="phone")
-			input(type="hidden", name="_csrf", value= csrfToken)
-			button(type="submit")
-				span REGISTER
-				img(src="../images/rightArrow.png", alt="")
-			a(href="/user/signin") Already have an account?
-		.right
-			p Follow Us
-			div.icons
-				div.social
-					a(href="#")
-						img.facebook(src="../images/social/facebook.png", alt="")
-					a(href="#")
-						img(src="../images/social/twitter.png", alt="")
-					a(href="#")
-						img.google(src="../images/social/google.png", alt="")
-			div.error
-				if hasErrors
-					each e in messages
-						p= messages
-block scripts
+doctype html
+html
+	head
+		title= title
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		link(href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300", rel="stylesheet")
+		link(rel='stylesheet', href='/stylesheets/account/login.css')
+	body
+		div.become
+			form(method="POST")
+				p Become a Member
+				div.email
+					label(for="email")  E-mail:
+					input(type="text", name="email", id="email")
+				div.name
+					label(for="name") Name:
+					input(type="text", name="name", id="name")
+				div.city
+					label(for="city") City:
+					input(type="text", name="city", id="city")
+				div.password
+					label(for="password") Password:
+					input(type="text", name="password", id="password")
+				div.phone
+					label(for="phone") Phone:
+					input(type="number", name="phone", id="phone")
+				input(type="hidden", name="_csrf", value= csrfToken)
+				button(type="submit")
+					span REGISTER
+					img(src="../images/rightArrow.png", alt="")
+				a(href="/user/signin") Already have an account?

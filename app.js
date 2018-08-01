@@ -13,7 +13,6 @@ import flash from 'connect-flash';
 
 import index from './routes/index';
 import user from './routes/user';
-import api from './routes/api';
 import apiEvents from './routes/api/events';
 import apiUsers from './routes/api/users';
 
@@ -34,7 +33,7 @@ export const sessionMiddleware = session({
 });
 
 console.log(config.db);
-mongoose.connect('mongodb://localhost:27017/events');
+mongoose.connect(config.db);
 require('./config/passport');
 
 // view engine setup

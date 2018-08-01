@@ -80,6 +80,7 @@ router.get('/signup', (req, res, next) => {
 
 router.post('/signup', passport.authenticate('local.signup', {
 	failureRedirect: '/user/signup',
+	successRedirect: '/events',
 	failureFlash: true
 }), (req, res, next) => {
 	if (req.session.oldUrl) {
@@ -101,7 +102,7 @@ router.get('/signin', (req, res, next) => {
 
 router.post('/signin', passport.authenticate('local.signin', {
 	failureRedirect: '/user/signin',
-	successRedirect: '/',
+	successRedirect: '/events',
 	failureFlash: true
 }), (req, res, next) => {
 	console.log(req.session);

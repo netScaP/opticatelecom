@@ -15,7 +15,7 @@ const eventSchema = new Schema({
 	followers:  [{ type: Schema.Types.ObjectId, ref: 'User' }],
 	hashtags:   { type: [String], required: true },
 	startEvent: { type: Date, required: true },
-	endEvent:   { type: Date, required: true }
+	endEvent:   { type: Date, required: true, expires: 86400}
 });
 
 export default mongoose.model('Event', eventSchema);

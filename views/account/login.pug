@@ -1,33 +1,27 @@
-extends ../layout
-
-block styles
-	link(rel='stylesheet', href='/stylesheets/account/login.css')
-
-block content
-	if hasErrors
-		each message in messages
-			p= message
-	div.become
-		form.left(method="POST")
-			p Become a Member
-				span Login
-			p.easy It's Easy...
-			div.email
-				label(for="email") E-mail:
-				input(type="text", name="email", id="email", required)
-			div.password
-				label(for="password") Password:
-				input(type="text", name="password", id="password", required)
-			div.remember
-				div.left
-					input(type="checkbox", name="isRemember", id="isRemember")
-					label(for="isRemember") Remember me
+doctype html
+html
+	head
+		title= title
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		link(href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300", rel="stylesheet")
+		link(rel='stylesheet', href='/stylesheets/account/login.css')
+	body
+		div.become
+			form.left(method="POST")
+				p Become a Member
+				div.email
+					label(for="email") E-mail:
+					input(type="text", name="email", id="email", required)
+				div.password
+					label(for="password") Password:
+					input(type="text", name="password", id="password", required)
+				div.remember
+					div.left
+						input(type="checkbox", name="isRemember", id="isRemember")
+						label(for="isRemember") Remember me
+				input(type="hidden", name="_csrf", value= csrfToken)
+				button(type="submit")
+					span LOGIN
+					img(src="../images/rightArrow.png", alt="")
 				div.right
-					a(href="#") Forgot Password?
-					span or
-					a(href="/user/signup") Create an account
-			input(type="hidden", name="_csrf", value= csrfToken)
-			button(type="submit")
-				span LOGIN
-				img(src="../images/rightArrow.png", alt="")
-block scripts
+					a(href="/user/signup") Still haven't an account?
