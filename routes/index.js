@@ -37,7 +37,8 @@ router.get('/events', ensureAuthenticated, (req, res, next) => {
 		messages,
 		hasErrors: messages.length > 0,
 		city: req.user['city'],
-		userId: req.user['_id']
+		userId: req.user['_id'],
+		userName: req.user['name']
 	});
 });
 

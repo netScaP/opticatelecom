@@ -1,5 +1,5 @@
 var socket = io();
-
+console.log(socket);
 var app = new Vue({
 	el: '.common-block',
 	data: {
@@ -13,6 +13,7 @@ var app = new Vue({
 		currentMsg: '',
 		search: '',
 		userId: '',
+		userName: '',
 		eventIsOpen: false,
 		totalEvents: 0,
 		isWidthLTE700: false,
@@ -98,7 +99,7 @@ var app = new Vue({
 			this.$http.post('/api/events/quit' + id);
 		},
 		sendMsg: function(e) {
-			socket.emit('chat-message', this.currentEvent['_id'], this.currentMsg, 'You');
+			socket.emit('chat-message', this.currentEvent['_id'], this.currentMsg, this.userName);
 			var options = {
 				params: {
 					id: this.currentEvent['_id'],
@@ -145,6 +146,7 @@ var app = new Vue({
 	mounted: function() {
 		console.log(this.$refs);
 		this.userId = this.$refs['userId'].innerHTML;
+		this.userName = this.$refs['userName'].innerHTML;
 	}
 });
 

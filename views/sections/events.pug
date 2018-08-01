@@ -28,6 +28,7 @@ block content
 			li(:class='{ acitve: whichEventIsOpen == "followings" }', @click="whichEventIsOpen = 'followings'") You joined events
 		div.for-same-height
 			span(ref="userId", v-show="false") #{userId}
+			span(ref="userName", v-show="false") #{userName}
 			div.events(v-if="!isWidthLTE700 || whichEventIsOpen == 'all'")
 				div.top
 					h2(v-if="!isWidthLTE700") All events
@@ -35,6 +36,7 @@ block content
 					button(@click="addHashtag()") +
 				ul.hashtags
 					li(v-for="(hashtag, index) in hashtags", @click="delHashtag(index)") {{ hashtag }}
+				span(v-if="events.length == 0") Событий по данному запросу в вашем городе на данный момент нет
 				div.event(v-for="(event, index) in events")
 					p.event-title {{ event.title }}
 					p.event-content {{ event.content }}

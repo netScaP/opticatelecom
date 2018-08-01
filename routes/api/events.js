@@ -21,11 +21,9 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 		startEvent: { $gte: currentDate }
 	}).sort({ startEvent: 1 }).skip(+req.query.skip).limit(+req.query.limit)
 		.then(events => {
-			console.log(events);
 			res.send(events)
 		})
 		.catch(e => {
-			console.log(e);
 			req.flash('error', e.message)
 		});
 });
@@ -42,11 +40,9 @@ router.get('/total', ensureAuthenticated, (req, res, next) => {
 		city: req.user['city']
 	})
 		.then(events => {
-			console.log(events);
 			res.send(events)
 		})
 		.catch(e => {
-			console.log(e);
 			req.flash('error', e.message)
 		});
 });
@@ -59,7 +55,6 @@ router.get('/followings', ensureAuthenticated, (req, res, next) => {
 		.sort({ startEvent: 1 })
 		.populate('followingsEvents')
 		.exec((err, user) => {
-			console.log(user);
 			if (user)
 				res.send(user['followingsEvents']);
 			else {
@@ -69,7 +64,6 @@ router.get('/followings', ensureAuthenticated, (req, res, next) => {
 });
 
 router.post('/join/:id', ensureAuthenticated, (req, res, next) => {
-	console.log(req.params);
 	Event.findOneAndUpdate(
 		{ _id: req.params['id'] },
 		{ $addToSet: { followers: req.user['_id'] } }
@@ -97,13 +91,11 @@ router.post('/update', ensureAuthenticated, (req, res, next) => { //!!
 	)
 		.then((result) => console.log(result))
 		.catch(e => {
-			console.log(e);
 			req.flash('error', e.message);
 		});
 });
 
 router.post('/quit/:id', ensureAuthenticated, (req, res, next) => {
-	console.log(req.params);
 	Event.updateOne(
 		{ _id: req.params['id'] },
 		{ $pull: { followers: req.user['_id'] } }
