@@ -1,0 +1,71 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "authentication": {
+    "secret": "c704bcb464f8168dceab100b1de773e6dbafaab7a998dbfda509807706edf7b676b3974270665e2d51ba08a1d6d91ec0620c495c6aaf0fb0aeab3766020e7f96242b854764ea69a30b3b36b661eb8536f066fa83f4a9c56d3904b8468208e40a4bc78a2727d28256a0d1324ddcdc46562ae430cb1f99d9385feef76d6da658a4436074610c3234d68120751edaed7d10baa5f2c0a500eb6670ae9b98d8a4ac04546e000d601c3d349b84b8eeb98e677045167db43917b5da510634b2b4b4e423f244b68956b6f33c029245f105ca74c40d6d0621ef4990f4c76eb1cf8d7a1667605e966d24819301687311900b1776e1d24f4a2993fdf2225ed7c546dc143288",
+    "strategies": [
+      "jwt",
+      "local"
+    ],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "entity": "user",
+      "usernameField": "email",
+      "passwordField": "password"
+    },
+    "auth0": {
+      "clientID": "UCkCX4ajh0m20nPrcYXMy1JWZM3agd3H",
+      "clientSecret": "027gA0GONg8BWudIewDGJGFle-cJlfdazfpxMdWzwkj5hex-m30B3Fc42fShNdGf",
+      "successRedirect": "/",
+      "domain": "eventapi.eu.auth0.com",
+      "scopes": [
+        "profile"
+      ]
+    },
+    "facebook": {
+      "clientID": "491489241356769",
+      "clientSecret": "177600b6da39f3c596085e6df4eaa2ce",
+      "callbackURL": "http://localhost:3030/auth/facebook/callback",
+      "successRedirect": "/",
+      "scope": [
+        "public_profile",
+        "email"
+      ],
+      "profileFields": [
+        "id",
+        "displayName",
+        "first_name",
+        "last_name",
+        "email",
+        "gender",
+        "profileUrl",
+        "birthday",
+        "picture",
+        "permissions"
+      ]
+    },
+    "cookie": {
+      "enabled": true,
+      "name": "feathers-jwt",
+      "httpOnly": false,
+      "secure": false
+    }
+  },
+  "postgres": "postgres://postgres:Bahmud20002004@localhost:5432/eventsapi"
+}
