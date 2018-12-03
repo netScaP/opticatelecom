@@ -15,10 +15,12 @@ module.exports = function (app) {
       allowNull: false
     },
     city: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     hashtags: {
-      type: DataTypes.ARRAY(DataTypes.STRING)
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false
     },
     startEvent: {
       type: DataTypes.DATE,

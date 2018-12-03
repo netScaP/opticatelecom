@@ -2,6 +2,287 @@
 
 > Api for Eventsapp
 
+## API documentation
+
+#Auth Token
+
+All endpoints includes a auth token.
+How to take a token?
+1) create an account (POST /users)
+2) Go to /authentication (support only POST)
+And pass {
+  "email": "your@mail.ru",
+  "password": "qwerty",
+  "strategy": "local"
+}
+Response {
+    "accessToken": "YOUR TOKEN"
+}
+
+#users
+
+uri /users
+```
+GET
+Request params {}
+Response {
+  "total": 1,
+  "limit": 10,
+  "skip": 0,
+  "data": [
+    {
+      "id": 1,
+      "email": "mamaev-ali@inbox.ru",
+      "name": "First",
+      "city": "last",
+      "phone": 1231231,
+      "auth0Id": null,
+      "facebookId": null,
+      "createdAt": "2018-12-03T16:26:25.489Z",
+      "updatedAt": "2018-12-03T16:26:25.489Z"
+    }
+  ]
+}
+
+Post
+Request params {
+  "email": "mamaev-ali3@inbox.ru", String
+  "password": "somePassword",      String
+  "name": "First",                 String
+  "city": "last",                  String
+  "phone": "1231231"               Number
+}
+Respone {
+  "id": 3,
+  "email": "mamaev-ali3@inbox.ru",
+  "name": "First",
+  "city": "last",
+  "phone": 1231231,
+  "updatedAt": "2018-12-03T18:58:33.043Z",
+  "createdAt": "2018-12-03T18:58:33.043Z",
+  "auth0Id": null,
+  "facebookId": null
+}
+For getting data by GET methods, you must be you)
+Same for POST PATCH /users/{id}
+```
+
+#events
+
+uri /events
+```
+GET
+Request params {}
+Response {
+  "total": 1,
+  "limit": 10,
+  "skip": 0,
+  "data": [
+    {
+      "id": 1,
+      "title": "event title",
+      "description": "event description",
+      "city": "event city",
+      "hashtags": [
+        "some",
+        "tags"
+      ],
+      "startEvent": "2020-01-01T00:00:00.000Z",
+      "endEvent": "2020-01-02T00:00:00.000Z",
+      "createdAt": "2018-12-03T17:18:40.834Z",
+      "updatedAt": "2018-12-03T17:18:40.834Z",
+      "createdBy": 2,
+      "followers": [],
+      "author": {
+        "id": 2,
+        "email": "mamaev-ali2@inbox.ru",
+        "password": "$2a$13$aBirfZ3ebLhJHJW9/01NSOMTCGm5fyMfAPT7mStp5DCqydzbdLEsS",
+        "name": "First",
+        "city": "last",
+        "phone": 1231231,
+        "auth0Id": null,
+        "facebookId": null,
+        "createdAt": "2018-12-03T16:26:37.563Z",
+        "updatedAt": "2018-12-03T16:26:37.563Z"
+      }
+    }
+  ]
+}
+
+POST
+Request params {
+  "title": "event title",             String
+  "description": "event description", String
+  "city": "event city",               String
+  "hashtags": ["some", "tags"],       [String]
+  "startEvent": "2020-01-01",         Date
+  "endEvent": "2020-01-02"            Date
+  //"createdBy": "1"                  Get automaticly by a token
+}
+Response {
+    "id": 1,
+    "title": "event title",
+    "description": "event description",
+    "city": "event city",
+    "hashtags": [
+        "some",
+        "tags"
+    ],
+    "startEvent": "2020-01-01T00:00:00.000Z",
+    "endEvent": "2020-01-02T00:00:00.000Z",
+    "createdBy": 2,
+    "updatedAt": "2018-12-03T17:18:40.834Z",
+    "createdAt": "2018-12-03T17:18:40.834Z"
+}
+GET POST PATCH /events/{id}
+```
+uri event-messages
+```
+For getting any data by GET, FIND methods, you must be associated with a current event
+GET
+Request params {}
+Response {
+  "total": 1,
+  "limit": 10,
+  "skip": 0,
+  "data": [
+    {
+        "id": 1,
+        "text": "MSG text",
+        "createdAt": "2018-12-03T18:47:57.469Z",
+        "updatedAt": "2018-12-03T18:47:57.469Z",
+        "eventId": 1,
+        "userId": 2
+    }
+  ]
+}
+
+POST
+Request params {
+  "text": "MSG text", String
+  "eventId": "1"      EventId
+  //"userId": "1"     Get automaticly by a token
+}
+Response {
+  "id": 1,
+  "text": "MSG text",
+  "eventId": 1,
+  "userId": 2,
+  "updatedAt": "2018-12-03T18:47:57.469Z",
+  "createdAt": "2018-12-03T18:47:57.469Z"
+}
+GET POST PATCH /event-messages/{id}
+```
+
+#groups (like a DM)
+
+uri /groups
+```
+GET
+Request params {}
+Response {
+  "total": 1,
+  "limit": 10,
+  "skip": 0,
+  "data": [
+    {
+      "id": 1,
+      "title": "first g",
+      "createdAt": "2018-12-03T16:27:37.447Z",
+      "updatedAt": "2018-12-03T16:27:37.447Z",
+      "users": [
+        {
+          "id": 1,
+          "email": "mamaev-ali@inbox.ru",
+          "password": "$2a$13$zZBpXxdhVi41Pujjl2m6Y.f/zRsTClVNGKbNNRNmFw3thfn4GS7g2",
+          "name": "First",
+          "city": "last",
+          "phone": 1231231,
+          "auth0Id": null,
+          "facebookId": null,
+          "createdAt": "2018-12-03T16:26:25.489Z",
+          "updatedAt": "2018-12-03T16:26:25.489Z",
+          "user_group": {
+            "id": 1,
+            "followerId": 1,
+            "followingId": 1,
+            "createdAt": "2018-12-03T16:28:34.741Z",
+            "updatedAt": "2018-12-03T16:28:34.741Z"
+          }
+        },
+        {
+          "id": 2,
+          "email": "mamaev-ali2@inbox.ru",
+          "password": "$2a$13$aBirfZ3ebLhJHJW9/01NSOMTCGm5fyMfAPT7mStp5DCqydzbdLEsS",
+          "name": "First",
+          "city": "last",
+          "phone": 1231231,
+          "auth0Id": null,
+          "facebookId": null,
+          "createdAt": "2018-12-03T16:26:37.563Z",
+          "updatedAt": "2018-12-03T16:26:37.563Z",
+          "user_group": {
+            "id": 2,
+            "followerId": 2,
+            "followingId": 1,
+            "createdAt": "2018-12-03T16:28:39.160Z",
+            "updatedAt": "2018-12-03T16:28:39.160Z"
+          }
+        }
+      ]
+    }
+  ]
+}
+
+Post
+Request params {
+  "title": "Some title" String
+}
+Response {
+  "id": 2,
+  "title": "Some title",
+  "updatedAt": "2018-12-03T18:54:27.069Z",
+  "createdAt": "2018-12-03T18:54:27.069Z"
+}
+GET POST PATCH /groups/{id}
+```
+uri /group-messages
+```
+GET
+Request params {}
+Respone {
+  "total": 1,
+  "limit": 10,
+  "skip": 0,
+  "data": [
+    {
+      "id": 1,
+      "text": "f g m",
+      "createdAt": "2018-12-03T16:27:52.266Z",
+      "updatedAt": "2018-12-03T16:27:52.266Z",
+      "groupId": 1,
+      "userId": 1
+    }
+  ]
+}
+Post
+Request params {
+  "text": "some", String
+  "groupId": "1", GroupId
+  //"userId": "1" Get automaticly by a token
+}
+Response {
+  "id": 2,
+  "text": "some",
+  "groupId": 1,
+  "userId": 2,
+  "updatedAt": "2018-12-03T19:05:17.356Z",
+  "createdAt": "2018-12-03T19:05:17.356Z"
+}
+GET /group-messages/{id} Doesn't support
+Patch Delete /group-messages/{id} - For accessing this, you must be author of current message
+```
+
 ## Association
 
 For adding association user-to-user:
@@ -20,6 +301,15 @@ Request params {
 }
 ```
 
+For user-to-group
+```
+uri /user-group
+Request params {
+  followingId: "GroupId"
+}
+```
+
+
 ## About
 
 This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
@@ -28,17 +318,25 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 Getting up and running is as easy as 1, 2, 3.
 
-1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
+1. Make sure you have [NodeJS](https://nodejs.org/), [yarn](https://yarnpkg.com/lang/en/) and [postgresql](https://www.postgresql.org) installed.
 2. Install your dependencies
 
     ```
-    cd path/to/api; npm install
+    git clone https://github.com/netScaP/Eventsapp;
+    cd Eventsapp/api;
+    yarn
     ```
 
-3. Start your app
+3. Edit field "postgres" in default.json for accessing to DB
+
+4. Start your app
 
     ```
-    npm start
+    yarn start
+    ```
+    or
+    ```
+    yarn run dev
     ```
 
 ## Testing

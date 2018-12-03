@@ -10,13 +10,13 @@ module.exports = {
       associateCurrentUser({ idField: 'id', as: 'userId' })
     ],
     update: [
-      restrictToOwner({ idField: 'id', ownerField: 'createdBy' })
+      restrictToOwner({ idField: 'id', ownerField: 'userId' })
     ],
     patch: [
-      restrictToOwner({ idField: 'id', ownerField: 'createdBy' })
+      restrictToOwner({ idField: 'id', ownerField: 'userId' })
     ],
     remove: [
-      restrictToOwner({ idField: 'id', ownerField: 'createdBy' })
+      restrictToOwner({ idField: 'id', ownerField: 'userId' })
     ]
   },
 
