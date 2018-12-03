@@ -1,6 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
 
-const include = require('../../hooks/includeModels.js');
+const include = require('feathers-include-hook');
 
 const {
   hashPassword, protect
@@ -10,26 +11,23 @@ module.exports = {
   before: {
     all: [],
     find: [ 
-      authenticate('jwt'),
-      include([
-        {
-          model: 'users',
-          as: 'followers'
-        }, {
-          model: 'events',
-          as: 'eventFollowers'
-        }
-      ])
+      authenticate('jwt')
     ],
     get: [ 
       authenticate('jwt'),
+      restrictToOwner({ idField: 'id', ownerField: 'id' }),
       include([
         {
           model: 'users',
           as: 'followers'
-        }, {
+        }, 
+        {
           model: 'events',
-          as: 'eventFollowers'
+          as: 'eventFollows'
+        },
+        {
+          model: 'groups',
+          as: 'groups'
         }
       ])
     ],

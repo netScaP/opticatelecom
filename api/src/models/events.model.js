@@ -40,7 +40,7 @@ module.exports = function (app) {
   events.associate = function (models) {
     events.belongsToMany(models.users, {
       through: 'event_followers',
-      as: 'following',
+      as: 'followers',
       foreignKey: 'followingId'
     });
 
@@ -48,7 +48,9 @@ module.exports = function (app) {
       foreignKey: 'createdBy',
       as: 'author'
     });
-    events.hasMany(models.messages);
+    events.hasMany(models.event_messages, {
+      as: 'messages'
+    });
   };
 
   return events;

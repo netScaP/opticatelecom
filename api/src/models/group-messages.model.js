@@ -5,7 +5,7 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const messages = sequelizeClient.define('messages', {
+  const groupMessages = sequelizeClient.define('group_messages', {
     text: {
       type: DataTypes.STRING,
       allowNull: false
@@ -19,9 +19,10 @@ module.exports = function (app) {
   });
 
   // eslint-disable-next-line no-unused-vars
-  messages.associate = function (models) {
-    messages.belongsTo(models.users);
+  groupMessages.associate = function (models) {
+    groupMessages.belongsTo(models.groups);
+    groupMessages.belongsTo(models.users);
   };
 
-  return messages;
+  return groupMessages;
 };

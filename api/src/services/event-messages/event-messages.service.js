@@ -1,7 +1,7 @@
-// Initializes the `messages` service on path `/messages`
+// Initializes the `event-messages` service on path `/event-messages`
 const createService = require('feathers-sequelize');
-const createModel = require('../../models/messages.model');
-const hooks = require('./messages.hooks');
+const createModel = require('../../models/event-messages.model');
+const hooks = require('./event-messages.hooks');
 
 module.exports = function (app) {
   const Model = createModel(app);
@@ -13,10 +13,10 @@ module.exports = function (app) {
   };
 
   // Initialize our service with any options it requires
-  app.use('/messages', createService(options));
+  app.use('/event-messages', createService(options));
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('messages');
+  const service = app.service('event-messages');
 
   service.hooks(hooks);
 };

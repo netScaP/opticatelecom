@@ -5,15 +5,11 @@ const include = require('feathers-include-hook');
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
-    find: [
+    find: [ // restrict to associated users
       include([
         {
           model: 'users',
-          as: 'followers'
-        },
-        {
-          model: 'users',
-          as: 'author'
+          as: 'users'
         }
       ])
     ],
@@ -21,30 +17,20 @@ module.exports = {
       include([
         {
           model: 'users',
-          as: 'followers'
+          as: 'users',
+          attributes: ['id']
         },
         {
-          model: 'users',
-          as: 'author'
-        },
-        {
-          model: 'event_messages',
+          model: 'group_messages',
           as: 'messages'
         }
-      ])
+      ]),
+      // restrictToOwner({ idField: 'id', 'ownerField': 'usersId', array: true })
     ],
-    create: [
-      associateCurrentUser({ idField: 'id', as: 'createdBy' })
-    ],
-    update: [
-      restrictToOwner({ idField: 'id', ownerField: 'createdBy' })
-    ],
-    patch: [
-      restrictToOwner({ idField: 'id', ownerField: 'createdBy' })
-    ],
-    remove: [
-      restrictToOwner({ idField: 'id', ownerField: 'createdBy' })
-    ]
+    create: [],
+    update: [],
+    patch: [],
+    remove: []
   },
 
   after: {

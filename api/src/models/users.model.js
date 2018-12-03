@@ -54,9 +54,15 @@ module.exports = function (app) {
       foreignKey: 'followingId'
     });
 
+    users.belongsToMany(models.groups, {
+      through: 'user_group',
+      as: 'groups',
+      foreignKey: 'followerId'
+    });
+
     users.belongsToMany(models.events, {
       through: 'event_followers',
-      as: 'eventFollowers',
+      as: 'eventFollows',
       foreignKey: 'followerId'
     });
   };
