@@ -64,6 +64,68 @@ Respone {
   "facebookId": null
 }
 For getting data by GET methods, you must be you)
+GET /users/{id}
+Request {
+  token
+}
+Response {
+    "id": 1,
+    "email": "mamaev-ali@inbox.ru",
+    "name": "nwe",
+    "city": "last",
+    "phone": 1231231,
+    "auth0Id": null,
+    "facebookId": null,
+    "createdAt": "2018-12-03T16:26:25.489Z",
+    "updatedAt": "2018-12-08T16:23:19.371Z",
+    "followers": [
+        {
+            "id": 2,
+            "name": "changed",
+            "city": "last",
+            "phone": 1231231,
+            "createdAt": "2018-12-03T16:26:37.563Z"
+        }
+    ],
+    "events": [
+        {
+            "id": 1,
+            "title": "event title",
+            "description": "event description",
+            "city": "event city",
+            "hashtags": [
+                "some",
+                "tags"
+            ],
+            "startEvent": "2020-01-01T00:00:00.000Z",
+            "endEvent": "2020-01-02T00:00:00.000Z",
+            "createdAt": "2018-12-03T17:18:40.834Z",
+            "updatedAt": "2018-12-03T17:18:40.834Z",
+            "createdBy": 2,
+            "event_followers": {
+                "id": 1
+            },
+            "author": {
+                "id": 2,
+                "name": "changed",
+                "city": "last",
+                "phone": 1231231,
+                "createdAt": "2018-12-03T16:26:37.563Z"
+            }
+        }
+    ],
+    "groups": [
+        {
+            "id": 1,
+            "title": "first g",
+            "createdAt": "2018-12-03T16:27:37.447Z",
+            "updatedAt": "2018-12-03T16:27:37.447Z",
+            "user_group": {
+                "id": 1
+            }
+        }
+    ]
+}
 Same for POST PATCH /users/{id}
 ```
 
@@ -72,41 +134,46 @@ Same for POST PATCH /users/{id}
 uri /events
 ```
 GET
-Request params {}
-Response {
-  "total": 1,
-  "limit": 10,
-  "skip": 0,
-  "data": [
-    {
-      "id": 1,
-      "title": "event title",
-      "description": "event description",
-      "city": "event city",
-      "hashtags": [
-        "some",
-        "tags"
-      ],
-      "startEvent": "2020-01-01T00:00:00.000Z",
-      "endEvent": "2020-01-02T00:00:00.000Z",
-      "createdAt": "2018-12-03T17:18:40.834Z",
-      "updatedAt": "2018-12-03T17:18:40.834Z",
-      "createdBy": 2,
-      "followers": [],
-      "author": {
-        "id": 2,
-        "email": "mamaev-ali2@inbox.ru",
-        "password": "$2a$13$aBirfZ3ebLhJHJW9/01NSOMTCGm5fyMfAPT7mStp5DCqydzbdLEsS",
-        "name": "First",
-        "city": "last",
-        "phone": 1231231,
-        "auth0Id": null,
-        "facebookId": null,
-        "createdAt": "2018-12-03T16:26:37.563Z",
-        "updatedAt": "2018-12-03T16:26:37.563Z"
-      }
-    }
-  ]
+Request params {
+  token
+}
+Response{
+    "total": 1,
+    "limit": 10,
+    "skip": 0,
+    "data": [
+        {
+            "id": 1,
+            "title": "event title",
+            "description": "event description",
+            "city": "event city",
+            "hashtags": [
+                "some",
+                "tags"
+            ],
+            "startEvent": "2020-01-01T00:00:00.000Z",
+            "endEvent": "2020-01-02T00:00:00.000Z",
+            "createdAt": "2018-12-03T17:18:40.834Z",
+            "updatedAt": "2018-12-03T17:18:40.834Z",
+            "createdBy": 2,
+            "followers": [
+                {
+                    "id": 1,
+                    "name": "nwe",
+                    "city": "last",
+                    "phone": 1231231,
+                    "createdAt": "2018-12-03T16:26:25.489Z"
+                }
+            ],
+            "author": {
+                "id": 2,
+                "name": "changed",
+                "city": "last",
+                "phone": 1231231,
+                "createdAt": "2018-12-03T16:26:37.563Z"
+            }
+        }
+    ]
 }
 
 POST
@@ -134,31 +201,58 @@ Response {
     "updatedAt": "2018-12-03T17:18:40.834Z",
     "createdAt": "2018-12-03T17:18:40.834Z"
 }
-GET POST PATCH /events/{id}
+GET /events/{id} - make an internal create call to event-followers service in sub-to-group hook
+POST PATCH /events/{id}
 ```
 uri event-messages
 ```
 For getting any data by GET, FIND methods, you must be associated with a current event
 GET
-Request params {}
+Request params {
+  token
+  "groupId": "eventId"
+}
 Response {
-  "total": 1,
-  "limit": 10,
-  "skip": 0,
-  "data": [
-    {
-        "id": 1,
-        "text": "MSG text",
-        "createdAt": "2018-12-03T18:47:57.469Z",
-        "updatedAt": "2018-12-03T18:47:57.469Z",
-        "eventId": 1,
-        "userId": 2
-    }
-  ]
+    "total": 2,
+    "limit": 10,
+    "skip": 0,
+    "data": [
+        {
+            "id": 1,
+            "text": "MSG text",
+            "createdAt": "2018-12-03T18:47:57.469Z",
+            "updatedAt": "2018-12-03T18:47:57.469Z",
+            "eventId": 1,
+            "userId": 2,
+            "event": {
+                "id": 1
+            },
+            "user": {
+                "id": "2",
+                "name": "changed"
+            }
+        },
+        {
+            "id": 17,
+            "text": "some",
+            "createdAt": "2018-12-08T16:07:11.834Z",
+            "updatedAt": "2018-12-08T16:07:11.834Z",
+            "eventId": 1,
+            "userId": 1,
+            "event": {
+                "id": 1
+            },
+            "user": {
+                "id": "1",
+                "name": "nwe"
+            }
+        }
+    ]
 }
 
 POST
 Request params {
+  token
   "text": "MSG text", String
   "eventId": "1"      EventId
   //"userId": "1"     Get automaticly by a token
@@ -178,60 +272,38 @@ GET POST PATCH /event-messages/{id}
 
 uri /groups
 ```
-GET
-Request params {}
+GET Give you only following groups
+Request params {
+  token
+}
 Response {
-  "total": 1,
-  "limit": 10,
-  "skip": 0,
-  "data": [
-    {
-      "id": 1,
-      "title": "first g",
-      "createdAt": "2018-12-03T16:27:37.447Z",
-      "updatedAt": "2018-12-03T16:27:37.447Z",
-      "users": [
+    "id": 1,
+    "title": "first g",
+    "createdAt": "2018-12-03T16:27:37.447Z",
+    "updatedAt": "2018-12-03T16:27:37.447Z",
+    "users": [
         {
-          "id": 1,
-          "email": "mamaev-ali@inbox.ru",
-          "password": "$2a$13$zZBpXxdhVi41Pujjl2m6Y.f/zRsTClVNGKbNNRNmFw3thfn4GS7g2",
-          "name": "First",
-          "city": "last",
-          "phone": 1231231,
-          "auth0Id": null,
-          "facebookId": null,
-          "createdAt": "2018-12-03T16:26:25.489Z",
-          "updatedAt": "2018-12-03T16:26:25.489Z",
-          "user_group": {
             "id": 1,
-            "followerId": 1,
-            "followingId": 1,
-            "createdAt": "2018-12-03T16:28:34.741Z",
-            "updatedAt": "2018-12-03T16:28:34.741Z"
-          }
-        },
-        {
-          "id": 2,
-          "email": "mamaev-ali2@inbox.ru",
-          "password": "$2a$13$aBirfZ3ebLhJHJW9/01NSOMTCGm5fyMfAPT7mStp5DCqydzbdLEsS",
-          "name": "First",
-          "city": "last",
-          "phone": 1231231,
-          "auth0Id": null,
-          "facebookId": null,
-          "createdAt": "2018-12-03T16:26:37.563Z",
-          "updatedAt": "2018-12-03T16:26:37.563Z",
-          "user_group": {
-            "id": 2,
-            "followerId": 2,
-            "followingId": 1,
-            "createdAt": "2018-12-03T16:28:39.160Z",
-            "updatedAt": "2018-12-03T16:28:39.160Z"
-          }
+            "name": "nwe",
+            "city": "last",
+            "phone": 1231231,
+            "createdAt": "2018-12-03T16:26:25.489Z"
         }
-      ]
-    }
-  ]
+    ],
+    "messages": [
+        {
+            "id": 1,
+            "text": "f g m",
+            "createdAt": "2018-12-03T16:27:52.266Z",
+            "updatedAt": "2018-12-03T16:27:52.266Z",
+            "groupId": 1,
+            "userId": 1,
+            "user": {
+                "id": 1,
+                "name": "nwe"
+            }
+        }
+    ]
 }
 
 Post
@@ -244,26 +316,37 @@ Response {
   "updatedAt": "2018-12-03T18:54:27.069Z",
   "createdAt": "2018-12-03T18:54:27.069Z"
 }
-GET POST PATCH /groups/{id}
+GET /groups/{id} - make an internal create call to group-followers service in sub-to-group hook
+POST PATCH /groups/{id}
 ```
 uri /group-messages
 ```
 GET
-Request params {}
+Request params {
+  token
+  "groupId": "groupId"
+}
 Respone {
-  "total": 1,
-  "limit": 10,
-  "skip": 0,
-  "data": [
-    {
-      "id": 1,
-      "text": "f g m",
-      "createdAt": "2018-12-03T16:27:52.266Z",
-      "updatedAt": "2018-12-03T16:27:52.266Z",
-      "groupId": 1,
-      "userId": 1
-    }
-  ]
+    "total": 1,
+    "limit": 10,
+    "skip": 0,
+    "data": [
+        {
+            "id": 1,
+            "text": "f g m",
+            "createdAt": "2018-12-03T16:27:52.266Z",
+            "updatedAt": "2018-12-03T16:27:52.266Z",
+            "groupId": 1,
+            "userId": 1,
+            "group": {
+                "id": 1
+            },
+            "user": {
+                "id": "1",
+                "name": "nwe"
+            }
+        }
+    ]
 }
 Post
 Request params {

@@ -62,7 +62,7 @@ module.exports = function (app) {
 
     users.belongsToMany(models.events, {
       through: 'event_followers',
-      as: 'eventFollows',
+      as: 'events',
       foreignKey: 'followerId'
     });
   };

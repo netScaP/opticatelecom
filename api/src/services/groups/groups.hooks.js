@@ -2,30 +2,47 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
 const include = require('feathers-include-hook');
 
+const restrictToAssociated = require('../../hooks/restrict-to-associated');
+const subToGroup = require('../../hooks/sub-to-group');
+
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
-    find: [ // restrict to associated users
-      include([
-        {
-          model: 'users',
-          as: 'users'
-        }
-      ])
-    ],
-    get: [
+    find: [
       include([
         {
           model: 'users',
           as: 'users',
-          attributes: ['id']
-        },
+          context: {
+            where: {
+              id: '$params.user.id'
+            }
+          },
+          through: { attributes: [] },
+          attributes: ['id', 'name', 'city', 'phone', 'createdAt']
+        }
+      ])
+    ],
+    get: [
+      restrictToAssociated({ idField: 'id', 'model': 'users', 'as': 'users' }),
+      include([
         {
+          model: 'users',
+          as: 'users',
+          through: { attributes: [] },
+          attributes: ['id', 'name', 'city', 'phone', 'createdAt']
+        }, {
           model: 'group_messages',
-          as: 'messages'
+          as: 'messages',
+          include: [
+            {
+              model: 'users',
+              attributes: ['id', 'name']
+            }
+          ]
         }
       ]),
-      // restrictToOwner({ idField: 'id', 'ownerField': 'usersId', array: true })
+      subToGroup({ followerIdField: 'followerId', followingIdField: 'followingId', subService: 'user-group' })
     ],
     create: [],
     update: [],

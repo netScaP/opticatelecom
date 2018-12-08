@@ -20,6 +20,7 @@ module.exports = function (app) {
 
   // eslint-disable-next-line no-unused-vars
   eventMessages.associate = function (models) {
+    eventMessages.belongsTo(models.events);
     eventMessages.belongsTo(models.users);
   };
 

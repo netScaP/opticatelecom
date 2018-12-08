@@ -2,6 +2,8 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
 const include = require('feathers-include-hook');
 
+const subToGroup = require('../../hooks/sub-to-group');
+
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
@@ -9,29 +11,38 @@ module.exports = {
       include([
         {
           model: 'users',
-          as: 'followers'
+          as: 'followers',
+          attributes: ['id', 'name', 'city', 'phone', 'createdAt'],
+          through: { attributes: [] }
         },
         {
           model: 'users',
-          as: 'author'
+          as: 'author',
+          attributes: ['id', 'name', 'city', 'phone', 'createdAt']
         }
       ])
     ],
     get: [
-      include([
-        {
-          model: 'users',
-          as: 'followers'
-        },
-        {
-          model: 'users',
-          as: 'author'
-        },
-        {
-          model: 'event_messages',
-          as: 'messages'
-        }
-      ])
+      include([{
+        model: 'users',
+        as: 'followers',
+        attributes: ['id', 'name', 'city', 'phone', 'createdAt'],
+        through: { attributes: [] }
+      }, {
+        model: 'users',
+        as: 'author',
+        attributes: ['id', 'name', 'city', 'phone', 'createdAt']
+      }, {
+        model: 'event_messages',
+        as: 'messages',
+        include: [
+          {
+            model: 'users',
+            attributes: ['id', 'name']
+          }
+        ]
+      }]), 
+      subToGroup({ followerIdField: 'followerId', followingIdField: 'followingId', subService: 'event-followers' })
     ],
     create: [
       associateCurrentUser({ idField: 'id', as: 'createdBy' })

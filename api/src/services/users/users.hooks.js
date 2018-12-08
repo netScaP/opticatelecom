@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
+const { discard } = require('feathers-hooks-common');
 
 const include = require('feathers-include-hook');
 
@@ -19,22 +20,44 @@ module.exports = {
       include([
         {
           model: 'users',
-          as: 'followers'
+          as: 'followers',
+          through: { attributes: [] },
+          attributes: ['id', 'name', 'city', 'phone', 'createdAt']
         }, 
         {
           model: 'events',
-          as: 'eventFollows'
+          as: 'events',
+          through: { attributes: ['id'] },
+          include: [
+            {
+              model: 'users',
+              as: 'author',
+              attributes: ['id', 'name', 'city', 'phone', 'createdAt']
+            }
+          ]
         },
         {
           model: 'groups',
-          as: 'groups'
+          as: 'groups',
+          through: { attributes: ['id'] }
         }
       ])
     ],
     create: [ hashPassword() ],
-    update: [ hashPassword(),  authenticate('jwt') ],
-    patch: [ hashPassword(),  authenticate('jwt') ],
-    remove: [ authenticate('jwt') ]
+    update: [ 
+      hashPassword(), 
+      authenticate('jwt'),
+      restrictToOwner({ idField: 'id', ownerField: 'id' })
+    ],
+    patch: [ 
+      hashPassword(), 
+      authenticate('jwt'),
+      restrictToOwner({ idField: 'id', ownerField: 'id' })
+    ],
+    remove: [ 
+      authenticate('jwt'),
+      restrictToOwner({ idField: 'id', ownerField: 'id' })
+    ]
   },
 
   after: {
