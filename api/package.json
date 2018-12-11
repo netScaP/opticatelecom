@@ -1,15 +1,15 @@
 {
   "name": "api",
   "description": "Api for Eventsapp",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "homepage": "",
   "main": "src",
   "keywords": [
     "feathers"
   ],
   "author": {
-    "name": "",
-    "email": "ali-mamaev2000@mail.ru"
+    "name": "Ali",
+    "email": "mamaev-ali@inbox.ru"
   },
   "contributors": [],
   "bugs": {},
@@ -22,11 +22,11 @@
     "yarn": ">= 0.18.0"
   },
   "scripts": {
-    "test": "yarn run eslint && NODE_ENV= yarn run mocha",
+    "test": "SET NODE_ENV=test&& yarn run eslint && yarn run mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "dev": "nodemon src/",
     "start": "node src/",
-    "mocha": "mocha test/ --recursive --exit"
+    "mocha": "mocha test/ --recursive --exit --timeout 10000"
   },
   "dependencies": {
     "@feathersjs/authentication": "^2.1.12",
@@ -48,12 +48,14 @@
     "helmet": "^3.13.0",
     "passport-auth0": "^1.1.0",
     "passport-facebook": "^2.1.1",
-    "pg": "^7.6.1",
+    "pg": "^7.7.1",
     "sequelize": "^4.38.0",
     "serve-favicon": "^2.5.0",
     "winston": "^3.0.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "database-cleaner": "^1.3.0",
     "eslint": "^5.9.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.7",

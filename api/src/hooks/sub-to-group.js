@@ -1,5 +1,4 @@
-// Use this hook to manipulate incoming or outgoing data.
-// For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
+// events
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function (options = {}) {
@@ -13,7 +12,7 @@ module.exports = function (options = {}) {
     };
 
     try {
-      await app.service(options.subService).create(data, params.headers);
+      await app.service(subService).create(data, params.headers);
     } catch (err) {
       // You already subscribed to current group
     }

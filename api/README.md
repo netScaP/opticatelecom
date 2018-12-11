@@ -316,8 +316,8 @@ Response {
   "updatedAt": "2018-12-03T18:54:27.069Z",
   "createdAt": "2018-12-03T18:54:27.069Z"
 }
-GET /groups/{id} - make an internal create call to group-followers service in sub-to-group hook
-POST PATCH /groups/{id}
+GET /groups/{id} - For accessing group info, creator of the current group must associate you with this group.(user-group)
+DELETE POST PATCH /groups/{id}
 ```
 uri /group-messages
 ```
@@ -388,8 +388,11 @@ For user-to-group
 ```
 uri /user-group
 Request params {
+  followerId: 'UserId',
   followingId: "GroupId"
 }
+For adding association with this group, you must be a creator of it.
+Delete /user-group/{id} You must be a creator of current group or your id must be equal to followerId
 ```
 
 
@@ -424,7 +427,9 @@ Getting up and running is as easy as 1, 2, 3.
 
 ## Testing
 
-Simply run `npm test` and all your tests in the `test/` directory will be run.
+Make sure that you have a `eventsapi_test` postgresql db and set the connection string in `config/test.json`.
+
+Simply run `yarn test` and all your tests in the `test/` directory will be run.
 
 ## Scaffolding
 

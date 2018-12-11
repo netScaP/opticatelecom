@@ -23,6 +23,9 @@ module.exports = function (app) {
     groups.hasMany(models.group_messages, {
       as: 'messages'
     });
+    groups.belongsTo(models.users, {
+      as: 'creator'
+    });
     groups.belongsToMany(models.users, {
       through: 'user_group',
       as: 'users',

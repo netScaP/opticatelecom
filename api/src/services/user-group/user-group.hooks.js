@@ -1,6 +1,8 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
-const { disallow } = require('feathers-hooks-common');
+const { restrictToOwner } = require('feathers-authentication-hooks');
+const { disallow, iff, isNot } = require('feathers-hooks-common');
+
+const isCreator = require('../../hooks/is-creator');
 
 module.exports = {
   before: {
@@ -8,7 +10,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      associateCurrentUser({ idField: 'id', as: 'followerId' })
+      isCreator({ idField: 'id', ownerField: 'creatorId', service: 'groups', fieldWithId: 'followingId', type: 'error' })
     ],
     update: [
       disallow()
@@ -17,7 +19,8 @@ module.exports = {
       disallow()
     ],
     remove: [
-      restrictToOwner({ idField: 'id', ownerField: 'followerId' })
+      isCreator({ idField: 'id', ownerField: 'creatorId', service: 'groups', fieldWithId: 'followingId' }),
+      iff(isNot(hook => hook.isCreator), restrictToOwner({ idField: 'id', ownerField: 'followerId' }))
     ]
   },
 

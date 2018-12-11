@@ -1,27 +1,66 @@
 const assert = require('assert');
-const feathers = require('@feathersjs/feathers');
+
+const dbCleaning = require('../utils/db-cleaner');
+
 const subToGroup = require('../../src/hooks/sub-to-group');
 
 describe('\'subToGroup\' hook', () => {
-  let app;
+  let app, user, event;
 
-  beforeEach(() => {
-    app = feathers();
+  user = {
+    id: '1',
+    email: 'test@mail.ru',
+    password: 'testPassword',
+    name: 'test',
+    city: 'testCity',
+    phone: '1231231'
+  };
 
-    app.use('/dummy', {
-      async get(id) {
-        return { id };
+  event = {
+    id: '1',
+    title: 'testEvent',
+    description: 'testDescription',
+    city: 'testCity',
+    hashtags: ['test', 'hashtag'],
+    startEvent: '2018-01-01',
+    endEvent: '2019-01-01',
+    createdBy: user.id
+  };
+
+  beforeEach((done) => {
+    app = require('../../src/app');
+
+    app.service('events').hooks({
+      before: {
+        get: subToGroup({ followerIdField: 'followerId', followingIdField: 'followingId', subService: 'event-followers' })
       }
     });
 
-    app.service('dummy').hooks({
-      before: subToGroup()
-    });
+    dbCleaning(app, done);
+   
   });
 
-  it('runs the hook', async () => {
-    const result = await app.service('dummy').get('test');
+  it('Follow to group(event) from a hook', async () => {
     
-    assert.deepEqual(result, { id: 'test' });
+    await app.service('users').create(user);
+    await app.service('events').create(event);
+
+    let params = {
+      user
+    };
+
+    let result = await app.service('event-followers').find();
+
+    assert.equal(result.total, 0);
+
+    await app.service('events').get(event.id, params);
+
+    result = await app.service('event-followers').find();
+
+    assert.equal(result.total, 1);
+    assert.equal(result.data[0].followerId, user.id);
+    assert.equal(result.data[0].followingId, event.id);
+
   });
+
 });

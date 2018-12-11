@@ -1,3 +1,5 @@
+// groups
+
 const errors = require('@feathersjs/errors');
 
 const defaults = {
@@ -11,7 +13,7 @@ module.exports = function (options = {}) {
     const sequelize = context.app.get('sequelizeClient');
     const { models } = sequelize;
 
-    options = Object.assign({}, defaults, context.app.get('authentication'), options)
+    options = Object.assign({}, defaults, context.app.get('authentication'), options);
 
     const userEntity = context.params[options.entity || 'user'];
 
@@ -20,7 +22,7 @@ module.exports = function (options = {}) {
     }
 
     if (!userEntity) {
-      throw new errors.NotAuthenticated(`The current user is missing. You should be authenticated.`);
+      throw new errors.NotAuthenticated('The current user is missing. You should be authenticated.');
     }
 
     const id = userEntity[options.idField];

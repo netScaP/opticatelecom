@@ -1,0 +1,7 @@
+{
+  "paginate": {
+    "default": 5,
+    "max": 10
+  },
+  "postgres": "postgres://postgres:superpas@localhost:5432/eventsapi_test"
+}

@@ -1,9 +1,8 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
+const { restrictToOwner, associateCurrentUser } = require('feathers-authentication-hooks');
 const include = require('feathers-include-hook');
 
 const restrictToAssociated = require('../../hooks/restrict-to-associated');
-const subToGroup = require('../../hooks/sub-to-group');
 
 module.exports = {
   before: {
@@ -41,13 +40,20 @@ module.exports = {
             }
           ]
         }
-      ]),
-      subToGroup({ followerIdField: 'followerId', followingIdField: 'followingId', subService: 'user-group' })
+      ])
     ],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
+    create: [
+      associateCurrentUser({ idField: 'id', as: 'creatorId' })
+    ],
+    update: [
+      restrictToOwner({ idFiled: 'id', ownerField: 'creatorId' })
+    ],
+    patch: [
+      restrictToOwner({ idFiled: 'id', ownerField: 'creatorId' })
+    ],
+    remove: [
+      restrictToOwner({ idFiled: 'id', ownerField: 'creatorId' })
+    ]
   },
 
   after: {

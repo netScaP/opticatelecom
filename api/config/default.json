@@ -67,5 +67,5 @@
       "secure": false
     }
   },
-  "postgres": "postgres://postgres:Bahmud20002004@localhost:5432/eventsapi"
+  "postgres": "postgres://postgres:superpas@localhost:5432/eventsapi"
 }

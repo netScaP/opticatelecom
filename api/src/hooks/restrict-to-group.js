@@ -1,3 +1,5 @@
+// event-messages group-messages
+
 const errors = require('@feathersjs/errors');
 
 // eslint-disable-next-line no-unused-vars
@@ -11,6 +13,7 @@ module.exports = function (options = {}) {
     let response = await app.service('users').get(params.user.id, {
       sequelize: {
         raw: false,
+        required: false,
         include: [
           {
             model: models[options.model],
@@ -19,6 +22,7 @@ module.exports = function (options = {}) {
         ]
       }
     });
+
     if (response.toJSON) {
       response = response.toJSON();
     } else if (response.toObject) {
@@ -26,9 +30,14 @@ module.exports = function (options = {}) {
     }
 
     const groupFollows = response[options.as];
-    const groupsId = groupFollows.map(obj => obj.id.toString());
 
-    if (groupsId.length === 0 || groupsId.indexOf(data[options.fieldWithId]) < 0) {
+    if (!groupFollows) {
+      throw new errors.Forbidden('You do not have the permissions to access this.');
+    }
+
+    const groupsId = groupFollows.map(obj => obj.id.toString());
+    
+    if (groupsId.length === 0 || groupsId.indexOf(data[options.fieldWithId].toString()) < 0) {
       throw new errors.Forbidden('You do not have the permissions to access this.');
     }
 

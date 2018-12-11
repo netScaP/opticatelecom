@@ -1,6 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
-const { discard } = require('feathers-hooks-common');
+const { restrictToOwner } = require('feathers-authentication-hooks');
 
 const include = require('feathers-include-hook');
 
