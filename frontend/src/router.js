@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
-import Login from './views/Login.vue';
-import Register from './views/Register.vue';
+
+import Auth from './views/Auth.vue';
 import Events from './views/Events.vue';
+import Users from './views/Users.vue';
+import Groups from './views/Groups.vue';
 
 import store from './store';
 
@@ -16,30 +17,31 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: Home,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login,
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register,
+      component: Auth,
+      meta: {
+        excludeAuth: true,
+      },
     },
     {
       path: '/events',
       name: 'events',
       component: Events,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: Users,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/groups',
+      name: 'groups',
+      component: Groups,
       meta: {
         requiresAuth: true,
       },
@@ -53,7 +55,16 @@ router.beforeEach((to, from, next) => {
       next();
       return;
     }
-    next('/login');
+    next('/');
+  } else {
+    next();
+  }
+  if (to.matched.some(record => record.meta.excludeAuth)) {
+    if (store.getters.isLoggedIn) {
+      next('/events');
+      return;
+    }
+    next();
   } else {
     next();
   }

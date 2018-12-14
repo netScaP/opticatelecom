@@ -6,6 +6,7 @@
 
 <script>
 import EventList from '@/components/EventList.vue';
+
 export default {
   data() {
     return {

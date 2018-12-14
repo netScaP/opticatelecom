@@ -2,7 +2,7 @@ const getters = {
   isLoggedIn(state) {
     return !!state.token;
   },
-  authStatus(state) {
+  appStatus(state) {
     return state.status;
   },
 };

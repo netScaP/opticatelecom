@@ -1,12 +1,14 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-      <router-link to="/login">Login</router-link>
-      <router-link to="/events">Events</router-link>
+    <div class="error-msg" v-if="appStatus.type === 'error'">
+      {{ appStatus.message }}
+    </div>
+    <div class="nav" v-if="!isOnLoginPage()">
+      <router-link class="nav__link" :to="{ name: 'home' }">Home </router-link>
+      <router-link class="nav__link" :to="{ name: 'events' }">Events </router-link>
+      <router-link class="nav__link" :to="{ name: 'users' }">Groups </router-link>
       <span v-if="isLoggedIn">
-        <a @click="logout">Logout</a>
+        <a class="nav__link" @click="logout">Logout</a>
       </span>
     </div>
     <router-view/>
@@ -19,11 +21,17 @@ export default {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
     },
+    appStatus() {
+      return this.$store.getters.appStatus;
+    },
   },
   methods: {
     logout() {
       this.$store.dispatch('logout')
-        .then(() => this.$router.push('/login'));
+        .then(() => this.$router.push({ name: 'home' }));
+    },
+    isOnLoginPage() {
+      return this.$route.path === '/';
     },
   },
   created() {
@@ -39,17 +47,37 @@ export default {
 </script>
 
 <style lang="sass">
+body
+  margin: 0px
+  padding: 0px
+  background: linear-gradient(to left, #76b852, #8DC26F)
+#nprogress
+  .bar
+    background-color: black !important
+    height: 2px !important
 #app
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   text-align: center
   color: #2c3e50
-#nav
+.error-msg
+  position: fixed
+  right: 0
+  top: 1
+  z-index: 10001
+  max-width: 300px
+  margin-right: 1px
+  padding: 10px
+  border: 1px solid red
+  border-radius: 5px
+  background-color: white
+.nav
   padding: 30px
-  a
+  &__link
     font-weight: bold
     color: #2c3e50
+    text-decoration: none
     &.router-link-exact-active
-      color: #42b983
+      color: white
 </style>

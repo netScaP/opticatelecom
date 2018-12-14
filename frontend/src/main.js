@@ -1,10 +1,53 @@
 import Vue from 'vue';
-import Axios from 'axios';
+import NProgress from 'nprogress';
+import axios from 'axios';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 
-Vue.prototype.$http = Axios;
+import '../node_modules/nprogress/nprogress.css';
+
+NProgress.configure({
+  minimum: 0.1,
+  parent: '#app',
+  easing: 'linear',
+  speed: 300,
+  template:
+  `
+    <div class="bar" role="bar" ref="loadingBar">
+      <div class="peg"></div>
+    </div>
+    <div class="spinner" role="spinner" ref="loadingSpinner">
+      <div class="spinner-icon"></div>
+    </div>
+  `,
+});
+
+axios.interceptors.request.use((config) => {
+  NProgress.start();
+  return config;
+}, error => Promise.reject(error));
+
+axios.interceptors.response.use((response) => {
+  NProgress.done();
+  return response;
+}, (error) => {
+  NProgress.done();
+  return Promise.reject(error);
+});
+
+router.beforeResolve((to, from, next) => {
+  if (to.name) {
+    NProgress.start();
+  }
+  next();
+});
+
+router.afterEach(() => {
+  NProgress.done();
+});
+
+Vue.prototype.$http = axios;
 const token = localStorage.getItem('token');
 if (token) {
   Vue.prototype.$http.defaults.headers.common.Authorization = token;

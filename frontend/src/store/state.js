@@ -1,5 +1,8 @@
 const state = {
-  status: '',
+  status: {
+    type: '',
+    message: '',
+  },
   user: {},
   token: localStorage.getItem('token') || '',
   apiUrl: 'http://localhost:3030/',
