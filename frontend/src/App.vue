@@ -4,7 +4,6 @@
       {{ appStatus.message }}
     </div>
     <div class="nav" v-if="!isOnLoginPage()">
-      <router-link class="nav__link" :to="{ name: 'home' }">Home </router-link>
       <router-link class="nav__link" :to="{ name: 'events' }">Events </router-link>
       <router-link class="nav__link" :to="{ name: 'users' }">Groups </router-link>
       <span v-if="isLoggedIn">
@@ -47,20 +46,22 @@ export default {
 </script>
 
 <style lang="sass">
+@import 'utilities/variables'
+
 body
   margin: 0px
   padding: 0px
   background: linear-gradient(to left, #76b852, #8DC26F)
 #nprogress
   .bar
-    background-color: black !important
+    background-color: $fontColor !important
     height: 2px !important
 #app
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   text-align: center
-  color: #2c3e50
+  color: $fontColor
 .error-msg
   position: fixed
   right: 0
@@ -76,7 +77,7 @@ body
   padding: 30px
   &__link
     font-weight: bold
-    color: #2c3e50
+    color: $fontColor
     text-decoration: none
     &.router-link-exact-active
       color: white

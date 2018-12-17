@@ -28,13 +28,13 @@
         <input class="auth-form__input" type="password" placeholder="Password"
           v-model="user.password"
         />
-        <input class="auth-form__input" type="text" placeholder="Name"
+        <input class="auth-form__input" type="text" placeholder="Name" required
           v-model="user.name"
         />
-        <input class="auth-form__input" type="text" placeholder="City"
+        <input class="auth-form__input" type="text" placeholder="City" required
           v-model="user.city"
         />
-        <input class="auth-form__input" type="text" placeholder="Phone"
+        <input class="auth-form__input" type="text" placeholder="Phone" required
           v-model="user.phone"
         />
         <button class="auth-form__button">create</button>

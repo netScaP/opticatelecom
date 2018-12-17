@@ -3,7 +3,7 @@ const state = {
     type: '',
     message: '',
   },
-  user: {},
+  user: JSON.parse(localStorage.getItem('user')) || {},
   token: localStorage.getItem('token') || '',
   apiUrl: 'http://localhost:3030/',
   api: {

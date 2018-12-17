@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <EventList />
+  <div class="events-block">
+    <EventList type="all" title="All events" />
+    <EventList type="user" title="My events" />
   </div>
 </template>
 
@@ -18,3 +19,9 @@ export default {
   },
 };
 </script>
+
+<style lang="sass">
+.events-block
+  display: flex
+  justify-content: space-around
+</style>

@@ -11,7 +11,7 @@ NProgress.configure({
   minimum: 0.1,
   parent: '#app',
   easing: 'linear',
-  speed: 300,
+  speed: 500,
   template:
   `
     <div class="bar" role="bar" ref="loadingBar">

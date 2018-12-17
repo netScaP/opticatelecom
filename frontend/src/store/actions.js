@@ -15,8 +15,9 @@ const actions = {
           return dispatch('login', registeredUser);
         })
         .catch((err) => {
-          commit('auth_error', 'Неправильный логин или пароль.');
+          commit('auth_error', 'Данные заполнены неверно');
           localStorage.removeItem('token');
+          localStorage.removeItem('user');
           reject(err);
         });
     });
@@ -50,12 +51,14 @@ const actions = {
         })
         .then((response) => {
           const user = response.data;
+          localStorage.setItem('user', JSON.stringify(user));
           commit('auth_success', { token, user });
           resolve(response);
         })
         .catch((err) => {
           commit('auth_error', 'Неправильный логин или пароль.');
           localStorage.removeItem('token');
+          localStorage.removeItem('user');
           reject(err);
         });
     });
@@ -64,6 +67,7 @@ const actions = {
     return new Promise((resolve) => {
       commit('logout');
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       delete axios.defaults.headers.common.Authorization;
       resolve();
     });
