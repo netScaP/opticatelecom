@@ -15,7 +15,7 @@ const actions = {
           return dispatch('login', registeredUser);
         })
         .catch((err) => {
-          commit('auth_error', 'Данные заполнены неверно');
+          commit('flash_error', 'Данные заполнены неверно');
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           reject(err);
@@ -56,7 +56,7 @@ const actions = {
           resolve(response);
         })
         .catch((err) => {
-          commit('auth_error', 'Неправильный логин или пароль.');
+          commit('flash_error', 'Неправильный логин или пароль.');
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           reject(err);
@@ -70,6 +70,23 @@ const actions = {
       localStorage.removeItem('user');
       delete axios.defaults.headers.common.Authorization;
       resolve();
+    });
+  },
+  createEvent({ commit, state }, event) {
+    return new Promise((resolve, reject) => {
+      axios({
+        url: state.apiUrl + state.api.createEvent.name,
+        data: event,
+        method: state.api.createEvent.method,
+      })
+        .then((response) => {
+          commit('add_event_to_user', response.data);
+          resolve(response.data);
+        })
+        .catch((err) => {
+          commit('flash_error', 'Something went wrong');
+          reject(err);
+        });
     });
   },
 };

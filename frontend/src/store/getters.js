@@ -5,6 +5,9 @@ const getters = {
   appStatus(state) {
     return state.status;
   },
+  newEvent(state) {
+    return state.newEvent;
+  },
   userEvents(state) {
     return state.user.events;
   },

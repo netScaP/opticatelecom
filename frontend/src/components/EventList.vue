@@ -2,10 +2,18 @@
   <div class="wrapper">
     <h2>{{ title }}</h2>
     <div class="hashtags">
-      <input class="hashtags__input" type="text" placeholder="Hashtag"
-        v-model.trim="newHashtag"
-        @keyup.enter="addHashtag"
-      >
+      <div class="hashtags__form">
+        <input class="hashtags__input" type="text" placeholder="Hashtag"
+          v-model.trim="newHashtag"
+          @keyup.enter="addHashtag"
+        >
+        <button class="hashtags__button"
+          v-if="type !== 'all'"
+          @click="isCreateEvent = !isCreateEvent"
+        >
+          {{ isCreateEvent ? 'Close' : 'Create Event' }}
+        </button>
+      </div>
       <transition-group name="hashtag-list" tag="div" class="hashtags__block">
         <span class="hashtags__hashtag"
           v-for="(hashtag, index) in hashtags"
@@ -17,27 +25,22 @@
       </transition-group>
     </div>
     <transition-group name="event-list" tag="div" class="event-list" appear>
-      <div class="event-list__event" v-for="event in matchedEvents" :key="event.id">
-        <h2 class="event-list__title event-list_margin-5">{{ event.title }}</h2>
-        <p class="event-list__par event-list_margin-5">{{ event.description }}</p>
-        <p class="event-list__par event-list_margin-5">{{ event.city }}</p>
-        <div class="event-list__dateBlock event-list_margin-5">
-          <p class="event-list_margin-5">{{ event.startEvent | getDate}}</p>
-          <p class="event-list_margin-5">{{ event.endEvent | getDate }}</p>
-        </div>
-        <div class="event-list__hashtags">
-          <span class="event-list__hashtag"
-            v-for="(hashtag, index) in event.hashtags"
-            @click="addHashtag(hashtag)"
-            :key="index"
-          >
-            {{ hashtag }}
-          </span>
-        </div>
-      </div>
+      <event
+        v-if="isCreateEvent"
+        :key="-1"
+        @add-hashtag="addHashtag"
+        :is-create="isCreateEvent"
+        @add-user-event="addUserEvent"
+      />
+      <event
+        v-for="event in events"
+        :event="event"
+        :key="event.id"
+        @add-hashtag="addHashtag"
+      />
     </transition-group>
     <pagination
-      :current="initialPage"
+      :current="currentPage"
       :total="total"
       :perPage="limit"
       @page-changed="getEvents"
@@ -46,6 +49,7 @@
 </template>
 
 <script>
+import Event from './SingleEvent.vue';
 import Pagination from './Pagination.vue';
 
 export default {
@@ -56,31 +60,27 @@ export default {
   data() {
     return {
       events: [],
+      isCreateEvent: false,
       hashtags: [],
       newHashtag: '',
       total: 0,
-      limit: 10,
-      initialPage: 0,
+      limit: 2,
+      currentPage: 0,
     };
   },
   components: {
+    Event,
     Pagination,
   },
   computed: {
     userEvents() {
       return this.$store.getters.userEvents;
     },
-    matchedEvents() {
+    userFilteredEvents() {
       if (this.hashtags.length === 0) {
-        return this.events;
+        return this.userEvents;
       }
-      return this.events.filter(event => event.hashtags.some(this.checkHashtag));
-    },
-  },
-  filters: {
-    getDate(value) {
-      const arr = value.split('T');
-      return `${arr[0].split('-').join('.')} - ${arr[1].split('.').slice(0, -1)}`;
+      return this.userEvents.filter(event => event.hashtags.some(this.checkHashtag));
     },
   },
   methods: {
@@ -91,16 +91,21 @@ export default {
           params: {
             $skip: page * this.limit,
             $limit: this.limit,
+            hashtags: this.hashtags,
           },
         })
           .then((response) => {
+            this.currentPage = page;
             this.total = response.data.total;
             this.events = response.data.data;
           });
         return true;
       }
-      this.total = this.userEvents.length;
-      this.events = this.userEvents.slice(page * this.limit - 1, page * this.limit + this.limit);
+      const sliceArguments = [page * this.limit - 1, page * this.limit + this.limit];
+
+      this.currentPage = page;
+      this.total = this.userFilteredEvents.length;
+      this.events = this.userFilteredEvents.slice(...sliceArguments);
       return true;
     },
     addHashtag(hashtag) {
@@ -123,9 +128,13 @@ export default {
     checkHashtag(hashtag) {
       return this.hashtags.indexOf(hashtag) > -1;
     },
+    addUserEvent(event) {
+      this.isCreateEvent = false;
+      this.events.unshift(event);
+    },
   },
   created() {
-    this.getEvents(this.initialPage);
+    this.getEvents(this.currentPage);
   },
 };
 </script>
@@ -173,38 +182,23 @@ export default {
 .event-list
   display: flex
   flex-direction: column
-  &__event
-    display: flex
-    flex-direction: column
-    text-align: left
-    width: 100%
-    padding: 15px
-    margin-bottom: 30px
-    border: 1px solid $fontColor
-    background-color: $bkColor
-    border-radius: 2px
-    box-sizing: border-box
-    transition: transform 1s, opacity .8s
-  &__hashtags
-    margin-top: 15px
-  &__hashtag
-    @extend %hashtag
-    margin: auto 10px auto 0px
-    &:hover
-      @extend %hover
-  &_margin-5
-    margin: 5px 0px 5px 0px
 
 .hashtags
   display: flex
   flex-direction: column
   width: 100%
+  &__form
+    display: flex
+    justify-content: space-between
   &__input
     width: 50%
     padding: 5px
     color: $fontColor
     border: 1px solid $fontColor
     border-radius: 2px
+  &__button
+    @extend %hashtag
+    background-color: $bkColor
   &__block
     min-height: 40px
     display: flex

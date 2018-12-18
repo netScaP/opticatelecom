@@ -11,6 +11,7 @@ const state = {
     register: { name: 'users', method: 'post' },
     getUsers: { name: 'users/', method: 'get' },
     findEvents: { name: 'events', method: 'get' },
+    createEvent: { name: 'events', method: 'post' },
   },
 };
 

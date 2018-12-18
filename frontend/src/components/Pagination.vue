@@ -13,7 +13,7 @@
         v-for="(page, index) in pages"
         :key="index"
         @click.prevent="changePage(page)"
-        :class="{ 'paginate__link-current': currentPage == page - 1 }"
+        :class="{ 'paginate__link-current': current == page - 1 }"
       >
         {{ page }}
       </a>
@@ -61,23 +61,17 @@ export default {
       return pages;
     },
     rangeStart() {
-      const start = this.currentPage - this.pageRange;
+      const start = this.current - this.pageRange;
 
       return (start > 0) ? start : 1;
     },
     rangeEnd() {
-      const end = this.currentPage + this.pageRange;
+      const end = this.current + this.pageRange;
 
       return (end < this.totalPages) ? end : this.totalPages;
     },
     totalPages() {
       return Math.ceil(this.total / this.perPage);
-    },
-    nextPage() {
-      return this.currentPage + 1;
-    },
-    prevPage() {
-      return this.currentPage - 1;
     },
   },
   methods: {
@@ -88,16 +82,15 @@ export default {
       return this.rangeEnd < this.totalPages;
     },
     hasPrev() {
-      return this.currentPage > 1;
+      return this.current > 1;
     },
     hasNext() {
-      return this.currentPage < this.totalPages;
+      return this.current < this.totalPages;
     },
     changePage(page) {
-      if (this.currentPage === page - 1) {
+      if (this.current === page - 1) {
         return false;
       }
-      this.currentPage = page - 1;
       return this.$emit('page-changed', page - 1);
     },
   },
@@ -118,8 +111,10 @@ export default {
   &__page-text
     margin-right: 10px
   &__link
+    display: inline-block
     color: $fontColor
     text-decoration: none
+    margin-right: 2px
     padding: 5px
     border: 1px solid transparent
     transition: all .5s

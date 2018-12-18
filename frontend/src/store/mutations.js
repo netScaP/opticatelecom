@@ -9,7 +9,7 @@ const mutations = {
     state.token = token;
     state.user = user;
   },
-  auth_error(state, err) {
+  flash_error(state, err) {
     state.status.type = 'error';
     state.status.message = err;
   },
@@ -18,6 +18,9 @@ const mutations = {
     state.status.message = '';
     state.token = '';
     state.user = {};
+  },
+  add_event_to_user(state, event) {
+    state.user.events.unshift(event);
   },
 };
 
