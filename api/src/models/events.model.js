@@ -20,7 +20,7 @@ module.exports = function (app) {
     },
     hashtags: {
       type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: false
+      defaultValue: []
     },
     startEvent: {
       type: DataTypes.DATE,

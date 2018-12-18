@@ -133,9 +133,11 @@ Same for POST PATCH /users/{id}
 
 uri /events
 ```
-GET
+GET (FIND all events where startEvent >= now and if hashtags passed - check some includes for hashtags)
 Request params {
-  token
+  token,
+  // hashtags[]: 'one',
+  // hashtags[]: 'two'
 }
 Response{
     "total": 1,
@@ -445,11 +447,19 @@ $ feathers help                           # Show all commands
 
 ## Help
 
+How to pass hashtags like an array? (At least in Postman)
+```
+Request params {
+  hashtags[]: 'one',
+  hashtags[]: 'two'
+}
+```
+
 For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
 
 ## Changelog
 
-__0.1.0__
+__1.0.0__
 
 - Initial release
 
