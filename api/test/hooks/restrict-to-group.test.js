@@ -5,11 +5,20 @@ const dbCleaning = require('../utils/db-cleaner');
 const restrictToGroup = require('../../src/hooks/restrict-to-group');
 
 describe('\'restrictToGroup\' hook', () => {
-  let app, user, event;
+  let app, user, user2, event;
 
   user = {
     id: '1',
     email: 'test@mail.ru',
+    password: 'testPassword',
+    name: 'test',
+    city: 'testCity',
+    phone: '1231231'
+  };
+
+  user2 = {
+    id: '2',
+    email: 'test2@mail.ru',
     password: 'testPassword',
     name: 'test',
     city: 'testCity',
@@ -43,10 +52,16 @@ describe('\'restrictToGroup\' hook', () => {
   it('Should return error when add a message to the event (not associated)', async () => {
     
     await app.service('users').create(user);
-    await app.service('events').create(event);
+    await app.service('users').create(user2);
 
     let params = {
       user
+    };
+
+    await app.service('events').create(event, params);
+
+    params = {
+      user: user2
     };
 
     try {
@@ -66,15 +81,12 @@ describe('\'restrictToGroup\' hook', () => {
   it('Add a message (associated)', async () => {
 
     await app.service('users').create(user);
-    await app.service('events').create(event);
-    await app.service('event-followers').create({
-      followerId: user.id,
-      followingId: event.id
-    });
 
     let params = {
       user
     };
+
+    await app.service('events').create(event, params);
 
     const result = await app.service('event-messages').create({
       id: '1',

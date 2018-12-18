@@ -3,13 +3,22 @@
 // eslint-disable-next-line no-unused-vars
 module.exports = function (options = {}) {
   return async context => {
-    const { app, id, params } = context;
-    const { followerIdField, followingIdField, subService } = options;
+    const { app, params, type } = context;
+    const { followerIdField, followingIdField, subService, idField } = options;
 
-    const data = {
-      [followingIdField]: id,
-      [followerIdField]: params.user.id
-    };
+    let data;
+
+    if (type === 'before') {
+      data = {
+        [followingIdField]: context.id,
+        [followerIdField]: params.user.id
+      };
+    } else if (idField && type === 'after') {
+      data = {
+        [followingIdField]: context.result[idField],
+        [followerIdField]: params.user.id
+      };
+    }
 
     try {
       await app.service(subService).create(data, params.headers);

@@ -11,7 +11,7 @@ module.exports = function (options = {}) {
       throw new errors.BadRequest('Hashtags should be as an array. Try this out https://github.com/netScaP/Eventsapp/tree/master/api#help');
     }
 
-    const hashtagsQuery = !!query.hashtags ? {
+    const hashtagsQuery = query.hashtags ? {
       hashtags: {
         $overlap: query.hashtags
       }

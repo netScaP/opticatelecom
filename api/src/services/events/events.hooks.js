@@ -26,25 +26,29 @@ module.exports = {
       ])
     ],
     get: [
-      include([{
-        model: 'users',
-        as: 'followers',
-        attributes: ['id', 'name', 'city', 'phone', 'createdAt'],
-        through: { attributes: [] }
-      }, {
-        model: 'users',
-        as: 'author',
-        attributes: ['id', 'name', 'city', 'phone', 'createdAt']
-      }, {
-        model: 'event_messages',
-        as: 'messages',
-        include: [
-          {
-            model: 'users',
-            attributes: ['id', 'name']
-          }
-        ]
-      }]), 
+      include([
+        {
+          model: 'users',
+          as: 'followers',
+          attributes: ['id', 'name', 'city', 'phone', 'createdAt'],
+          through: { attributes: [] }
+        },
+        {
+          model: 'users',
+          as: 'author',
+          attributes: ['id', 'name', 'city', 'phone', 'createdAt']
+        },
+        {
+          model: 'event_messages',
+          as: 'messages',
+          include: [
+            {
+              model: 'users',
+              attributes: ['id', 'name']
+            }
+          ]
+        }
+      ]), 
       subToGroup({ followerIdField: 'followerId', followingIdField: 'followingId', subService: 'event-followers' })
     ],
     create: [
@@ -68,7 +72,9 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [
+      subToGroup({ followerIdField: 'followerId', followingIdField: 'followingId', subService: 'event-followers', idField: 'id' })
+    ],
     update: [],
     patch: [],
     remove: []

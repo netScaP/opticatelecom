@@ -33,6 +33,9 @@ describe('\'subToGroup\' hook', () => {
     app.service('events').hooks({
       before: {
         get: subToGroup({ followerIdField: 'followerId', followingIdField: 'followingId', subService: 'event-followers' })
+      },
+      after: {
+        create: subToGroup({ followerIdField: 'followerId', followingIdField: 'followingId', subService: 'event-followers', idField: 'id' })
       }
     });
 
@@ -41,21 +44,16 @@ describe('\'subToGroup\' hook', () => {
   });
 
   it('Follow to group(event) from a hook', async () => {
-    
+
     await app.service('users').create(user);
-    await app.service('events').create(event);
 
     let params = {
       user
     };
 
-    let result = await app.service('event-followers').find();
+    await app.service('events').create(event, params);
 
-    assert.equal(result.total, 0);
-
-    await app.service('events').get(event.id, params);
-
-    result = await app.service('event-followers').find();
+    const result = await app.service('event-followers').find();
 
     assert.equal(result.total, 1);
     assert.equal(result.data[0].followerId, user.id);
