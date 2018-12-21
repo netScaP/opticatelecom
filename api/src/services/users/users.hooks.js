@@ -19,8 +19,8 @@ module.exports = {
       include([
         {
           model: 'users',
-          as: 'followers',
-          through: { attributes: [] },
+          as: 'friends',
+          through: { attributes: ['id'] },
           attributes: ['id', 'name', 'city', 'phone', 'createdAt']
         }, 
         {

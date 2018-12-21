@@ -51,7 +51,9 @@ describe('\'subToGroup\' hook', () => {
       user
     };
 
-    await app.service('events').create(event, params);
+    const eventWithCredentials = await app.service('events').create(event, params);
+
+    assert.equal(eventWithCredentials['event-followers'].followerId, params.user.id);
 
     const result = await app.service('event-followers').find();
 

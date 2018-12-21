@@ -78,13 +78,16 @@ Response {
     "facebookId": null,
     "createdAt": "2018-12-03T16:26:25.489Z",
     "updatedAt": "2018-12-08T16:23:19.371Z",
-    "followers": [
+    "friends": [
         {
             "id": 2,
             "name": "changed",
             "city": "last",
             "phone": 1231231,
-            "createdAt": "2018-12-03T16:26:37.563Z"
+            "createdAt": "2018-12-03T16:26:37.563Z",
+            "user_followers": {
+                "id": 2
+            }
         }
     ],
     "events": [

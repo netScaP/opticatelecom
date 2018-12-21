@@ -21,7 +21,10 @@ module.exports = function (options = {}) {
     }
 
     try {
-      await app.service(subService).create(data, params.headers);
+      const result = await app.service(subService).create(data, params.headers);
+      if (type === 'after') {
+        context.result[subService] = result;
+      }
     } catch (err) {
       // You already subscribed to current group
     }

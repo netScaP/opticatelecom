@@ -45,7 +45,7 @@ module.exports = function (app) {
   users.associate = function (models) {
     users.belongsToMany(users, {
       through: 'user_followers',
-      as: 'UserFollowing',
+      as: 'friends',
       foreignKey: 'followerId'
     });
     users.belongsToMany(users, {
