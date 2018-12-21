@@ -11,6 +11,9 @@ const getters = {
   userEvents(state) {
     return state.user.events;
   },
+  userFriends(state) {
+    return state.user.friends;
+  },
   getApiMethods(state) {
     return state.api;
   },

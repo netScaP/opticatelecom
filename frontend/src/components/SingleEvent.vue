@@ -66,6 +66,18 @@
         {{ hashtag }}
       </span>
     </div>
+    <button class="user__button"
+      v-if="type === 'all'"
+      @click.prevent="followToEvent
+    ">
+      Follow to Event
+    </button>
+    <button class="user__button"
+      v-else
+      @click.prevent="exitFromEvent"
+    >
+      Exit from Event
+    </button>
   </div>
 </template>
 
@@ -83,9 +95,14 @@ export default {
         hashtags: [''],
       }),
     },
+    index: Number,
     isCreate: {
       type: Boolean,
       default: false,
+    },
+    type: {
+      type: String,
+      default: 'all',
     },
   },
   methods: {
@@ -111,6 +128,12 @@ export default {
       return this.$store.dispatch('createEvent', event)
         .then(createdEvent => this.$emit('add-user-event', createdEvent))
         .catch(err => console.log(err));
+    },
+    followToEvent() {
+      this.$emit('follow-to-event', this.event);
+    },
+    exitFromEvent() {
+      this.$emit('exit-from-event', this.event);
     },
     addHashtag(hashtag) {
       return this.$emit('add-hashtag', hashtag);

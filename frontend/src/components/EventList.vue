@@ -28,14 +28,17 @@
       <event
         v-if="isCreateEvent"
         :key="-1"
-        @add-hashtag="addHashtag"
         :is-create="isCreateEvent"
+        @add-hashtag="addHashtag"
         @add-user-event="addUserEvent"
       />
       <event
         v-for="event in events"
-        :event="event"
         :key="event.id"
+        :event="event"
+        :type="type"
+        @follow-to-event="followToEvent"
+        @exit-from-event="exitFromEvent"
         @add-hashtag="addHashtag"
       />
     </transition-group>
@@ -83,6 +86,11 @@ export default {
       return this.userEvents.filter(event => event.hashtags.some(this.checkHashtag));
     },
   },
+  watch: {
+    userEvents() {
+      this.getEvents(this.currentPage);
+    },
+  },
   methods: {
     getEvents(page) {
       if (this.type === 'all') {
@@ -101,12 +109,27 @@ export default {
           });
         return true;
       }
-      const sliceArguments = [page * this.limit - 1, page * this.limit + this.limit];
+      const sliceArguments = [page * this.limit, page * this.limit + this.limit];
 
       this.currentPage = page;
       this.total = this.userFilteredEvents.length;
       this.events = this.userFilteredEvents.slice(...sliceArguments);
+      // if after delete event page is empty
+      if (this.hashtags.length === 0 && this.events.length === 0) {
+        this.currentPage -= 1;
+        this.getEvents(this.currentPage);
+      }
       return true;
+    },
+    followToEvent(event) {
+      this.$store.dispatch('followToEvent', event)
+        .then(relation => console.log(relation))
+        .catch(err => console.log(err));
+    },
+    exitFromEvent(event) {
+      this.$store.dispatch('exitFromEvent', event)
+        .then(() => this.getEvents(this.currentPage))
+        .catch(err => console.log(err));
     },
     addHashtag(hashtag) {
       if (this.newHashtag === '' && typeof hashtag !== 'string') {

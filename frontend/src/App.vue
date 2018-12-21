@@ -5,7 +5,7 @@
     </div>
     <div class="nav" v-if="!isOnLoginPage()">
       <router-link class="nav__link" :to="{ name: 'events' }">Events </router-link>
-      <router-link class="nav__link" :to="{ name: 'users' }">Groups </router-link>
+      <router-link class="nav__link" :to="{ name: 'users' }">Users </router-link>
       <span v-if="isLoggedIn">
         <a class="nav__link" @click="logout">Logout</a>
       </span>

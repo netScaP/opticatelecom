@@ -22,6 +22,15 @@ const mutations = {
   add_event_to_user(state, event) {
     state.user.events.unshift(event);
   },
+  delete_event_from_user(state, eventIndex) {
+    state.user.events.splice(eventIndex, 1);
+  },
+  add_friend_to_user(state, friend) {
+    state.user.friends.unshift(friend);
+  },
+  delete_friend_from_user(state, friendIndex) {
+    state.user.friends.splice(friendIndex, 1);
+  },
 };
 
 export default mutations;
