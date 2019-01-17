@@ -5,6 +5,7 @@ const include = require('feathers-include-hook');
 const customEventSequelize = require('../../hooks/custom-event-sequelize');
 const compareEventDate = require('../../hooks/compare-event-date');
 const subToGroup = require('../../hooks/sub-to-group');
+const emitEvent = require('../../hooks/emit-event');
 
 module.exports = {
   before: {
@@ -71,9 +72,12 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [],
+    get: [
+      emitEvent({ eventName: 'eventJoin' })
+    ],
     create: [
-      subToGroup({ followerIdField: 'followerId', followingIdField: 'followingId', subService: 'event-followers', idField: 'id' })
+      subToGroup({ followerIdField: 'followerId', followingIdField: 'followingId', subService: 'event-followers', idField: 'id' }),
+      emitEvent({ eventName: 'eventJoin' })
     ],
     update: [],
     patch: [],

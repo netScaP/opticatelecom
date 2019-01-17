@@ -8,7 +8,7 @@ const restrictToGroup = require('../../hooks/restrict-to-group');
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    // all: [ authenticate('jwt') ],
     find: [
       checkGroupId({ fieldName: 'eventId' }), 
       include([
@@ -38,6 +38,9 @@ module.exports = {
       iff(context => context.params.provider, disallow()) // for restrictToOwner call
     ],
     create: [
+      context => {
+        console.log(context);
+      },
       restrictToGroup({ model: 'events', as: 'events', fieldWithId: 'eventId' }),
       associateCurrentUser({ idField: 'id', as: 'userId' })
     ],

@@ -12,6 +12,7 @@ module.exports = function(app) {
   app.on('login', (authResult, { connection }) => {
     // connection can be undefined if there is no
     // real-time connection, e.g. when logging in via REST
+    console.log(connection);
     if(connection) {
       // Obtain the logged in user from the connection
       // const user = connection.user;
@@ -44,6 +45,20 @@ module.exports = function(app) {
     // e.g. to publish all service events to all authenticated users use
     return app.channel('authenticated');
   });
+
+  app.on('eventJoin', ({ user, eventId }) => {
+    console.log(user);
+    console.log(eventId);
+    app.channel(`event/${eventId}`).join(user);
+    app.service('event-messages').publish(() => app.channel(`event/${eventId}`));
+  });
+
+  app.service('event-messages').on('created', ({ text, groupId }, context) => {
+    app.channel(`event/${groupId}`).send({
+      text
+    });
+  });
+
 
   // Here you can also add service specific event publishers
   // e.g. the publish the `users` service `created` event to the `admins` channel
