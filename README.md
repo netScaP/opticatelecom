@@ -6,7 +6,7 @@
 
 #Auth Token
 
-All endpoints includes a auth token.
+All endpoints includes an auth token.
 How to take a token?
 1) create an account (POST /users)
 2) Go to /authentication (support only POST)
